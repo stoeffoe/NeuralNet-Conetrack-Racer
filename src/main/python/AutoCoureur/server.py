@@ -20,6 +20,7 @@ class Server:
                 with self.clientSocket:
                     while True:
                         incomingString = self.recv ()
+                        print(incomingString.strip())
                         self.send (incomingString)
 
     def send (self, message):

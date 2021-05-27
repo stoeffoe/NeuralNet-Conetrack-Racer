@@ -8,7 +8,7 @@ public class Client{
     /**
      * The max length of the buffer which is used to send and receive to and from the server
      */
-    private static final int maxMessageLength = 1024;
+    private static final int maxMessageLength = 256;
     private Socket socket;
     private DataInputStream inStream;
     private DataOutputStream outStream;
