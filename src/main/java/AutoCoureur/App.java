@@ -14,6 +14,11 @@ package AutoCoureur;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("Hello World");
+        Client client = new Client();
+
+        client.send("Hello World");
+        System.out.println(client.recv());
+
+        client.close();
     }
 }

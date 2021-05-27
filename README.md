@@ -1,4 +1,4 @@
-# Opdracht3
+# Opdracht4
 
 ### Compile
 ```
@@ -13,4 +13,9 @@ java -cp ".\target\Opdracht4-0.1.jar;.\target\dependency\*" AutoCoureur.App
 ### Compile and Run
 ```
 mvn package; java -cp ".\target\Opdracht4-0.1.jar;.\target\dependency\*" AutoCoureur.App
+```
+
+### Run python server manually
+```
+py .\src\main\python\AutoCoureur\server.py
 ```
