@@ -1,21 +1,56 @@
 package CarSimulator;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Car {
     Client client;
+    private Process python;
+
     /**
      * Set up a client connection to be able to use the car
      */
     public Car(){
+        try{
+            python = runPython("server.py");
+            Thread.sleep(500);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
         client = new Client();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+    
     /**
      * Close the socket connection
      */
     public void close(){
         client.close();
+        python.destroy();
+    }
+
+    /**
+     * Run a python script
+     * @param fileName the location of the python script relative to the current location
+     * @return the process
+     * @throws IOException
+     */
+    private Process runPython(String fileName) throws IOException{
+        String dir = System.getProperty("user.dir") + "\\src\\main\\python\\CarSimulator\\";
+        String cmd = "python " + dir + fileName;
+
+        return Runtime.getRuntime().exec(cmd);
     }
 
     /**
