@@ -1,6 +1,6 @@
 package AutoCoureur;
 
-import java.util.Scanner;
+import CarSimulator.Car;
 
 /**
  * Requirements:
@@ -16,26 +16,10 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
-        Client client = new Client();
+        Car car = new Car();
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Press q to quit or any other sentence to test the echo server:");
-        String input;
-        boolean quit = false;
-        do{
-            input = scanner.nextLine();
-            switch (input) {
-                case "q":
-                    quit = true;
-                    break;
-                default:
-                    client.send(input);
-                    System.out.println(client.recv());
-                    break;
-            }
-        } while (!quit);
-        scanner.close();
+        car.test();
 
-        client.close();
+        car.close();
     }
 }

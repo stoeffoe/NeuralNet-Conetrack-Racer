@@ -1,10 +1,10 @@
-package AutoCoureur;
+package CarSimulator;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
-public class Client{
+class Client{
     /**
      * The max length of the buffer which is used to send and receive to and from the server
      */
