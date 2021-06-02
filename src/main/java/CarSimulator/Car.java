@@ -43,20 +43,20 @@ public class Car {
             lidarDistances [distanceIndex] = (double) rawLidarDistances.get(distanceIndex);
         }
 
-        var lidarHalfApertureAngle = (long) sensorObject.get("lidarHalfApertureAngle");
-        var lidarApertureAngle = 2 * lidarHalfApertureAngle;
+        long lidarHalfApertureAngle = (long) sensorObject.get("lidarHalfApertureAngle");
+        long lidarApertureAngle = 2 * lidarHalfApertureAngle;
 
         // ====== BEGIN of control algorithm
 
-        var nearestObstacleDistance = finity;
-        var nearestObstacleAngle = 0.;
+        double nearestObstacleDistance = finity;
+        double nearestObstacleAngle = 0.;
         
-        var nextObstacleDistance = finity;
-        var nextObstacleAngle = 0.;
+        double nextObstacleDistance = finity;
+        double nextObstacleAngle = 0.;
 
         for (long lidarAngle = -lidarHalfApertureAngle; lidarAngle < lidarHalfApertureAngle; lidarAngle++) {
             long distanceIndex = lidarAngle < 0 ? lidarAngle + lidarApertureAngle : lidarAngle;
-            var lidarDistance = lidarDistances [(int) distanceIndex];
+            double lidarDistance = lidarDistances [(int) distanceIndex];
             
             if (lidarDistance < nearestObstacleDistance) {
                 nextObstacleDistance = nearestObstacleDistance;
