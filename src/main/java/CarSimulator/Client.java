@@ -2,52 +2,45 @@ package CarSimulator;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 class Client{
     /**
      * The max length of the buffer which is used to send and receive to and from the server
      */
-    private static final int maxMessageLength = 256;
+    private static final int maxMessageLength = 1024;
     private Socket socket;
     private DataInputStream inStream;
     private DataOutputStream outStream;
 
-    /**
-     * Set up a socket connection to the server
-     */
+
     public Client(){
         try{
-            socket = new Socket("", 50008);
-            inStream = new DataInputStream(socket.getInputStream());
-            outStream = new DataOutputStream(socket.getOutputStream());
+            connect();
         } catch(Exception e){
             e.printStackTrace();
         }
     }
 
     /**
-     * Send the message to the server
-     * @param message The message which has to be sent with a maximum of {@value #maxMessageLength} bytes
+     * Connect the socket and the corresponding streams
+     * @throws UnknownHostException
+     * @throws IOException
      */
-    public void send(String message){
-        while(message.length() < maxMessageLength){
-            message += " ";
-        }
-        try{
-            byte[] sendBytes = message.getBytes("ASCII");
-            outStream.write(sendBytes);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+    public void connect() throws UnknownHostException, IOException{
+        socket = new Socket("localhost", 50012);
+        inStream = new DataInputStream(socket.getInputStream());
+        outStream = new DataOutputStream(socket.getOutputStream());
     }
 
     /**
-     * Wait until the client receives a message from the server
-     * @return The message returned from the server
+     * Receive a message from the socket server
+     * @return The received string without leading of trailing whitespace
      */
     public String recv(){
-        byte[] inBytes = new byte[maxMessageLength];
+        byte[] inBytes = new byte [maxMessageLength];
         String inString = "";
         try{
             inStream.readFully(inBytes, 0, maxMessageLength);
@@ -56,6 +49,22 @@ class Client{
             e.printStackTrace();
         }
         return inString.trim();
+    }
+
+    /**
+     * Send the given message to the socket server
+     * @param message The message which is sent to the socket server with a maximum of {@value #maxMessageLength} bytes
+     */
+    public void send(String message){
+        while (message.length() < maxMessageLength) {
+            message += " ";
+        }
+        try{
+            byte[] sendBytes = message.getBytes("ASCII");
+            outStream.write(sendBytes);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
