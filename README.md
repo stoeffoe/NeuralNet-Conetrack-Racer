@@ -17,5 +17,5 @@ mvn package; java -cp ".\target\Opdracht4-0.1.jar;.\target\dependency\*" AutoCou
 
 ### Run python server manually
 ```
-py .\src\main\python\AutoCoureur\server.py
+py .\src\main\python\AutoCoureur\lidar_socketpilot_world.py
 ```
