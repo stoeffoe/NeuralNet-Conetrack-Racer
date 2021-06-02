@@ -4,20 +4,20 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Car {
-    Client client;
+    LidarSocketPilotClient client;
     private Process python;
 
     /**
      * Set up a client connection to be able to use the car
      */
     public Car(){
-        try{
-            python = runPython("server.py");
-            Thread.sleep(500);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        client = new Client();
+        // try{
+        //     python = runPython("server.py");
+        //     Thread.sleep(500);
+        // } catch(Exception e){
+        //     e.printStackTrace();
+        // }
+        client = new LidarSocketPilotClient();
     }
 
 
@@ -36,7 +36,7 @@ public class Car {
      * Close the socket connection
      */
     public void close(){
-        client.close();
+        // client.close();
         python.destroy();
     }
 
@@ -56,23 +56,23 @@ public class Car {
     /**
      * Test function to test the connectivity with the socket server
      */
-    public void test(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Press q to quit or any other sentence to test the echo server:");
-        String input;
-        boolean quit = false;
-        do{
-            input = scanner.nextLine();
-            switch (input) {
-                case "q":
-                    quit = true;
-                    break;
-                default:
-                    client.send(input);
-                    System.out.println(client.recv());
-                    break;
-            }
-        } while (!quit);
-        scanner.close();
-    }
+    // public void test(){
+    //     Scanner scanner = new Scanner(System.in);
+    //     System.out.println("Press q to quit or any other sentence to test the echo server:");
+    //     String input;
+    //     boolean quit = false;
+    //     do{
+    //         input = scanner.nextLine();
+    //         switch (input) {
+    //             case "q":
+    //                 quit = true;
+    //                 break;
+    //             default:
+    //                 client.send(input);
+    //                 System.out.println(client.recv());
+    //                 break;
+    //         }
+    //     } while (!quit);
+    //     scanner.close();
+    // }
 }
