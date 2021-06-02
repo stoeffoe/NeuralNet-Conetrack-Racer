@@ -28,7 +28,6 @@ import socket as sc
 import time as tm
 import json as js
 import simpylc as sp
-import lidar_pilot_base as lb
 
 class LidarSocketpilotServer:
     address = 'localhost', 50012
