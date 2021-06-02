@@ -1,17 +1,11 @@
 package CarSimulator;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.Gson;
 
 public class Car {
     private static final double finity = 1e20;
     private Client client;
+    private Gson gson = new Gson();
 
     /**
      * Set up a client connection to be able to use the car
@@ -20,30 +14,21 @@ public class Car {
         client = new Client();
 
         while(true){
-            try{
-                control();
-            } catch(Exception e){
-                e.printStackTrace();
-            }
+            client.send(control(client.recv()));
         }
 
-        // close();
+        // client.close();
     }
 
-    public void control() throws ParseException, IOException{
-        String sensorString = client.recv();
+    /**
+     * Receive data from the server, process this and send data back to the server
+     */
+    public String control(String sensorString){
+        // String sensorString = client.recv();
         // System.out.println (sensorString);
-
-        JSONParser sensorParser = new JSONParser();
-        JSONObject sensorObject = (JSONObject) sensorParser.parse(sensorString);
-        JSONArray rawLidarDistances = (JSONArray) sensorObject.get("lidarDistances");
-        double[] lidarDistances = new double [rawLidarDistances.size()];
-
-        for (int distanceIndex = 0; distanceIndex < lidarDistances.length; distanceIndex++){
-            lidarDistances [distanceIndex] = (double) rawLidarDistances.get(distanceIndex);
-        }
-
-        long lidarHalfApertureAngle = (long) sensorObject.get("lidarHalfApertureAngle");
+        CarParameters carEnvironmentelParameters = gson.fromJson(sensorString, CarParameters.class);
+        double[] lidarDistances = carEnvironmentelParameters.lidarDistances;
+        long lidarHalfApertureAngle = carEnvironmentelParameters.lidarHalfApertureAngle;
         long lidarApertureAngle = 2 * lidarHalfApertureAngle;
 
         // ====== BEGIN of control algorithm
@@ -74,35 +59,13 @@ public class Car {
         double targetObstacleDistance = (nearestObstacleDistance + nextObstacleDistance) / 2;
         double targetObstacleAngle = (nearestObstacleAngle + nextObstacleAngle) / 2;
 
-        double steeringAngle = targetObstacleAngle;
-        double targetVelocity = (90 - Math.abs (steeringAngle)) / 60;
+        CarParameters carControlParameters = new CarParameters();
+        carControlParameters.steeringAngle = targetObstacleAngle;
+        carControlParameters.targetVelocity = (90 - Math.abs (carControlParameters.steeringAngle)) / 60;
 
         // ====== END of control algorithm
 
-        client.send(toActuatorString(steeringAngle, targetVelocity));                
-    }
-
-    /**
-     * Combine the steeringAngle and the targetVelocity to a JSON string
-     * @param steeringAngle
-     * @param targetVelocity
-     * @return JSON string of the object
-     * @throws IOException
-     */
-    public String toActuatorString(double steeringAngle, double targetVelocity) throws IOException{
-        HashMap<String, Double> actuatorObject = new HashMap<String, Double>();
-        actuatorObject.put("steeringAngle", steeringAngle);
-        actuatorObject.put("targetVelocity", targetVelocity);
-
-        StringWriter actuatorStringWriter = new StringWriter();
-        (new JSONObject(actuatorObject)).writeJSONString(actuatorStringWriter);
-        return actuatorStringWriter.toString();
-    }
-    
-    /**
-     * Close the socket connection
-     */
-    public void close(){
-        client.close();
+        // client.send(gson.toJson(carParameters));
+        return gson.toJson(carControlParameters);
     }
 }
