@@ -16,16 +16,20 @@ import CarSimulator.Car;
 public class App {
 
     public static void main(String[] args) {
-        Car car = new Car();
+        while(true){       
+            Car car = new Car();
 
-        while(true){
-            String incomingString = car.recvProperties();
-            // System.out.println(incomingString);
-            String controlString = car.control(incomingString);
-            // System.out.println(controlString);
-            car.sendControls(controlString);
+            long t = System.currentTimeMillis();
+            long end = t+10000;
+            while(System.currentTimeMillis() < end){
+                String incomingString = car.recvProperties();
+                // System.out.println(incomingString);
+                String controlString = car.control(incomingString);
+                // System.out.println(controlString);
+                car.sendControls(controlString);
+            }
+
+            car.close();
         }
-
-        // car.close();
     }
 }

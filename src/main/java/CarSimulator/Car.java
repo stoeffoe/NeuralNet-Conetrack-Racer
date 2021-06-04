@@ -1,5 +1,7 @@
 package CarSimulator;
 
+import java.io.IOException;
+
 import com.google.gson.Gson;
 
 public class Car{
@@ -8,11 +10,18 @@ public class Car{
     private Gson gson;
     public Properties properties;
     public Controls controls;
+    private Process pythonWorld;
 
     /**
      * Set up a client connection to be able to use the car
      */
     public Car(){
+        try{
+            pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat");
+            Thread.sleep(1000);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
         gson = new Gson();
         properties = new Properties();
         controls = new Controls();
@@ -78,5 +87,17 @@ public class Car{
      */
     public void sendControls(String controlString){
         client.send(controlString);
+    }
+
+    public void close(){
+        client.close();
+        pythonWorld.descendants().forEach(s -> {
+            try {
+                Runtime.getRuntime().exec("taskkill /F /PID " + s);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 }
