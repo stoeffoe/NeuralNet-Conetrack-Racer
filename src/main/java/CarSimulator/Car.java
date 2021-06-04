@@ -2,33 +2,30 @@ package CarSimulator;
 
 import com.google.gson.Gson;
 
-public class Car {
+public class Car{
     private static final double finity = 1e20;
     private Client client;
-    private Gson gson = new Gson();
+    private Gson gson;
+    public Properties properties;
+    public Controls controls;
 
     /**
      * Set up a client connection to be able to use the car
      */
     public Car(){
+        gson = new Gson();
+        properties = new Properties();
+        controls = new Controls();
         client = new Client();
-
-        while(true){
-            client.send(control(client.recv()));
-        }
-
-        // client.close();
     }
 
     /**
-     * Receive data from the server, process this and send data back to the server
+     * Process incoming properties and return controls
      */
     public String control(String sensorString){
-        // String sensorString = client.recv();
-        // System.out.println (sensorString);
-        CarParameters carEnvironmentelParameters = gson.fromJson(sensorString, CarParameters.class);
-        double[] lidarDistances = carEnvironmentelParameters.lidarDistances;
-        long lidarHalfApertureAngle = carEnvironmentelParameters.lidarHalfApertureAngle;
+        properties = gson.fromJson(sensorString, Properties.class);
+        double[] lidarDistances = properties.getLidarDistances();
+        long lidarHalfApertureAngle = properties.getLidarHalfApertureAngle();
         long lidarApertureAngle = 2 * lidarHalfApertureAngle;
 
         // ====== BEGIN of control algorithm
@@ -59,13 +56,27 @@ public class Car {
         double targetObstacleDistance = (nearestObstacleDistance + nextObstacleDistance) / 2;
         double targetObstacleAngle = (nearestObstacleAngle + nextObstacleAngle) / 2;
 
-        CarParameters carControlParameters = new CarParameters();
-        carControlParameters.steeringAngle = targetObstacleAngle;
-        carControlParameters.targetVelocity = (90 - Math.abs (carControlParameters.steeringAngle)) / 60;
+        controls.setSteeringAngle(targetObstacleAngle);
+        controls.setTargetVelocity((90 - Math.abs (controls.getSteeringAngle())) / 60);
 
         // ====== END of control algorithm
 
-        // client.send(gson.toJson(carParameters));
-        return gson.toJson(carControlParameters);
+        return gson.toJson(controls);
+    }
+
+    /**
+     * Receive the properties of the car from the world
+     * @return String in json format with the properties
+     */
+    public String recvProperties(){
+        return client.recv();
+    }
+
+    /**
+     * Send the controls to the car in the world
+     * @param controlString The controls in a string in json format
+     */
+    public void sendControls(String controlString){
+        client.send(controlString);
     }
 }
