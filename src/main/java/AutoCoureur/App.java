@@ -20,9 +20,9 @@ public class App {
 
         while(true){
             String incomingString = car.recvProperties();
-            System.out.println(incomingString);
+            // System.out.println(incomingString);
             String controlString = car.control(incomingString);
-            System.out.println(controlString);
+            // System.out.println(controlString);
             car.sendControls(controlString);
         }
 
