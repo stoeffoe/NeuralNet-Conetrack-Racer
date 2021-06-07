@@ -24,7 +24,7 @@ public class Car{
 
         try{
             pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat " + socketPortCounter);
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch(Exception e){
             e.printStackTrace();
         }
