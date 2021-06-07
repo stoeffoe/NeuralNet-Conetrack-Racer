@@ -15,11 +15,6 @@ class Client{
     private DataInputStream inStream;
     private DataOutputStream outStream;
 
-
-    public Client(){
-        this(50012);
-    }
-
     public Client(int socketPort){
         try{
             connect(socketPort);

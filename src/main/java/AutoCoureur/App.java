@@ -29,11 +29,6 @@ public class App {
                 for(int i = 0; i < amountOfCars; i++){
                     cars[i].sendControls(cars[i].control(cars[i].recvProperties()));
                 }
-                // String incomingString = car.recvProperties();
-                // // System.out.println(incomingString);
-                // String controlString = car.control(incomingString);
-                // // System.out.println(controlString);
-                // car.sendControls(controlString);
             }
 
             for(int i = 0; i < amountOfCars; i++){

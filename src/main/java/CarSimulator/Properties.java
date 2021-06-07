@@ -4,22 +4,20 @@ class Properties{
     private double[] lidarDistances;
     private long lidarHalfApertureAngle;
 
-    Properties(){
+    Properties(){}
 
-    }
-
-    public void setLidarDistances(double[] lidarDistances){
-        this.lidarDistances = lidarDistances;
-    }
-
+    /**
+     * 
+     * @return Array of lidardistances
+     */
     public double[] getLidarDistances(){
         return lidarDistances;
     }
 
-    public void setLidarHalfApertureAngle(long lidarHalfApertureAngle){
-        this.lidarHalfApertureAngle = lidarHalfApertureAngle;
-    }
-
+    /**
+     * 
+     * @return Lidar half aperture angle
+     */
     public long getLidarHalfApertureAngle(){
         return lidarHalfApertureAngle;
     }
