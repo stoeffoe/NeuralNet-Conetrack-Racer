@@ -17,10 +17,14 @@ class Client{
 
 
     public Client(){
+        this(50012);
+    }
+
+    public Client(int socketPort){
         try{
-            connect();
+            connect(socketPort);
         } catch(Exception e){
-            e.printStackTrace();
+            System.out.println("There is no server running at socket port: " + socketPort);
         }
     }
 
@@ -29,8 +33,8 @@ class Client{
      * @throws UnknownHostException
      * @throws IOException
      */
-    public void connect() throws UnknownHostException, IOException{
-        socket = new Socket("localhost", 50012);
+    public void connect(int socketPort) throws UnknownHostException, IOException{
+        socket = new Socket("localhost", socketPort);
         inStream = new DataInputStream(socket.getInputStream());
         outStream = new DataOutputStream(socket.getOutputStream());
     }

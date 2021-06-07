@@ -28,16 +28,24 @@ import socket as sc
 import time as tm
 import json as js
 import simpylc as sp
+import sys
+
+this = sys.modules[__name__]
+
+this.port = 50012
+
+def setPort(port):
+    this.port = int(port)
 
 class LidarSocketpilotServer:
-    address = 'localhost', 50012
+    host = 'localhost'
     socketType = sc.AF_INET, sc.SOCK_STREAM
     maxNrOfConnectionRequests = 5
     maxMessageLength = 1024
 
     def __init__ (self):
         with sc.socket (*self.socketType) as serverSocket:
-            serverSocket.bind (self.address)
+            serverSocket.bind ((self.host, this.port))
             serverSocket.listen (self.maxNrOfConnectionRequests)
 
             while True:

@@ -6,26 +6,33 @@ import com.google.gson.Gson;
 
 public class Car{
     private static final double finity = 1e20;
-    private Client client;
+    private static int socketPortCounter = 50012;
+
     private Gson gson;
+
+    private Process pythonWorld;
+    private Client client;
+
     public Properties properties;
     public Controls controls;
-    private Process pythonWorld;
 
     /**
      * Set up a client connection to be able to use the car
      */
     public Car(){
+        gson = new Gson();
+
         try{
-            pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat");
+            pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat " + socketPortCounter);
             Thread.sleep(1000);
         } catch(Exception e){
             e.printStackTrace();
         }
-        gson = new Gson();
+        client = new Client(socketPortCounter);
+
         properties = new Properties();
         controls = new Controls();
-        client = new Client();
+        socketPortCounter++;
     }
 
     /**

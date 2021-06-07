@@ -1,1 +1,1 @@
-py .\src\main\python\CarSimulator\lidar_socketpilot_world.py
+py .\src\main\python\CarSimulator\lidar_socketpilot_world.py %1

@@ -37,6 +37,9 @@ import lidar_socketpilot_server as ls
 import physics as ps
 import visualisation as vs
 
+# Set the port for the socket server
+ls.setPort(ss.argv[1])
+
 sp.World (
     ls.LidarSocketpilotServer,
     ps.Physics,
