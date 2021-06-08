@@ -41,7 +41,7 @@ class LidarSocketpilotServer:
     host = 'localhost'
     socketType = sc.AF_INET, sc.SOCK_STREAM
     maxNrOfConnectionRequests = 5
-    maxMessageLength = 1024
+    maxMessageLength = 2048
 
     def __init__ (self):
         with sc.socket (*self.socketType) as serverSocket:
@@ -55,7 +55,11 @@ class LidarSocketpilotServer:
                     while True:
                         sensors = {
                             'lidarDistances': sp.world.visualisation.lidar.distances,
-                            'lidarHalfApertureAngle': sp.world.visualisation.lidar.halfApertureAngle
+                            'lidarHalfApertureAngle': sp.world.visualisation.lidar.halfApertureAngle,
+                            'isOnTrack': sp.world.visualisation.isOnTrack(),
+                            'progress': "{:.1f}".format(sp.world.visualisation.getProgress()),
+                            'lapTime': "{:.2f}".format(sp.world.visualisation.getLapTime()),
+                            'collided': sp.world.visualisation.floor.scene.collided
                         }
                         self.send (sensors)
 
