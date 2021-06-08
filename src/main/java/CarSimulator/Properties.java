@@ -69,6 +69,7 @@ public class Properties{
         double[] distanceOfNearestCones = {1e20, 1e20, 1e20, 1e20};
         double[] angleOfNearestCones = new double[4];
 
+        // Get the 4 nearest cone distances and angles
         for(int i = 0; i < amountOfLidars; i++){
             double currentLidarDistance = lidarDistances[i];
             if(currentLidarDistance < distanceOfNearestCones[0]){
@@ -79,26 +80,28 @@ public class Properties{
                 angleOfNearestCones[3] = angleOfNearestCones[2];
                 angleOfNearestCones[2] = angleOfNearestCones[1];
                 angleOfNearestCones[1] = angleOfNearestCones[0];
-                angleOfNearestCones[0] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars);
+                angleOfNearestCones[0] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars) - lidarHalfApertureAngle;
             } else if(currentLidarDistance < distanceOfNearestCones[1]){
                 distanceOfNearestCones[3] = distanceOfNearestCones[2];
                 distanceOfNearestCones[2] = distanceOfNearestCones[1];
                 distanceOfNearestCones[1] = currentLidarDistance;
                 angleOfNearestCones[3] = angleOfNearestCones[2];
                 angleOfNearestCones[2] = angleOfNearestCones[1];
-                angleOfNearestCones[1] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars);
+                angleOfNearestCones[1] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars) - lidarHalfApertureAngle;
             } else if(currentLidarDistance < distanceOfNearestCones[2]){
                 distanceOfNearestCones[3] = distanceOfNearestCones[2];
                 distanceOfNearestCones[2] = currentLidarDistance;
                 angleOfNearestCones[3] = angleOfNearestCones[2];
-                angleOfNearestCones[2] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars);
+                angleOfNearestCones[2] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars) - lidarHalfApertureAngle;
             } else if(currentLidarDistance < distanceOfNearestCones[3]){
                 distanceOfNearestCones[3] = currentLidarDistance;
-                angleOfNearestCones[3] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars);
+                angleOfNearestCones[3] = (i + 1) * ((lidarHalfApertureAngle * 2) / amountOfLidars) - lidarHalfApertureAngle;
             }
         }
-        for (int i = 0; i < angleOfNearestCones.length; i++) {
-            for (int j = 0; j < angleOfNearestCones.length; j++) {
+
+        // Sort the distance and angles arrays on the angle from left to right
+        for (int i = 0; i < angleOfNearestCones.length; i++){
+            for (int j = 0; j < angleOfNearestCones.length; j++){
                 double temp = 0;
                 if(angleOfNearestCones[i] < angleOfNearestCones[j]){
                     temp = angleOfNearestCones[i];
@@ -111,6 +114,7 @@ public class Properties{
             }
         }
 
+        // Combine the distance and angle arrays
         for (int i = 0; i < nearestCones.length; i++) {
             if(i % 2 == 0){
                 nearestCones[i] = distanceOfNearestCones[i/2];

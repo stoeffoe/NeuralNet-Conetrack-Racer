@@ -62,7 +62,7 @@ public class PropertiesTest {
 
     @Test
     public void getNearestCones(){
-        double[] expected = {2.5013, 71, 4.0302, 78, 1.1235, 97, 4.47, 98};
+        double[] expected = {2.5013, 11, 4.0302, 18, 1.1235, 37, 4.47, 38};
         double[] actual = properties.getNearestCones();
         assertArrayEquals(expected, actual, 0.001);
     }
