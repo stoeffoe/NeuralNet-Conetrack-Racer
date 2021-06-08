@@ -64,14 +64,6 @@ public class PropertiesTest {
     public void getNearestCones(){
         double[] expected = {2.5013, 71, 4.0302, 78, 1.1235, 97, 4.47, 98};
         double[] actual = properties.getNearestCones();
-        for (double d : expected) {
-            System.out.print(d + ", ");
-        }
-        System.out.println();
-        for (double d : actual) {
-            System.out.print(d + ", ");
-        }
-        System.out.println();
         assertArrayEquals(expected, actual, 0.001);
     }
 }

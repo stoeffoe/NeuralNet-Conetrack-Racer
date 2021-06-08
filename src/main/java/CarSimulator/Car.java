@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.google.gson.Gson;
 
 public class Car{
-    private static final double finity = 1e20;
     private static int socketPortCounter = 50012;
 
     private Gson gson;
@@ -37,7 +36,7 @@ public class Car{
 
     /**
      * 
-     * @return
+     * @return An object with all the properties of the car
      */
     public Properties getProperties() {
         return properties;
@@ -55,8 +54,8 @@ public class Car{
 
     /**
      * 
-     * @param steeringAngle
-     * @param targetVelocity
+     * @param steeringAngle The angle to where the car has to steer
+     * @param targetVelocity The target velocity of the car
      */
     public void sendControls(double steeringAngle, double targetVelocity){
         controls = new Controls(steeringAngle, targetVelocity);
@@ -64,7 +63,7 @@ public class Car{
     }
 
     /**
-     * Close the socketconnection and the server
+     * Close the socketconnection and kill the server
      */
     public void close(){
         client.close();
