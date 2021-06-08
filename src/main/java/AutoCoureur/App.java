@@ -53,7 +53,6 @@ public class App {
                         }
                     }
                     
-                    double targetObstacleDistance = (nearestObstacleDistance + nextObstacleDistance) / 2;
                     double targetObstacleAngle = (nearestObstacleAngle + nextObstacleAngle) / 2;
             
                     double steeringAngle = targetObstacleAngle;
