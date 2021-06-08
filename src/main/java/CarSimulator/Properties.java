@@ -44,7 +44,8 @@ class Properties{
 
     /**
      * 
-     * @return elasped simulation time
+     * @return elapsed simulation time
+
      */
     public double getLapTime() {
         return lapTime;
