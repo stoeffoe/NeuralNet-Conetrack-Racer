@@ -40,6 +40,10 @@ import simpylc as sp
 
 import parameters as pm
 
+import numpy as np
+
+from shapely.geometry import Point, Polygon
+
 normalFloorColor = (0, 0.003, 0)
 collisionFloorColor = (1, 0, 0.3)
 nrOfObstacles = 64
@@ -134,6 +138,15 @@ class Visualisation (sp.Scene):
         self.windowRear = Window (size = (0.05, 0.14, 0.18), center = (-0.18, 0, -0.025),angle = 72) 
 
         self.roadCones = []
+
+        self.leftConesPos = np.array(((3.0, -5.5),(4.5, -6.0),(6.0, -5.5),(6.0, -4.0),(6.0, -2.5),(5.5, -0.5),(5.0, 1.5),(5.0, 3.5),(5.5, 5.5),(5.0, 6.5),(4.0, 6.5),(2.5, 6.0),(2.0, 5.0),(1.5, 3.5),(1.5, 1.5),(1.5, -0.5),(0.5, -2.5),(-1.5, -3.5),(-3.0, -3.5),(-4.5, -2.5),(-4.5, -0.5),(-4.0, 1.0),(-3.5, 2.5),(-3.5, 4.0),(-3.5, 5.5),(-4.0, 6.0),(-5.0, 6.0),(-6.0, 5.5),(-6.5, 4.5),(-6.0, 3.0),(-6.5, 1.0),(-6.5, -1.0),(-6.0, -2.5),(-6.5, -4.5),(-5.5, -6.0),(-4.5, -6.5),(-3.0, -6.5),(-1.5, -6.0),(0.5, -5.5),))
+        self.rightConesPos = np.array(((3.0, -6.5),(5.0, -7.0),(7.0, -6.5),(7.0, -4.5),(7.0, -2.5),(6.5, -0.5),(6.0, 1.5),(6.0, 3.5),(6.5, 5.5),(6.0, 7.0),(4.0, 7.5),(2.0, 7.0),(1.0, 5.5),(0.5, 3.5),(0.5, 1.5),(0.5, -0.5),(-0.5, -2.0),(-2.0, -2.5),(-3.5, -2.0),(-3.5, -0.5),(-3.0, 1.0),(-2.5, 2.5),(-2.5, 4.0),(-2.5, 6.0),(-3.5, 7.0),(-5.0, 7.0),(-7.0, 6.5),(-7.5, 5.0),(-7.0, 3.0),(-7.5, 1.0),(-7.5, -1.0),(-7.0, -2.5),(-7.5, -4.5),(-6.5, -6.5),(-4.5, -7.5),(-2.5, -7.5),(-1.0, -7.0),(1.0, -6.5),))
+
+        self.circuitgon = Polygon(np.concatenate((self.leftConesPos, (self.leftConesPos[0],), self.rightConesPos, (self.rightConesPos[0],))))
+
+        self.progress = 0
+        self.lastCone = 0
+
         track = open ('default.track')
         
         for rowIndex, row in enumerate (track):
@@ -215,4 +228,30 @@ class Visualisation (sp.Scene):
         except Exception as exception: # Initial check
             pass
             # print ('Visualisation.display:', exception)
+        
+
+    def getPosition(self):
+        return Point(sp.world.physics.positionX+0, sp.world.physics.positionY+0)
+
+    def isOnTrack(self):
+        return self.getPosition().within(self.circuitgon)
+
+    def getProgress(self):
+        if self.progress >= 100:
+            return 100
+
+        distances = np.sum((self.leftConesPos-self.getPosition())**2, axis=1)
+        nearestCone = np.argmin(distances)
+        numOfInnerCones = len(self.leftConesPos)
+
+        newConeDiff = 1 if (self.lastCone == numOfInnerCones-1 and nearestCone == 0) else (nearestCone - self.lastCone)
+
+        if newConeDiff == 1 or newConeDiff == -1:
+            self.progress += (newConeDiff / numOfInnerCones) * 100
+            self.lastCone = nearestCone
+
+        return self.progress
+
+    def getLapTime(self):
+        return sp.world.time()
         
