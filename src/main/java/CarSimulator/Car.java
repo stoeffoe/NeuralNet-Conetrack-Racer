@@ -1,10 +1,12 @@
 package CarSimulator;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import com.google.gson.Gson;
 
 public class Car{
+    private static final long waitingTimeBeforeConnect = 500;
     private static int socketPortCounter = 50012;
 
     private Gson gson;
@@ -25,7 +27,7 @@ public class Car{
 
         try{
             pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat " + socketPortCounter);
-            Thread.sleep(2000);
+            Thread.sleep(waitingTimeBeforeConnect);
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -44,9 +46,24 @@ public class Car{
 
     /**
      * Receive the properties of the car from the world and set them in the properties
+     * Reconnect when a SocketTimeoutException is thrown
+     * Close the program when an IOException is thrown
+     * @return properties object
      */
     public Properties recvProperties(){
-        String incomingString = client.recv();
+        String incomingString = "";
+        boolean received = false;
+        while(!received){
+            try{
+                incomingString = client.recv();
+                received = true;
+            } catch(SocketTimeoutException e){
+                client.connect();
+            } catch(IOException e){
+                close();
+                System.exit(1);
+            }
+        }
         // System.out.println(incomingString);
         properties = gson.fromJson(incomingString, Properties.class);
         return properties;
@@ -74,6 +91,5 @@ public class Car{
                 e.printStackTrace();
             }
         });
-
     }
 }
