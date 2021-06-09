@@ -21,12 +21,9 @@ class Client{
     public Client(int socketPort){
         this.socketPort = socketPort;
         boolean connected = false;
-        long startTime = System.currentTimeMillis();
         while(!connected){
             connected = connect();
         }
-        long duration = System.currentTimeMillis() - startTime;
-        System.out.println("Connected to " + socket.getInetAddress() + ":" + socketPort + " in " + duration);
     }
 
     /**
@@ -41,7 +38,6 @@ class Client{
             outStream = new DataOutputStream(socket.getOutputStream());
             return true;
         } catch (IOException e){
-            // System.out.println("Not able to connect to socket on port " + socketPort + "...");
             return false;
         }
     }
