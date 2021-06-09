@@ -19,11 +19,14 @@ public class App {
         while(true){
             Car car = new Car();
 
-            long t = System.currentTimeMillis();
-            long end = t+5000;
-            while(System.currentTimeMillis() < end){
+            while(true){
                     car.recvProperties();
-
+                    double[] nearestCones = car.getProperties().getNearestCones();
+                    System.out.println(car.getProperties().getProgress());
+                    if(car.getProperties().getProgress() == 100){
+                        System.out.println(car.getProperties().getLapTime());
+                        break;
+                    }
                     double[] lidarDistances = car.getProperties().getLidarDistances();
                     long lidarHalfApertureAngle = car.getProperties().getLidarHalfApertureAngle();
                     long lidarApertureAngle = 2 * lidarHalfApertureAngle;
