@@ -59,7 +59,6 @@ public class ControlsTest {
         assertEquals(expected, actual, 0.001);
     }
 
-
     @Test
     public void setTargetVelocityTest(){
         controls.setTargetVelocity(1.0);
@@ -78,8 +77,8 @@ public class ControlsTest {
 
     @Test
     public void setTargetVelocityTooLowTest(){
-        controls.setSteeringAngle(-Controls.maxTargetVelocity);
-        double expected = 0;
+        controls.setSteeringAngle(Controls.minTargetVelocity - 10.0);
+        double expected = Controls.minTargetVelocity;
         double actual = controls.getTargetVelocity();
         assertEquals(expected, actual, 0.001);
     }
