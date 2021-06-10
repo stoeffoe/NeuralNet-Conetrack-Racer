@@ -65,7 +65,6 @@ public class Car{
                 System.exit(1);
             }
         }
-        // System.out.println(incomingString);
         properties = gson.fromJson(incomingString, Properties.class);
         return properties;
     }
@@ -91,9 +90,9 @@ public class Car{
      */
     public void close(){
         client.close();
-        pythonWorld.descendants().forEach(s -> {
+        pythonWorld.descendants().forEach(childprocess -> {
             try {
-                Runtime.getRuntime().exec("taskkill /F /PID " + s);
+                Runtime.getRuntime().exec("taskkill /F /PID " + childprocess);
             } catch (IOException e) {
                 e.printStackTrace();
             }
