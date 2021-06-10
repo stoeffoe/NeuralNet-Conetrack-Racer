@@ -57,17 +57,13 @@ class Client{
     /**
      * Send the given message to the socket server
      * @param message The message which is sent to the socket server with a maximum of {@value #maxMessageLength} bytes
+     * @throws IOException When there is no working server anymore
      */
-    public void send(String message){
+    public void send(String message) throws IOException{
         while (message.length() < maxMessageLength) {
             message += " ";
         }
-        try{
-            byte[] sendBytes = message.getBytes("ASCII");
-            outStream.write(sendBytes);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        outStream.write(message.getBytes("ASCII"));
     }
 
     /**
@@ -78,7 +74,7 @@ class Client{
             outStream.close();
             inStream.close();
             socket.close();
-        } catch(Exception e){
+        } catch(IOException e){
             e.printStackTrace();
         }
     }

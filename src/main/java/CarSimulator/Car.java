@@ -60,6 +60,7 @@ public class Car{
             } catch(SocketTimeoutException e){
                 client.connect();
             } catch(IOException e){
+                System.out.println("Server not reachable anymore, so exiting program");
                 close();
                 System.exit(1);
             }
@@ -76,7 +77,13 @@ public class Car{
      */
     public void sendControls(double steeringAngle, double targetVelocity){
         controls = new Controls(steeringAngle, targetVelocity);
-        client.send(gson.toJson(controls));
+        try {
+            client.send(gson.toJson(controls));
+        } catch (IOException e) {
+            System.out.println("Server not reachable anymore, so exiting program");
+            close();
+            System.exit(1);
+        }
     }
 
     /**
