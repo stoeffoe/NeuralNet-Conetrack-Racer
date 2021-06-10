@@ -1,8 +1,8 @@
 package CarSimulator;
 
 class Controls{
-    private static final double maxSteeringAngle = 90;
-    private static final double maxTargetVelocity = 10;
+    public static final double maxSteeringAngle = 90;
+    public static final double maxTargetVelocity = 10;
 
     private double steeringAngle;
     private double targetVelocity;
