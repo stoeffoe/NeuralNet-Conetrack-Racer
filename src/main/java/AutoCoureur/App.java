@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import CarSimulator.Car;
 import CarSimulator.Properties;
-
+import Machine_Learning.*;
 /**
  * Requirements:
  * 
@@ -29,10 +29,9 @@ public class App {
 
         nn.fit(d.getDataSet(), 1, 10000);
 
-        nn.showLineChart();
     }
 
-    }
+    
 
     public static void createData(){
         Car car = new Car();

@@ -17,7 +17,7 @@ public class Dataset {
     }
 
 
-    Dataset(){
+    public Dataset(){
         ArrayList<Data> dataSet = new  ArrayList<Data>();
 
 
