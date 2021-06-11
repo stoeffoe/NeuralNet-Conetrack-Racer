@@ -73,7 +73,7 @@ public class Properties{
         }
         double[] angleOfNearestCones = new double[amountOfNearestCones];
 
-        // Get the 4 nearest cone distances and angles
+        // Get the nearest cone distances and angles
         for(int i = 0; i < amountOfLidars; i++){
             double currentLidarDistance = lidarDistances[i];
             for(int j = 0; j < amountOfNearestCones; j++){

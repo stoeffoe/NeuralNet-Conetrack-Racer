@@ -9,7 +9,7 @@ public class Car{
     private static final long waitingTimeBeforeConnect = 500;
     private static int socketPortCounter = 50012;
 
-    private Gson gson;
+    private static Gson gson = new Gson();
 
     private Process pythonWorld;
     private Client client;
@@ -21,7 +21,6 @@ public class Car{
      * Set up a client connection to be able to use the car
      */
     public Car(){
-        gson = new Gson();
         properties = new Properties();
         controls = new Controls();
 
