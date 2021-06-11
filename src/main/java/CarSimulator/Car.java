@@ -65,6 +65,8 @@ public class Car{
                 System.exit(1);
             }
         }
+
+
         properties = gson.fromJson(incomingString, Properties.class);
         return properties;
     }

@@ -11,8 +11,6 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseMotionListener;
 
-import CarSimulator.Car;
-
 public class KeyboardController implements NativeKeyListener, NativeMouseMotionListener {
 
     private double steeringAngle;
