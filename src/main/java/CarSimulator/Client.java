@@ -21,12 +21,9 @@ class Client{
     public Client(int socketPort){
         this.socketPort = socketPort;
         boolean connected = false;
-        long startTime = System.currentTimeMillis();
         while(!connected){
             connected = connect();
         }
-        long duration = System.currentTimeMillis() - startTime;
-        System.out.println("Connected to " + socket.getInetAddress() + ":" + socketPort + " in " + duration);
     }
 
     /**
@@ -41,7 +38,7 @@ class Client{
             outStream = new DataOutputStream(socket.getOutputStream());
             return true;
         } catch (IOException e){
-            // System.out.println("Not able to connect to socket on port " + socketPort + "...");
+            
             return false;
         }
     }
@@ -61,17 +58,13 @@ class Client{
     /**
      * Send the given message to the socket server
      * @param message The message which is sent to the socket server with a maximum of {@value #maxMessageLength} bytes
+     * @throws IOException When there is no working server anymore
      */
-    public void send(String message){
+    public void send(String message) throws IOException{
         while (message.length() < maxMessageLength) {
             message += " ";
         }
-        try{
-            byte[] sendBytes = message.getBytes("ASCII");
-            outStream.write(sendBytes);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        outStream.write(message.getBytes("ASCII"));
     }
 
     /**
@@ -82,7 +75,7 @@ class Client{
             outStream.close();
             inStream.close();
             socket.close();
-        } catch(Exception e){
+        } catch(IOException e){
             e.printStackTrace();
         }
     }

@@ -26,7 +26,7 @@ public class Car{
         controls = new Controls();
 
         try{
-            pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat " + socketPortCounter);
+            pythonWorld = Runtime.getRuntime().exec("cmd /c activate Tinlab_opdracht_4 && start pythonServer.bat " + socketPortCounter);
             Thread.sleep(waitingTimeBeforeConnect);
         } catch(Exception e){
             e.printStackTrace();
@@ -60,11 +60,11 @@ public class Car{
             } catch(SocketTimeoutException e){
                 client.connect();
             } catch(IOException e){
+                System.out.println("Server not reachable anymore, so exiting program");
                 close();
                 System.exit(1);
             }
         }
-        // System.out.println(incomingString);
         properties = gson.fromJson(incomingString, Properties.class);
         return properties;
     }
@@ -76,7 +76,13 @@ public class Car{
      */
     public void sendControls(double steeringAngle, double targetVelocity){
         controls = new Controls(steeringAngle, targetVelocity);
-        client.send(gson.toJson(controls));
+        try {
+            client.send(gson.toJson(controls));
+        } catch (IOException e) {
+            System.out.println("Server not reachable anymore, so exiting program");
+            close();
+            System.exit(1);
+        }
     }
 
     /**
@@ -84,9 +90,9 @@ public class Car{
      */
     public void close(){
         client.close();
-        pythonWorld.descendants().forEach(s -> {
+        pythonWorld.descendants().forEach(childprocess -> {
             try {
-                Runtime.getRuntime().exec("taskkill /F /PID " + s);
+                Runtime.getRuntime().exec("taskkill /F /PID " + childprocess);
             } catch (IOException e) {
                 e.printStackTrace();
             }
