@@ -1,110 +1,100 @@
 package CarSimulator;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import com.google.gson.Gson;
 
 public class Car{
-    private static final double finity = 1e20;
+    private static final long waitingTimeBeforeConnect = 500;
     private static int socketPortCounter = 50012;
 
-    private Gson gson;
+    private static Gson gson = new Gson();
 
     private Process pythonWorld;
     private Client client;
 
-    public Properties properties;
-    public Controls controls;
+    private Properties properties;
+    private Controls controls;
 
     /**
      * Set up a client connection to be able to use the car
      */
     public Car(){
-        gson = new Gson();
+        properties = new Properties();
+        controls = new Controls();
 
         try{
             pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat " + socketPortCounter);
-            Thread.sleep(2000);
+            Thread.sleep(waitingTimeBeforeConnect);
         } catch(Exception e){
             e.printStackTrace();
         }
         client = new Client(socketPortCounter);
 
-        properties = new Properties();
-        controls = new Controls();
         socketPortCounter++;
     }
 
     /**
-     * Process incoming properties and return controls
+     * 
+     * @return An object with all the properties of the car
      */
-    public String control(String sensorString){
-        properties = gson.fromJson(sensorString, Properties.class);
-        double[] lidarDistances = properties.getLidarDistances();
-        long lidarHalfApertureAngle = properties.getLidarHalfApertureAngle();
-        long lidarApertureAngle = 2 * lidarHalfApertureAngle;
+    public Properties getProperties() {
+        return properties;
+    }
 
-        // ====== BEGIN of control algorithm
-
-        double nearestObstacleDistance = finity;
-        double nearestObstacleAngle = 0.;
-        
-        double nextObstacleDistance = finity;
-        double nextObstacleAngle = 0.;
-
-        for (long lidarAngle = -lidarHalfApertureAngle; lidarAngle < lidarHalfApertureAngle; lidarAngle++) {
-            long distanceIndex = lidarAngle < 0 ? lidarAngle + lidarApertureAngle : lidarAngle;
-            double lidarDistance = lidarDistances [(int) distanceIndex];
-            
-            if (lidarDistance < nearestObstacleDistance) {
-                nextObstacleDistance = nearestObstacleDistance;
-                nextObstacleAngle = nearestObstacleAngle;
-                
-                nearestObstacleDistance = lidarDistance;
-                nearestObstacleAngle = lidarAngle;
-            }
-            else if (lidarDistance < nextObstacleDistance) {
-                nextObstacleDistance = lidarDistance;
-                nextObstacleAngle = lidarAngle;
+    /**
+     * Receive the properties of the car from the world and set them in the properties
+     * Reconnect when a SocketTimeoutException is thrown
+     * Close the program when an IOException is thrown
+     * @return properties object
+     */
+    public Properties recvProperties(){
+        String incomingString = "";
+        boolean received = false;
+        while(!received){
+            try{
+                incomingString = client.recv();
+                received = true;
+            } catch(SocketTimeoutException e){
+                client.connect();
+            } catch(IOException e){
+                System.out.println("Server not reachable anymore, so exiting program");
+                close();
+                System.exit(1);
             }
         }
-        
-        double targetObstacleDistance = (nearestObstacleDistance + nextObstacleDistance) / 2;
-        double targetObstacleAngle = (nearestObstacleAngle + nextObstacleAngle) / 2;
-
-        controls.setSteeringAngle(targetObstacleAngle);
-        controls.setTargetVelocity((90 - Math.abs (controls.getSteeringAngle())) / 60);
-
-        // ====== END of control algorithm
-
-        return gson.toJson(controls);
+        properties = gson.fromJson(incomingString, Properties.class);
+        return properties;
     }
 
     /**
-     * Receive the properties of the car from the world
-     * @return String in json format with the properties
+     * 
+     * @param steeringAngle The angle to where the car has to steer
+     * @param targetVelocity The target velocity of the car
      */
-    public String recvProperties(){
-        return client.recv();
+    public void sendControls(double steeringAngle, double targetVelocity){
+        controls = new Controls(steeringAngle, targetVelocity);
+        try {
+            client.send(gson.toJson(controls));
+        } catch (IOException e) {
+            System.out.println("Server not reachable anymore, so exiting program");
+            close();
+            System.exit(1);
+        }
     }
 
     /**
-     * Send the controls to the car in the world
-     * @param controlString The controls in a string in json format
+     * Close the socketconnection and kill the server
      */
-    public void sendControls(String controlString){
-        client.send(controlString);
-    }
-
     public void close(){
         client.close();
-        pythonWorld.descendants().forEach(s -> {
+        pythonWorld.descendants().forEach(childprocess -> {
             try {
-                Runtime.getRuntime().exec("taskkill /F /PID " + s);
+                Runtime.getRuntime().exec("taskkill /F /PID " + childprocess);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-
     }
 }
