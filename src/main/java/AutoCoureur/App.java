@@ -39,7 +39,7 @@ public class App {
                 e.printStackTrace();
             }
 
-            String text = "dataSet.add(new Data(new double[]" +  Arrays.toString(x.getLidarDistances()).replace("[", "{").replace("]", "}") + ",new double[] {" + a + "}" + "));"; // dataSet.add(new Data(c0, cross));//0;
+            String text = "dataSet.add(new Data(new double[]" +  Arrays.toString(x.getLidarDistances()).replace("[", "{").replace("]", "}") + ", {" + a + "}" + "));"; // dataSet.add(new Data(c0, cross));//0;
             try {
                 whenAppendToFileUsingFileWriter_thenCorrect("drive.txt", text);
             } catch (IOException e) {
