@@ -22,6 +22,19 @@ import CarSimulator.Properties;
 public class App {
 
     public static void main(String[] args) {
+        Dataset d = new Dataset();
+
+        int[] layers = { 8, 6, 4, 1 };
+        NeuralNet nn = new NeuralNet(layers);
+
+        nn.fit(d.getDataSet(), 1, 10000);
+
+        nn.showLineChart();
+    }
+
+    }
+
+    public static void createData(){
         Car car = new Car();
         KeyboardController kc = new KeyboardController();
         while (true) {
@@ -47,7 +60,6 @@ public class App {
             }
 
         }
-
     }
 
     public static void whenAppendToFileUsingFileWriter_thenCorrect(String fileName, String input) throws IOException {
