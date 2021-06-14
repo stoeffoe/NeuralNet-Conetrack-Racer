@@ -36,8 +36,8 @@ public class App {
     public static void control(Car car){
         while(true){
             car.recvProperties();
-            if(car.getProperties().getLapTime() > 2){
-                System.out.println(car.getProperties().getProgress());
+            if(car.getProperties().getProgress() >= 100){
+                System.out.println(car.getProperties().getLapTime());
                 car.close();
                 break;
             }
