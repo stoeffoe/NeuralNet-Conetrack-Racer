@@ -90,7 +90,7 @@ public class App {
             
             nndataSet.add(
                 new Data(
-                    properties.getRay(), 
+                    properties.getRay(120,8), 
                     new double[]{
                         control.getSteeringAngle()
                     }
@@ -99,7 +99,6 @@ public class App {
         }
 
         Data[] dataSet = new Data[end];
-
         for (int indexData = 0; indexData < dataSet.length; indexData++) {
             dataSet[indexData] =nndataSet.get(indexData); 
         }
@@ -109,21 +108,21 @@ public class App {
         NeuralNet nn = null;
         
         // get startvalues of edges if necessary
-        if(edgesFile !=null){ 
-            try {
-                nn =new NeuralNet(NeuralNet.loadFromJsonFile(edgesFile).getEdges());
-            } catch (Exception e) {
-                System.out.println("No file to init edges");
-                nn = new NeuralNet(layers);
-            }
+        try {
+            nn =new NeuralNet(NeuralNet.loadFromJsonFile(edgesFile).getEdges());
+        } catch (Exception e) {
+            System.out.println("No file to init edges");
+            nn = new NeuralNet(layers);
         }
-        
+                
         // train
         nn.fit(dataSet, 0.1, 15);
+
         // save
-        nn.saveToJsonFile(edgesFile);
+        if(edgesFile != null){
+            nn.saveToJsonFile(edgesFile);
+        }
         System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
-        
     }
 
     /**

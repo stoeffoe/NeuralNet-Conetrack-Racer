@@ -66,12 +66,13 @@ public class Properties{
      * 
      * @return 
      */
-    public double[] getRay(){
-        double[][] rays = new double[8][15]; 
+    public double[] getRay(int lidarAngle, int outputVector){
+        int sublist = lidarAngle / outputVector;
+        double[][] rays = new double[outputVector][sublist]; 
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 15; j++) {
-                rays[i][j] = lidarDistances[(i*15)+j];
+        for (int i = 0; i < outputVector; i++) {
+            for (int j = 0; j < sublist; j++) {
+                rays[i][j] = lidarDistances[(i*sublist)+j];
             }
         }
 
@@ -79,14 +80,25 @@ public class Properties{
             Arrays.sort(ds);
         }
 
-        double[] tempRays = new double[8];
+        double[] tempRays = new double[outputVector];
         for (int k = 0; k < rays.length; k++) {
-            tempRays[k] = 1/rays[k][0];
+            tempRays[k] = normalize(rays[k][0], 0.5, 2) ;
         }
 
         return tempRays;
     }
 
+    double normalize(double value, double min, double max){
+        if (value > max){
+            return 1.0;
+        } else if (value < min){
+            return 0.0;
+        } else {
+            return (value - min) / (max - min);
+        }
+    }
+
+    
     /**
      * 
      * @return Array with the distance and angle to the 4 nearest cones sorted per cone
