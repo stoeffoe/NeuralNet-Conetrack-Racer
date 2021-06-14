@@ -7,19 +7,32 @@
 package NeuralNet;
 
 public class Data {
-    private double[][] desiredValue;
-    private double[] matrix;
-
-    public Data(double[] _matrix, double[] _desiredValue) {
-        this.matrix = _matrix;
-        this.desiredValue = MatMath.fromList(_desiredValue);
+    private double[][] outputValue;
+    private double[] inputValues;
+    
+    /**
+     * 
+     * @param _matrix double[] vector of the input
+     * @param _desiredValue double[] outputValue vector of the output
+     */
+    public Data(double[] inputValues, double[] outputValue) {
+        this.inputValues = inputValues;
+        this.outputValue = MatMath.fromList(outputValue);
     }
 
+    /**
+     * 
+     * @return double[]
+     */
     public double[] getMatrix() {
-        return matrix;
+        return inputValues;
     }
 
+    /**
+     * 
+     * @return double[][]
+     */
     public double[][] getDesiredValue() {
-        return desiredValue;
+        return outputValue;
     }
 }

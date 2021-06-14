@@ -10,6 +10,10 @@ public class NeuralNet {
 
     private double[][][] edges;
 
+    /**
+     * 
+     * @return double[][][]
+     */
     public double[][][] getEdges() {
         return edges;
     }
@@ -29,12 +33,20 @@ public class NeuralNet {
         }
     }
 
-    
+    /**
+     * if you have already the weights of the edges  
+     * @param edges 
+     */
     public NeuralNet(double[][][] edges) {
         this.edges = edges;
     }
 
-    void setEdgeWeight(int layer, double initEdgeWeight ){
+    /**
+     * init the layers with a static value
+     * @param layer
+     * @param initEdgeWeight
+     */
+    private void setEdgeWeight(int layer, double initEdgeWeight ){
         for (int row = 0; row < edges[layer].length; row++) {
             for (int col = 0; col < edges[layer][row].length; col++) {
                 edges[layer][row][col] = initEdgeWeight;
@@ -42,6 +54,11 @@ public class NeuralNet {
         }
     }
 
+    /**
+     * This will predict the the neural net 
+     * @param inputValues double[]
+     * @return
+     */
     public double[][] predict(double[] inputValues) {
         double[][] input = MatMath.fromList(inputValues);
         double[][] output = input;
@@ -53,6 +70,12 @@ public class NeuralNet {
         }
         return output;
     }
+
+    /**
+     * 
+     * @param dataSet Data[]
+     * @param weightChange double
+     */
 
     public void train(Data[] dataSet, double weightChange) {
         int[] bestEdgeIndex = new int[3];
@@ -87,6 +110,11 @@ public class NeuralNet {
         edges[bestEdgeIndex[0]][bestEdgeIndex[1]][bestEdgeIndex[2]] += bestEdgeWeightChange;
     }
 
+    /**
+     * 
+     * @param data Data
+     * @return
+     */
     private double calculateError(Data data) {
         double[][] target = data.getDesiredValue();
         double[][] output = predict(data.getMatrix());
@@ -94,6 +122,11 @@ public class NeuralNet {
         return MatMath.sumOfSquares(MatMath.sub(target, output));
     }
 
+    /**
+     * 
+     * @param dataSet Data[]
+     * @return
+     */
     public double calculateAverageError(Data[] dataSet) {
         double errorSum = 0;
         for (Data data : dataSet) {
@@ -103,6 +136,13 @@ public class NeuralNet {
         return errorSum / dataSet.length;
     }
 
+    /**
+     * 
+     * @param dataSet Data[]
+     * @param edgeIndex int[]
+     * @param weightChange double
+     * @return
+     */
     private double calculateErrorEdgeChange(Data[] dataSet, int[] edgeIndex, double weightChange) {
         edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
         double avgError = calculateAverageError(dataSet);
@@ -111,6 +151,12 @@ public class NeuralNet {
         return avgError;
     }
 
+    /**
+     * 
+     * @param dataSet Data[]
+     * @param weightChange double
+     * @param epochs int
+     */
     public void fit(Data[] dataSet, double weightChange, int epochs) {
         for (int epoch = 0; epoch < epochs; epoch++) {
             System.out.println(epoch);
