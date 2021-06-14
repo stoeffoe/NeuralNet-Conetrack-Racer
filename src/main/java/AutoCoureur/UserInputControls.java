@@ -10,6 +10,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseMotionListener;
 
+
 public final class UserInputControls implements NativeKeyListener, NativeMouseMotionListener {
 
     private static UserInputControls singletonInstance;
@@ -22,8 +23,10 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
 
     private static double speedIncrement = 0.45;
     
+
+
     /**
-     * Private constructor, 
+     * private constructor, 
      * initializes the system wide controls to control the car
      */
     private UserInputControls() {
@@ -39,8 +42,9 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
         }
     }
 
+
     /**
-     * @return Singleton instance
+     * @return singleton instance
      */
     public static UserInputControls getInstance() {
         if (singletonInstance == null) {
@@ -49,6 +53,8 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
 
         return singletonInstance;
     }
+
+
 
     /**
      * @return Desired steering angle from user input
@@ -64,6 +70,7 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
         return targetVelocity;
     }
 
+
     @Override
     public void nativeKeyPressed(NativeKeyEvent ev) {
         switch(ev.getKeyCode()){
@@ -77,19 +84,20 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
         }
     }
 
+    
     @Override
-    public void nativeMouseMoved(NativeMouseEvent mouse) {
-	this.steeringAngle = (mouse.getX() - (screenWidth/2)) * steeringFactor;
-    }
+	public void nativeMouseMoved(NativeMouseEvent mouse) {
+		this.steeringAngle = (mouse.getX() - (screenWidth/2)) * steeringFactor;
+	}
 
-    // Unused mandatory methods
+
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {}
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent e) {}
 
-    @Override
-    public void nativeMouseDragged(NativeMouseEvent e) {}
+	@Override
+	public void nativeMouseDragged(NativeMouseEvent e) {}
 }
 
