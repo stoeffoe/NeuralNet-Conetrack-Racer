@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 import CarSimulator.Car;
 import CarSimulator.Controls;
-import CarSimulator.DataSet;
 import CarSimulator.Properties;
+import CarSimulator.DataSet;
 import NeuralNet.Data;
 import NeuralNet.NeuralNet;
 
