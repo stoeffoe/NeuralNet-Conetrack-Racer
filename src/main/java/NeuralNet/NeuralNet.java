@@ -11,8 +11,7 @@ public class NeuralNet {
     private double[][][] edges;
 
     /**
-     * 
-     * @return double[][][]
+     * @return list of matrices containing the weights
      */
     public double[][][] getEdges() {
         return edges;
