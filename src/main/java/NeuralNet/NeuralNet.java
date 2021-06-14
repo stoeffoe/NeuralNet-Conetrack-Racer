@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -157,9 +158,15 @@ public class NeuralNet {
 
     public void fit(Data[] dataSet, double weightChange, int epochs) {
         for (int epoch = 0; epoch < epochs; epoch++) {
-            System.out.println(epoch);
             train(dataSet, weightChange);
+
+            System.out.print("\t epoch: "+epoch);
+            if(epoch%10==0){
+                System.out.print("\n");
+            }
         }
+        System.out.print("\n");
+
     }
 
 
@@ -186,8 +193,8 @@ public class NeuralNet {
      * @return A dataset object with the lists in it
      */
 
-     
-    public static double[][][] loadFromJsonFile(String fileName){
+
+    public static NeuralNet loadFromJsonFile(String fileName){
         gson = new Gson();
         try {
             Reader reader = Files.newBufferedReader(Paths.get(fileName));

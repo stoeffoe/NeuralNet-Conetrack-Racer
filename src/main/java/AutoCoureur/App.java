@@ -27,7 +27,7 @@ public class App {
 
 
     public static void main(String[] args){
-        train("jacquesCode.json", null);
+        train("jacquesCode.json", "jsonNN.json");
 
 
         // if(args.length > 0){
@@ -80,7 +80,7 @@ public class App {
      */
     public static void train(String dataSetFile, String edgesFile){
         // get dataset out of file
-        DataSet carDataSet = DataSet.loadFromJsonFile("jacquesCode.json");
+        DataSet carDataSet = DataSet.loadFromJsonFile(dataSetFile);
         
         // convert dataset to format for neuralnet
         ArrayList<Data> nndataSet = new ArrayList<Data>();
@@ -98,7 +98,6 @@ public class App {
                     }
                 )
             );
-
         }
 
         Data[] dataSet = new Data[end];
@@ -109,22 +108,21 @@ public class App {
         
         // create neural net
         int[] layers = { 8,6,4,1 };
-        NeuralNet nn = new NeuralNet(layers);
+        NeuralNet nn = null;
         
-        try {
-            
-        } catch (Exception e) {
-            System.out.println("No file to init");
-        }
-
-
         // get startvalues of edges if necessary
-        // ?
+        if(edgesFile !=null){ 
+            try {
+                nn =new NeuralNet(NeuralNet.loadFromJsonFile(edgesFile).getEdges());
+            } catch (Exception e) {
+                System.out.println("No file to init edges");
+                nn = new NeuralNet(layers);
+            }
+        }
         
-
         // train
-        nn.fit(dataSet, 0.1, 10);
-        
+        nn.fit(dataSet, 0.1, 15);
+        // save
         nn.saveToJsonFile("jsonNN.json");
         System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
         
