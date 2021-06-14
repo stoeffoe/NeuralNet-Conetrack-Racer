@@ -61,7 +61,7 @@ public class NeuralNet {
     /**
      * This will predict the the neural net 
      * @param inputValues double[]
-     * @return
+     * @return what the computer thinks is right 
      */
     public double[][] predict(double[] inputValues) {
         double[][] input = MatMath.fromList(inputValues);
