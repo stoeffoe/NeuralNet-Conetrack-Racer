@@ -14,20 +14,58 @@ import CarSimulator.Car;
  * 
  */
 public class App {
+    public static String currentFunction = null;
 
-    public static void main(String[] args) {
-        while(true){
-            int amountOfCars = 1;
-            Car car[] = new Car[amountOfCars];
-            for (int i = 0; i < car.length; i++) {
-                car[i] = new Car();
-            }
 
-            for (int i = 0; i < car.length; i++) {
-                control(car[i]);
-            }
+    public static void main(String[] args){
+        String fileName = null;
+        if(args.length == 2){
+            fileName = args[1];
+        }
+        switch(args[0]){
+            case "data":
+                currentFunction = "data";
+                getData(fileName);
+                break;
+            case "train":
+                currentFunction = "train";
+                train(fileName);
+                break;
+            case "test":
+                currentFunction = "test";
+                test(fileName);
+                break;
+            default:
+                break;
         }
     }
+
+    public static void getData(String fileName){
+
+    }
+
+    public static void train(String fileName){
+        
+    }
+
+    public static void test(String fileName){
+        
+    }
+
+
+    // public static void main(String[] args) {
+    //     while(true){
+    //         int amountOfCars = 1;
+    //         Car car[] = new Car[amountOfCars];
+    //         for (int i = 0; i < car.length; i++) {
+    //             car[i] = new Car();
+    //         }
+
+    //         for (int i = 0; i < car.length; i++) {
+    //             control(car[i]);
+    //         }
+    //     }
+    // }
 
     /**
      * Control a car for testing purposes
