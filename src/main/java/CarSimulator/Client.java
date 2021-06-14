@@ -20,10 +20,7 @@ class Client{
 
     public Client(int socketPort){
         this.socketPort = socketPort;
-        boolean connected = false;
-        while(!connected){
-            connected = connect();
-        }
+        while(!connect()){}
     }
 
     /**
@@ -38,7 +35,6 @@ class Client{
             outStream = new DataOutputStream(socket.getOutputStream());
             return true;
         } catch (IOException e){
-            
             return false;
         }
     }
@@ -61,7 +57,7 @@ class Client{
      * @throws IOException When there is no working server anymore
      */
     public void send(String message) throws IOException{
-        while (message.length() < maxMessageLength) {
+        while(message.length() < maxMessageLength){
             message += " ";
         }
         outStream.write(message.getBytes("ASCII"));

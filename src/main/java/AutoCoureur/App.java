@@ -1,13 +1,7 @@
 package AutoCoureur;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-
 import CarSimulator.Car;
-import CarSimulator.Properties;
-import Machine_Learning.*;
+
 /**
  * Requirements:
  * 
@@ -20,56 +14,146 @@ import Machine_Learning.*;
  * 
  */
 public class App {
-
-    public static void main(String[] args) {
-        // Dataset d = new Dataset();
-
-        // int[] layers = { 8, 6, 4, 1 };
-        // NeuralNet nn = new NeuralNet(layers);
-
-        // nn.fit(d.getDataSet(), 1, 10000);
-        createData();
-
-    }
-
-    
-
-    public static void createData(){
-        Car car = new Car();
-        UserInputControls kc = UserInputControls.getInstance();
-        while (true) {
-            Properties x = car.recvProperties();
-
-            double a = kc.getSteeringAngle();
-            double v = kc.getTargetVelocity();
-
-            car.sendControls(a, v);
+    // For testing purposes to see if the right function is called, might be removed later
+    public static String currentFunction = null;
 
 
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public static void main(String[] args){
+        if(args.length > 0){
+            currentFunction = args[0];
+            switch(currentFunction){
+                case "data":
+                    if(args.length == 2){
+                        getData(args[1]);
+                    }
+                    break;
+                    
+                case "train":
+                    if(args.length == 2){
+                        train(args[1], null);
+                    } else if(args.length == 3){
+                        train(args[1], args[2]);
+                    }
+                    break;
+                    
+                case "test":
+                    if(args.length == 2){
+                        test(args[1]);
+                    }
+                    break;
+                    
+                default:
+                    break;
             }
 
-            String text = "dataSet.add(new Data(new double[]" +  Arrays.toString(x.getLidarDistances()).replace("[", "{").replace("]", "}") + ", {" + a + "}" + "));"; // dataSet.add(new Data(c0, cross));//0;
-            try {
-                whenAppendToFileUsingFileWriter_thenCorrect("drive.txt", text);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        } else{
+            basicControlLoop();
         }
     }
 
-    public static void whenAppendToFileUsingFileWriter_thenCorrect(String fileName, String input) throws IOException {
-
-        FileWriter fw = new FileWriter(fileName, true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(input);
-        bw.newLine();
-        bw.close();
+    /**
+     * Get a raw dataset from the car by controlling it and saving all the input(properties)-output(controls)
+     * @param dataSetFile The file where the raw dataset needs to be saved
+     */
+    public static void getData(String dataSetFile){
+        // start car
+        // control car
+        // save dataset to specified file
 
     }
 
+    /**
+     * Train the neural net
+     * @param dataSetFile A file with a raw dataset from the car
+     * @param edgesFile A file where the weights of the edges are saved
+     */
+    public static void train(String dataSetFile, String edgesFile){
+        // get dataset out of file
+        // convert dataset to format for neuralnet
+        // get startvalues of edges if necessary
+        // create neural net
+        // train
+        // save edges to (new) file
+        
+    }
+
+    /**
+     * Control the car used a trained neural net to test its performance
+     * @param edgesFile A file where the weights of the edges are saved
+     */
+    public static void test(String edgesFile){
+        // get startvalues of edges from file
+        // create neural net
+        // start car
+        // control car using the neural net
+    }
+
+    /**
+     * basic loop to run Jacques code to control a car
+     */
+    public static void basicControlLoop(){
+        while(true){
+            int amountOfCars = 1;
+            Car car[] = new Car[amountOfCars];
+            for (int i = 0; i < car.length; i++) {
+                car[i] = new Car();
+            }
+
+            for (int i = 0; i < car.length; i++) {
+                control(car[i]);
+            }
+        }
+    }
+
+    /**
+     * Control a car for testing purposes
+     * @param car
+     */
+    public static void control(Car car){
+        while(true){
+            car.recvProperties();
+            if(car.getProperties().getProgress() >= 100){
+                System.out.println(car.getProperties().getLapTime());
+                car.close();
+                break;
+            }
+            double[] lidarDistances = car.getProperties().getLidarDistances();
+            long lidarHalfApertureAngle = car.getProperties().getLidarHalfApertureAngle();
+            long lidarApertureAngle = 2 * lidarHalfApertureAngle;
+    
+            // ====== BEGIN of control algorithm
+    
+            double nearestObstacleDistance = 1e20;
+            double nearestObstacleAngle = 0.;
+            
+            double nextObstacleDistance = 1e20;
+            double nextObstacleAngle = 0.;
+    
+            for (long lidarAngle = -lidarHalfApertureAngle; lidarAngle < lidarHalfApertureAngle; lidarAngle++) {
+                long distanceIndex = lidarAngle < 0 ? lidarAngle + lidarApertureAngle : lidarAngle;
+                double lidarDistance = lidarDistances [(int) distanceIndex];
+                
+                if (lidarDistance < nearestObstacleDistance) {
+                    nextObstacleDistance = nearestObstacleDistance;
+                    nextObstacleAngle = nearestObstacleAngle;
+                    
+                    nearestObstacleDistance = lidarDistance;
+                    nearestObstacleAngle = lidarAngle;
+                }
+                else if (lidarDistance < nextObstacleDistance) {
+                    nextObstacleDistance = lidarDistance;
+                    nextObstacleAngle = lidarAngle;
+                }
+            }
+            
+            double targetObstacleAngle = (nearestObstacleAngle + nextObstacleAngle) / 2;
+    
+            double steeringAngle = targetObstacleAngle;
+            double targetVelocity = (90 - Math.abs (steeringAngle)) / 60;
+    
+            // ====== END of control algorithm
+    
+            car.sendControls(steeringAngle, targetVelocity);
+        }
+    }
 }

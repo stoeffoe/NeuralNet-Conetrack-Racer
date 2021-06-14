@@ -1,8 +1,9 @@
 package CarSimulator;
 
 class Controls{
-    private static final double maxSteeringAngle = 90;
-    private static final double maxTargetVelocity = 10;
+    public static final double maxSteeringAngle = 90;
+    public static final double minTargetVelocity = 0;
+    public static final double maxTargetVelocity = 10;
 
     private double steeringAngle;
     private double targetVelocity;
@@ -45,8 +46,8 @@ class Controls{
     public void setTargetVelocity(double targetVelocity){
         if(targetVelocity > maxTargetVelocity){
             this.targetVelocity = maxTargetVelocity;
-        } else if(targetVelocity < 0){
-            this.targetVelocity = 0;
+        } else if(targetVelocity < minTargetVelocity){
+            this.targetVelocity = minTargetVelocity;
         } else{
             this.targetVelocity = targetVelocity;
         }

@@ -9,11 +9,12 @@ public class Car{
     private static final long waitingTimeBeforeConnect = 500;
     private static int socketPortCounter = 50012;
 
-    private Gson gson;
+    private static Gson gson = new Gson();
 
     private Process pythonWorld;
     private Client client;
 
+    private DataSet dataSet;
     private Properties properties;
     private Controls controls;
 
@@ -21,12 +22,12 @@ public class Car{
      * Set up a client connection to be able to use the car
      */
     public Car(){
-        gson = new Gson();
+        dataSet = new DataSet();
         properties = new Properties();
         controls = new Controls();
 
         try{
-            pythonWorld = Runtime.getRuntime().exec("cmd /c activate Tinlab_opdracht_4 && start pythonServer.bat " + socketPortCounter);
+            pythonWorld = Runtime.getRuntime().exec("cmd /c start pythonServer.bat " + socketPortCounter);
             Thread.sleep(waitingTimeBeforeConnect);
         } catch(Exception e){
             e.printStackTrace();
@@ -65,9 +66,8 @@ public class Car{
                 System.exit(1);
             }
         }
-
-
         properties = gson.fromJson(incomingString, Properties.class);
+        dataSet.addProperties(properties);
         return properties;
     }
 
@@ -78,6 +78,7 @@ public class Car{
      */
     public void sendControls(double steeringAngle, double targetVelocity){
         controls = new Controls(steeringAngle, targetVelocity);
+        dataSet.addControls(controls);
         try {
             client.send(gson.toJson(controls));
         } catch (IOException e) {
@@ -91,6 +92,7 @@ public class Car{
      * Close the socketconnection and kill the server
      */
     public void close(){
+        dataSet.saveToJsonFile("dataset.json");
         client.close();
         pythonWorld.descendants().forEach(childprocess -> {
             try {
