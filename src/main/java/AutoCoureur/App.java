@@ -27,39 +27,37 @@ public class App {
 
 
     public static void main(String[] args){
-        train("jacquesCode.json", "jsonNN.json");
 
+        if(args.length > 0){
+            currentFunction = args[0];
+            switch(currentFunction){
+                case "data":
+                    if(args.length == 2){
+                        getData(args[1]);
+                    }
+                    break;
+                    
+                case "train":
+                    if(args.length == 2){
+                        train(args[1], null);
+                    } else if(args.length == 3){
+                        train(args[1], args[2]);
+                    }
+                    break;
+                    
+                case "test":
+                    if(args.length == 2){
+                        test(args[1]);
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
 
-        // if(args.length > 0){
-        //     currentFunction = args[0];
-        //     switch(currentFunction){
-        //         case "data":
-        //             if(args.length == 2){
-        //                 getData(args[1]);
-        //             }
-        //             break;
-                    
-        //         case "train":
-        //             if(args.length == 2){
-        //                 train(args[1], null);
-        //             } else if(args.length == 3){
-        //                 train(args[1], args[2]);
-        //             }
-        //             break;
-                    
-        //         case "test":
-        //             if(args.length == 2){
-        //                 test(args[1]);
-        //             }
-        //             break;
-                    
-        //         default:
-        //             break;
-        //     }
-
-        // } else{
-        //     basicControlLoop();
-        // }
+        } else{
+            basicControlLoop();
+        }
     }
 
     /**
