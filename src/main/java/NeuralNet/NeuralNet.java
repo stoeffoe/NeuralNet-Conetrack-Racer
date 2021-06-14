@@ -17,6 +17,11 @@ public class NeuralNet {
         return edges;
     }
 
+    /**
+      * initializes neuralnet with given layer sizes from input to output with optional hidden layers
+      * @params layers is a list with the amount of nodes in each layer
+      */
+      
     public NeuralNet(int[] layers) {
 
         edges = new double[layers.length - 1][][];
