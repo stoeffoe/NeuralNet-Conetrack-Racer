@@ -33,7 +33,7 @@ public class NeuralNet {
 
             edges[i] = new double[output][input];
 
-            setEdgeWeight(i, initEdgeWeight);
+            initEdgeWeights(i, initEdgeWeight);
         }
     }
 
@@ -45,12 +45,7 @@ public class NeuralNet {
         this.edges = edges;
     }
 
-    /**
-     * init the layers with a static value
-     * @param layer
-     * @param initEdgeWeight
-     */
-    private void setEdgeWeight(int layer, double initEdgeWeight ){
+    private void initEdgeWeights(int layer, double initEdgeWeight ){
         for (int row = 0; row < edges[layer].length; row++) {
             for (int col = 0; col < edges[layer][row].length; col++) {
                 edges[layer][row][col] = initEdgeWeight;
