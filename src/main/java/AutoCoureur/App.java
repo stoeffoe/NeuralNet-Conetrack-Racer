@@ -89,7 +89,7 @@ public class App {
 
             Properties properties = carDataSet.getFirstProperties();
             Controls control = carDataSet.getFirstControls();
-
+            
             nndataSet.add(
                 new Data(
                     properties.getRay(), 

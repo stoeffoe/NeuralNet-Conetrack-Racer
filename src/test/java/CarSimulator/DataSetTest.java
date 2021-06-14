@@ -93,7 +93,7 @@ public class DataSetTest{
         writer.write(jsonString);
         writer.close();
 
-        dataSet = dataSet.loadFromJsonFile(fileName);
+        dataSet = DataSet.loadFromJsonFile(fileName);
         String expected = jsonString;
         String actual = gson.toJson(dataSet);
         assertEquals(expected, actual);

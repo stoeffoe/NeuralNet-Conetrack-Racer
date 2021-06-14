@@ -188,12 +188,10 @@ public class NeuralNet {
     }
 
     /**
-     * Load a dataset object from a json file
+     * Load a NeuralNet object from a json file
      * @param fileName The location and name of the file where the json info needs to be loaded from
-     * @return A dataset object with the lists in it
+     * @return A NeuralNet object with the lists in it
      */
-
-
     public static NeuralNet loadFromJsonFile(String fileName){
         gson = new Gson();
         try {
