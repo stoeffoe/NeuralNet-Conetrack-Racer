@@ -14,6 +14,7 @@ import CarSimulator.Car;
  * 
  */
 public class App {
+    // For testing purposes to see if the right function is called, might be removed later
     public static String currentFunction = null;
 
 
@@ -46,6 +47,10 @@ public class App {
         }
     }
 
+    /**
+     * Get a raw dataset from the car by controlling it and saving all the input(properties)-output(controls)
+     * @param dataSetFile The file where the raw dataset needs to be saved
+     */
     public static void getData(String dataSetFile){
         // start car
         // control car
@@ -53,6 +58,11 @@ public class App {
 
     }
 
+    /**
+     * Train the neural net
+     * @param dataSetFile A file with a raw dataset from the car
+     * @param edgesFile A file where the weights of the edges are saved
+     */
     public static void train(String dataSetFile, String edgesFile){
         // get dataset out of file
         // convert dataset to format for neuralnet
@@ -63,6 +73,10 @@ public class App {
         
     }
 
+    /**
+     * Control the car used a trained neural net to test its performance
+     * @param edgesFile A file where the weights of the edges are saved
+     */
     public static void test(String edgesFile){
         // get startvalues of edges from file
         // create neural net
@@ -70,7 +84,9 @@ public class App {
         // control car using the neural net
     }
 
-
+    /**
+     * basic loop to run Jacques code to control a car
+     */
     public static void main(){
         while(true){
             int amountOfCars = 1;
