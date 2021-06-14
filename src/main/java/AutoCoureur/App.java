@@ -22,12 +22,13 @@ import Machine_Learning.*;
 public class App {
 
     public static void main(String[] args) {
-        Dataset d = new Dataset();
+        // Dataset d = new Dataset();
 
-        int[] layers = { 8, 6, 4, 1 };
-        NeuralNet nn = new NeuralNet(layers);
+        // int[] layers = { 8, 6, 4, 1 };
+        // NeuralNet nn = new NeuralNet(layers);
 
-        nn.fit(d.getDataSet(), 1, 10000);
+        // nn.fit(d.getDataSet(), 1, 10000);
+        createData();
 
     }
 
@@ -35,7 +36,7 @@ public class App {
 
     public static void createData(){
         Car car = new Car();
-        KeyboardController kc = new KeyboardController();
+        UserInputControls kc = UserInputControls.getInstance();
         while (true) {
             Properties x = car.recvProperties();
 
