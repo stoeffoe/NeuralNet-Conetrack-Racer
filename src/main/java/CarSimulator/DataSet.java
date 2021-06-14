@@ -6,37 +6,44 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
 public class DataSet{
     private transient Gson gson;
-    private List<Properties> propertiesList;
-    private List<Controls> controlsList;
+    private LinkedList<Properties> propertiesList;
+    private LinkedList<Controls> controlsList;
 
     public DataSet(){
         gson = new Gson();
-        propertiesList = new ArrayList<Properties>();
-        controlsList = new ArrayList<Controls>();
+        propertiesList = new LinkedList<Properties>();
+        controlsList = new LinkedList<Controls>();
     }
 
     public void addProperties(Properties properties){
         propertiesList.add(properties);
     }
 
-    public List<Properties> getPropertiesList() {
+    public LinkedList<Properties> getPropertiesList() {
         return propertiesList;
+    }
+    
+    public Properties getFirstProperties(){
+        return propertiesList.removeFirst();
     }
 
     public void addControls(Controls controls){
         controlsList.add(controls);
     }
 
-    public List<Controls> getControlsList() {
+    public LinkedList<Controls> getControlsList() {
         return controlsList;
+    }
+
+    public Controls getFirstControls(){
+        return controlsList.removeFirst();
     }
 
     public void saveToJsonFile(String fileName){

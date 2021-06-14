@@ -46,12 +46,30 @@ public class DataSetTest{
     }
 
     @Test
+    public void getFirstPropertiesTest(){
+        assertEquals(0, dataSet.getPropertiesList().size());
+        dataSet.addProperties(properties);
+        assertEquals(1, dataSet.getPropertiesList().size());
+        assertEquals(properties, dataSet.getFirstProperties());
+        assertEquals(0, dataSet.getPropertiesList().size());
+    }
+
+    @Test
     public void addControlsTest(){
         dataSet.addControls(controls);
         List<Controls> expecteds = new ArrayList<Controls>();
         expecteds.add(controls);
         List<Controls> actuals = dataSet.getControlsList();
         assertEquals(expecteds, actuals);
+    }
+
+    @Test
+    public void getFirstControlsTest(){
+        assertEquals(0, dataSet.getControlsList().size());
+        dataSet.addControls(controls);
+        assertEquals(1, dataSet.getControlsList().size());
+        assertEquals(controls, dataSet.getFirstControls());
+        assertEquals(0, dataSet.getControlsList().size());
     }
 
     @Test
