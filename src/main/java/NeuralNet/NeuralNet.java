@@ -59,8 +59,8 @@ public class NeuralNet {
     }
 
     /**
-     * This will predict the the neural net 
-     * @param inputValues double[]
+     * Passes the input values through the neural net
+     * @param inputValues double input vector 
      * @return what the computer thinks is right 
      */
     public double[][] predict(double[] inputValues) {
@@ -123,7 +123,7 @@ public class NeuralNet {
         double[][] target = data.getDesiredValue();
         double[][] output = predict(data.getMatrix());
 
-        return MatMath.sumOfSquares(MatMath.sub(target, output));
+        return MatMath.sumSquaredErrors(target, output);
     }
 
     /**
