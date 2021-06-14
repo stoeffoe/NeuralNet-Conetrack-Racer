@@ -41,6 +41,8 @@ public class App {
                 default:
                     break;
             }
+        } else{
+            main();
         }
     }
 
@@ -69,19 +71,19 @@ public class App {
     }
 
 
-    // public static void main(String[] args) {
-    //     while(true){
-    //         int amountOfCars = 1;
-    //         Car car[] = new Car[amountOfCars];
-    //         for (int i = 0; i < car.length; i++) {
-    //             car[i] = new Car();
-    //         }
+    public static void main(){
+        while(true){
+            int amountOfCars = 1;
+            Car car[] = new Car[amountOfCars];
+            for (int i = 0; i < car.length; i++) {
+                car[i] = new Car();
+            }
 
-    //         for (int i = 0; i < car.length; i++) {
-    //             control(car[i]);
-    //         }
-    //     }
-    // }
+            for (int i = 0; i < car.length; i++) {
+                control(car[i]);
+            }
+        }
+    }
 
     /**
      * Control a car for testing purposes
