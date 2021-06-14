@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class AppTest{
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void noArgumentsTest() throws ArrayIndexOutOfBoundsException{
+    @Test
+    public void noArgumentsTest(){
         App.main(new String[]{});
     }
 

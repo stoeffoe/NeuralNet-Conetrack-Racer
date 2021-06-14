@@ -18,38 +18,54 @@ public class App {
 
 
     public static void main(String[] args){
-        String fileName = null;
-        if(args.length == 2){
-            fileName = args[1];
-        }
-        switch(args[0]){
-            case "data":
-                currentFunction = "data";
-                getData(fileName);
+        if(args.length > 0){
+            currentFunction = args[0];
+            switch(currentFunction){
+                case "data":
+                    if(args.length == 2){
+                        getData(args[1]);
+                    }
+                    break;
+                case "train":
+                    if(args.length == 2){
+                        train(args[1], null);
+                    } else if(args.length == 3){
+                        train(args[1], args[2]);
+                    }
+                    break;
+                case "test":
+                    if(args.length == 2){
+                        test(args[1]);
+                    }
                 break;
-            case "train":
-                currentFunction = "train";
-                train(fileName);
-                break;
-            case "test":
-                currentFunction = "test";
-                test(fileName);
-                break;
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
 
-    public static void getData(String fileName){
+    public static void getData(String dataSetFile){
+        // start car
+        // control car
+        // save dataset to specified file
 
     }
 
-    public static void train(String fileName){
+    public static void train(String dataSetFile, String edgesFile){
+        // get dataset out of file
+        // convert dataset to format for neuralnet
+        // get startvalues of edges if necessary
+        // create neural net
+        // train
+        // save edges to (new) file
         
     }
 
-    public static void test(String fileName){
-        
+    public static void test(String edgesFile){
+        // get startvalues of edges from file
+        // create neural net
+        // start car
+        // control car using the neural net
     }
 
 
