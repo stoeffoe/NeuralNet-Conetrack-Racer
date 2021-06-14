@@ -123,7 +123,7 @@ public class App {
         // train
         nn.fit(dataSet, 0.1, 15);
         // save
-        nn.saveToJsonFile("jsonNN.json");
+        nn.saveToJsonFile(edgesFile);
         System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
         
     }
