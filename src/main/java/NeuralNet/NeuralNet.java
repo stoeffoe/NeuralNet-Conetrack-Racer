@@ -70,11 +70,6 @@ public class NeuralNet {
         return output;
     }
 
-    /**
-     * 
-     * @param dataSet Data[]
-     * @param weightChange double
-     */
 
     private void train(Data[] dataSet, double weightChange) {
         int[] bestEdgeIndex = new int[3];
@@ -122,9 +117,9 @@ public class NeuralNet {
     }
 
     /**
-     * 
+     * calculate the error of eache datapoint 
      * @param dataSet Data[]
-     * @return calculate the error of eache datapoint and returns the average error
+     * @return returns the average error
      */
     private double calculateAverageError(Data[] dataSet) {
         double errorSum = 0;
