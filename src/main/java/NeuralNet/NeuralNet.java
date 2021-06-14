@@ -81,7 +81,7 @@ public class NeuralNet {
      * @param weightChange double
      */
 
-    public void train(Data[] dataSet, double weightChange) {
+    private void train(Data[] dataSet, double weightChange) {
         int[] bestEdgeIndex = new int[3];
         double bestEdgeWeightChange =0;
         double lowestAvgError = calculateAverageError(dataSet);
@@ -129,9 +129,9 @@ public class NeuralNet {
     /**
      * 
      * @param dataSet Data[]
-     * @return
+     * @return calculate the error of eache datapoint and returns the average error
      */
-    public double calculateAverageError(Data[] dataSet) {
+    private double calculateAverageError(Data[] dataSet) {
         double errorSum = 0;
         for (Data data : dataSet) {
             errorSum += calculateError(data);
@@ -145,7 +145,7 @@ public class NeuralNet {
      * @param dataSet Data[]
      * @param edgeIndex int[]
      * @param weightChange double
-     * @return
+     * @return the avrrage error of the dataset with the edge chance  
      */
     private double calculateErrorEdgeChange(Data[] dataSet, int[] edgeIndex, double weightChange) {
         edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
