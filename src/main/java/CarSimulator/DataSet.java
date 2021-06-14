@@ -80,7 +80,14 @@ public class DataSet{
      * Save the lists within this object to a json file
      * @param fileName The location and name of the json file where the data needs to be saved to
      */
-    public void saveToJsonFile(String fileName ){
+    public void saveToJsonFile(String fileName){
+        while(propertiesList.size() != controlsList.size()){
+            if(propertiesList.size() > controlsList.size()){
+                propertiesList.removeLast();
+            } else if(propertiesList.size() < controlsList.size()){
+                controlsList.removeLast();
+            }
+        }
         try{
             Writer writer = new FileWriter(fileName);
             gson.toJson(this, writer);
