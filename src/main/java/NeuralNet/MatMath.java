@@ -59,7 +59,12 @@ public final class MatMath {
     }
 
 
-    public static double sumOfSquares(double[][] mA){
+    public static double sumSquaredErrors(double[][] mA, double[][] mB) {
+        return sumOfSquares(MatMath.sub(mB, mA));
+    }
+
+
+    public static double sumOfSquares(double[][] mA) {
         return reduce(mA, (x,a) -> x+Math.pow(a,2), 0);
     }
     
@@ -141,18 +146,12 @@ public final class MatMath {
 
 
     public static String toString(double[][] mat) {
-        String matrixStr = "";
-
-        for (double[] row : mat){
-            matrixStr += Arrays.toString(row) + '\n';
-        }
-
-        return matrixStr;
+        return Arrays.deepToString(mat);
     }
 
 
     public static void print(double[][] mA) {
-        System.out.print(toString(mA));
+        System.out.println(toString(mA));
     }
     
     
