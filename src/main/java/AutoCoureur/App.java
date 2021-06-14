@@ -43,7 +43,7 @@ public class App {
                     break;
             }
         } else{
-            main();
+            basicControlLoop();
         }
     }
 
@@ -87,7 +87,7 @@ public class App {
     /**
      * basic loop to run Jacques code to control a car
      */
-    public static void main(){
+    public static void basicControlLoop(){
         while(true){
             int amountOfCars = 1;
             Car car[] = new Car[amountOfCars];
