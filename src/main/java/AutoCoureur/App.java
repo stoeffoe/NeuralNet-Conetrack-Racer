@@ -27,6 +27,7 @@ public class App {
                         getData(args[1]);
                     }
                     break;
+                    
                 case "train":
                     if(args.length == 2){
                         train(args[1], null);
@@ -34,14 +35,17 @@ public class App {
                         train(args[1], args[2]);
                     }
                     break;
+                    
                 case "test":
                     if(args.length == 2){
                         test(args[1]);
                     }
-                break;
+                    break;
+                    
                 default:
                     break;
             }
+
         } else{
             basicControlLoop();
         }
