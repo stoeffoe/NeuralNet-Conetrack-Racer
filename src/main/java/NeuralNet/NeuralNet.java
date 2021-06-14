@@ -6,7 +6,17 @@ Authors
 */
 package NeuralNet;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+
 public class NeuralNet {
+    private transient static Gson gson;
 
     private double[][][] edges;
 
@@ -150,6 +160,42 @@ public class NeuralNet {
             System.out.println(epoch);
             train(dataSet, weightChange);
         }
+    }
+
+
+    /**
+     * Save the lists within this object to a json file
+     * @param fileName The location and name of the json file where the data needs to be saved to
+     */
+    public void saveToJsonFile(String fileName ){
+        gson = new Gson();
+        try{
+            Writer writer = new FileWriter(fileName);
+            gson.toJson(this, writer);
+            writer.close();
+        } catch(JsonIOException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load a dataset object from a json file
+     * @param fileName The location and name of the file where the json info needs to be loaded from
+     * @return A dataset object with the lists in it
+     */
+
+     
+    public static double[][][] loadFromJsonFile(String fileName){
+        gson = new Gson();
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get(fileName));
+            return gson.fromJson(reader, NeuralNet.class);
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

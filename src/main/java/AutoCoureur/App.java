@@ -1,6 +1,14 @@
 package AutoCoureur;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import CarSimulator.Car;
+import CarSimulator.Controls;
+import CarSimulator.DataSet;
+import CarSimulator.Properties;
+import NeuralNet.Data;
+import NeuralNet.NeuralNet;
 
 /**
  * Requirements:
@@ -19,36 +27,39 @@ public class App {
 
 
     public static void main(String[] args){
-        if(args.length > 0){
-            currentFunction = args[0];
-            switch(currentFunction){
-                case "data":
-                    if(args.length == 2){
-                        getData(args[1]);
-                    }
-                    break;
-                    
-                case "train":
-                    if(args.length == 2){
-                        train(args[1], null);
-                    } else if(args.length == 3){
-                        train(args[1], args[2]);
-                    }
-                    break;
-                    
-                case "test":
-                    if(args.length == 2){
-                        test(args[1]);
-                    }
-                    break;
-                    
-                default:
-                    break;
-            }
+        train("jacquesCode.json", null);
 
-        } else{
-            basicControlLoop();
-        }
+
+        // if(args.length > 0){
+        //     currentFunction = args[0];
+        //     switch(currentFunction){
+        //         case "data":
+        //             if(args.length == 2){
+        //                 getData(args[1]);
+        //             }
+        //             break;
+                    
+        //         case "train":
+        //             if(args.length == 2){
+        //                 train(args[1], null);
+        //             } else if(args.length == 3){
+        //                 train(args[1], args[2]);
+        //             }
+        //             break;
+                    
+        //         case "test":
+        //             if(args.length == 2){
+        //                 test(args[1]);
+        //             }
+        //             break;
+                    
+        //         default:
+        //             break;
+        //     }
+
+        // } else{
+        //     basicControlLoop();
+        // }
     }
 
     /**
@@ -69,11 +80,53 @@ public class App {
      */
     public static void train(String dataSetFile, String edgesFile){
         // get dataset out of file
+        DataSet carDataSet = DataSet.loadFromJsonFile("jacquesCode.json");
+        
         // convert dataset to format for neuralnet
-        // get startvalues of edges if necessary
+        ArrayList<Data> nndataSet = new ArrayList<Data>();
+        int end = carDataSet.getPropertiesList().size()-1;
+        for(int i = 0; i < end; i++){
+
+            Properties properties = carDataSet.getFirstProperties();
+            Controls control = carDataSet.getFirstControls();
+
+            nndataSet.add(
+                new Data(
+                    properties.getRay(), 
+                    new double[]{
+                        control.getSteeringAngle()
+                    }
+                )
+            );
+
+        }
+
+        Data[] dataSet = new Data[end];
+
+        for (int indexData = 0; indexData < dataSet.length; indexData++) {
+            dataSet[indexData] =nndataSet.get(indexData); 
+        }
+        
         // create neural net
+        int[] layers = { 8,6,4,1 };
+        NeuralNet nn = new NeuralNet(layers);
+        
+        try {
+            
+        } catch (Exception e) {
+            System.out.println("No file to init");
+        }
+
+
+        // get startvalues of edges if necessary
+        // ?
+        
+
         // train
-        // save edges to (new) file
+        nn.fit(dataSet, 0.1, 10);
+        
+        nn.saveToJsonFile("jsonNN.json");
+        System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
         
     }
 
