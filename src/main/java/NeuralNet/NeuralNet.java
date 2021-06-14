@@ -110,9 +110,9 @@ public class NeuralNet {
     }
 
     /**
-     * 
+     *  calculate error of the vector 
      * @param data Data
-     * @return
+     * @return error as double 
      */
     private double calculateError(Data data) {
         double[][] target = data.getDesiredValue();
@@ -136,7 +136,7 @@ public class NeuralNet {
     }
 
     /**
-     * 
+     * chance the edge and chance them back
      * @param dataSet Data[]
      * @param edgeIndex int[]
      * @param weightChange double
@@ -150,12 +150,6 @@ public class NeuralNet {
         return avgError;
     }
 
-    /**
-     * 
-     * @param dataSet Data[]
-     * @param weightChange double
-     * @param epochs int
-     */
     public void fit(Data[] dataSet, double weightChange, int epochs) {
         for (int epoch = 0; epoch < epochs; epoch++) {
             System.out.println(epoch);
