@@ -1,5 +1,9 @@
 package NeuralNet.ActivationFunction;
 
+/** 
+ * Faster alternative to the sigmoid.
+ * Similar but not equal.
+*/
 public class FastSigmoid implements ActivationFunction {
 
     @Override
