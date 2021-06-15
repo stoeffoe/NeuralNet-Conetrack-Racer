@@ -50,16 +50,5 @@ public class MatMathTest {
 
         assertArrayEquals(expected, actual);
     }
-
-    @Test
-    public void transposeMatrix() {
-        double[][] expected =   {{3.1, 3},
-                                 {5.3, 4},
-                                 {  2, 9},};
-        double[][] actual = MatMath.transpose(mat_3x2);
-
-        assertArrayEquals(expected, actual);
-    }
-
 }
 
