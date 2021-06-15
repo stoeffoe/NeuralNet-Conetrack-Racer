@@ -40,6 +40,7 @@ public class App {
                         break;
 
                     default:
+                        System.out.println("Invalid argument specified!");
                         displayOptions();
                         break;
                 }
@@ -63,7 +64,7 @@ public class App {
      * @param dataSetFile The file where the raw dataset needs to be saved
      */
     private static void getData(String dataSetFile){
-        // start car
+        Car car = new Car();
         // control car
         // save dataset to specified file
 
