@@ -177,7 +177,7 @@ public class NeuralNet {
     public void saveToJsonFile(String fileName ){
         gson = new Gson();
         try{
-            Writer writer = new FileWriter(fileName);
+            Writer writer = new FileWriter("./jsonFiles/edges/"+fileName);
             gson.toJson(this, writer);
             writer.close();
         } catch(JsonIOException e){
@@ -195,7 +195,7 @@ public class NeuralNet {
     public static NeuralNet loadFromJsonFile(String fileName){
         gson = new Gson();
         try {
-            Reader reader = Files.newBufferedReader(Paths.get(fileName));
+            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
             return gson.fromJson(reader, NeuralNet.class);
         } catch(IOException e){
             e.printStackTrace();
