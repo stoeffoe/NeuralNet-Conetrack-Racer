@@ -104,7 +104,6 @@ public class DataSet{
      * @return A dataset object with the lists in it
      */
     public static DataSet loadFromJsonFile(String fileName){
-        gson = new Gson();
         try {
             Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/dataset/" + fileName));
             return gson.fromJson(reader, DataSet.class);
