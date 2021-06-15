@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
 public class DataSet{
-    private transient static Gson gson;
+    private transient static final Gson gson = new Gson();
     private LinkedList<Properties> propertiesList;
     private LinkedList<Controls> controlsList;
 
@@ -21,7 +21,6 @@ public class DataSet{
      * Initialize a dataset with an empty list of properties and an empty list of controls
      */
     public DataSet(){
-        gson = new Gson();
         propertiesList = new LinkedList<Properties>();
         controlsList = new LinkedList<Controls>();
     }
