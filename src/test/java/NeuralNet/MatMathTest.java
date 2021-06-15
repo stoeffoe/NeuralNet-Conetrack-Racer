@@ -33,15 +33,6 @@ public class MatMathTest {
 
 
     @Test
-    public void sum(){
-        double expected = 7.0;
-        double actual = MatMath.sum(mat_2x1);
-        double delta = 0.00000001;
-        assertEquals(expected, actual, delta);
-    }
-
-
-    @Test
     public void mapSingleMatrix(){
         double[][] expected = {{13.1, 15.3, 12},
                                {  13,   14, 19}};;
