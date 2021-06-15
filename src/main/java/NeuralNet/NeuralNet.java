@@ -19,7 +19,7 @@ import com.google.gson.JsonIOException;
 import NeuralNet.ActivationFunction.*;
 
 public class NeuralNet {
-    private transient static Gson gson;
+    private transient static final Gson gson = new Gson();
 
     private double[][][] edges;
     private ActivationFunction activationFunction ;
@@ -179,7 +179,6 @@ public class NeuralNet {
      * @param fileName The location and name of the json file where the data needs to be saved to
      */
     public void saveToJsonFile(String fileName ){
-        gson = new Gson();
         try{
             Writer writer = new FileWriter("./jsonFiles/edges/"+fileName);
             gson.toJson(edges, writer);
@@ -197,7 +196,6 @@ public class NeuralNet {
      * @return A NeuralNet object with the lists in it
      */
     public static NeuralNet loadFromJsonFile(String fileName){
-        gson = new Gson();
         try {
             Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
             return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
