@@ -81,21 +81,6 @@ public final class MatMath {
 
         return resultMatrix;
     }
-
-
-    public static double reduce(double[][] mA, BiFunction<Double, Double, Double> fn, double initialValue) {
-        int rows = mA.length;
-        int cols = mA[0].length;
-
-        double result = initialValue;
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                result = fn.apply(result, mA[r][c]);
-            }
-        }
-
-        return result;
-    }
     
 
     public static double[][] fromList(double[] list){
