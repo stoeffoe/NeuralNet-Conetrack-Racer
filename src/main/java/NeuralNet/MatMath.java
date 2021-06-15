@@ -65,11 +65,6 @@ public final class MatMath {
 
         return sse;
     }
-
-
-    public static double sumOfSquares(double[][] mA) {
-        return reduce(mA, (x,a) -> x+Math.pow(a,2), 0);
-    }
     
 
     public static double[][] transpose(double[][] mA) {
