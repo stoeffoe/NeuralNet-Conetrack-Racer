@@ -46,16 +46,16 @@ public final class MatMath {
         int rows = mA.length;
         int cols = mA[0].length;
 
-        double sse = 0;
+        double sumSquaredError = 0;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 double error = mA[r][c] - mB[r][c];
-                sse += error*error;
+                sumSquaredError += error*error;
             }
         }
 
-        return sse;
+        return sumSquaredError;
     }
 
 
