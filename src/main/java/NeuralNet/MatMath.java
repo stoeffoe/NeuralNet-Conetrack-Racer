@@ -24,8 +24,20 @@ public final class MatMath {
 
         double[][] resultMatrix = new double[rows][cols];
 
-        for (int r=0; r<rows; r++){
-            for (int c=0; c<cols; c++){
+    public static double[][] sub(double[][] mA, double[][] mB) {
+        int rows = mA.length;
+        int cols = mA[0].length;
+
+        double[][] resultMatrix = new double[cols][rows];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                resultMatrix[c][r] = mA[r][c] - mB[r][c];
+            }
+        }
+
+        return resultMatrix;
+    }
 
                 double sum = 0;
                 for (int i=0; i<numOfCalcs; i++){
