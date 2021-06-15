@@ -13,11 +13,6 @@ public final class MatMath {
     private MatMath(){} // private constructor; no initialization, only static methods
 
 
-    public static double[][] pow(double[][] mA, double n) {
-        return map(mA, a -> Math.pow(a,n));
-    }
-
-
     public static double[][] sub(double[][] mA, double[][] mB) {
         int rows = mA.length;
         int cols = mA[0].length;
