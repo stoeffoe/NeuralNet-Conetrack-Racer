@@ -15,7 +15,7 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
     private static UserInputControls singletonInstance;
 
     private double steeringAngle;
-    private double targetVelocity;
+    private double targetVelocity = 0;
     private boolean record;
     private boolean quit;
 

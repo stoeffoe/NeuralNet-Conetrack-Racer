@@ -85,7 +85,7 @@ public class App {
             }
 
             double steeringAngle = uic.getSteeringAngle();
-            double targetVelocity = 0.9;
+            double targetVelocity = uic.getTargetVelocity();
             Controls controls = car.sendControls(steeringAngle, targetVelocity);
             if(record){
                 carData.addControls(controls);
