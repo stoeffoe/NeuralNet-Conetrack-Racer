@@ -1,6 +1,14 @@
 package AutoCoureur;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import CarSimulator.Car;
+import CarSimulator.Controls;
+import CarSimulator.Properties;
+import CarSimulator.DataSet;
+import NeuralNet.Data;
+import NeuralNet.NeuralNet;
 
 /**
  * Requirements:
@@ -19,6 +27,7 @@ public class App {
 
 
     public static void main(String[] args){
+
         if(args.length > 0){
             currentFunction = args[0];
             switch(currentFunction){
@@ -69,12 +78,47 @@ public class App {
      */
     public static void train(String dataSetFile, String edgesFile){
         // get dataset out of file
-        // convert dataset to format for neuralnet
-        // get startvalues of edges if necessary
-        // create neural net
-        // train
-        // save edges to (new) file
+        DataSet carDataSet = DataSet.loadFromJsonFile(dataSetFile);
         
+        // convert dataset to format for neuralnet
+
+        int end = carDataSet.getPropertiesList().size()-1;
+        Data[] dataSet = new Data[end];
+
+        for(int indexDataset = 0; indexDataset < end; indexDataset++){
+            Properties properties = carDataSet.getFirstProperties();
+            Controls control = carDataSet.getFirstControls();
+            
+            dataSet[indexDataset] = new Data(
+                properties.getRay(120,8), 
+                new double[]{
+                    control.getSteeringAngle()
+                }
+            );
+        }
+
+
+        
+        // create neural net
+        int[] layers = { 8,6,4,1 };
+        NeuralNet nn = null;
+        
+        // get startvalues of edges if necessary
+        try {
+            nn = NeuralNet.loadFromJsonFile(edgesFile);
+        } catch (Exception e) {
+            System.out.println("No file to init edges");
+            nn = new NeuralNet(layers);
+        }
+                
+        // train
+        nn.fit(dataSet, 0.1, 15);
+
+        // save
+        if(edgesFile != null){
+            nn.saveToJsonFile(edgesFile);
+        }
+        System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
     }
 
     /**

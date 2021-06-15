@@ -6,10 +6,20 @@ Authors
 */
 package NeuralNet;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+
 import NeuralNet.ActivationFunction.*;
 
-
 public class NeuralNet {
+    private transient static Gson gson;
 
     private double[][][] edges;
     private ActivationFunction activationFunction = new FastSigmoid();
@@ -151,9 +161,49 @@ public class NeuralNet {
 
     public void fit(Data[] dataSet, double weightChange, int epochs) {
         for (int epoch = 0; epoch < epochs; epoch++) {
-            System.out.println(epoch);
             train(dataSet, weightChange);
+
+            System.out.print("\t epoch: "+epoch);
+            if(epoch%10==0){
+                System.out.print("\n");
+            }
         }
+        System.out.print("\n");
+
+    }
+
+
+    /**
+     * Save the lists within this object to a json file
+     * @param fileName The location and name of the json file where the data needs to be saved to
+     */
+    public void saveToJsonFile(String fileName ){
+        gson = new Gson();
+        try{
+            Writer writer = new FileWriter("./jsonFiles/edges/"+fileName);
+            gson.toJson(this, writer);
+            writer.close();
+        } catch(JsonIOException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load a NeuralNet object from a json file
+     * @param fileName The location and name of the file where the json info needs to be loaded from
+     * @return A NeuralNet object with the lists in it
+     */
+    public static NeuralNet loadFromJsonFile(String fileName){
+        gson = new Gson();
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
+            return gson.fromJson(reader, NeuralNet.class);
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

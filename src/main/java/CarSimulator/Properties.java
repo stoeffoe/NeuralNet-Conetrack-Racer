@@ -1,5 +1,7 @@
 package CarSimulator;
 
+import java.util.Arrays;
+
 public class Properties{
     private static final double finity = 1e20;
     private double[] lidarDistances;
@@ -59,6 +61,44 @@ public class Properties{
         return collided;
     }
 
+
+    /**
+     * 
+     * @return 
+     */
+    public double[] getRay(int lidarAngle, int outputVector){
+        int sublist = lidarAngle / outputVector;
+        double[][] rays = new double[outputVector][sublist]; 
+
+        for (int i = 0; i < outputVector; i++) {
+            for (int j = 0; j < sublist; j++) {
+                rays[i][j] = lidarDistances[(i*sublist)+j];
+            }
+        }
+
+        for (double[] ds : rays) {
+            Arrays.sort(ds);
+        }
+
+        double[] tempRays = new double[outputVector];
+        for (int k = 0; k < rays.length; k++) {
+            tempRays[k] = normalize(rays[k][0], 0.5, 2) ;
+        }
+
+        return tempRays;
+    }
+
+    double normalize(double value, double min, double max){
+        if (value > max){
+            return 1.0;
+        } else if (value < min){
+            return 0.0;
+        } else {
+            return (value - min) / (max - min);
+        }
+    }
+
+    
     /**
      * 
      * @return Array with the distance and angle to the 4 nearest cones sorted per cone
