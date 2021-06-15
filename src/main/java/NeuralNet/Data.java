@@ -8,7 +8,7 @@ package NeuralNet;
 
 public class Data {
     private double[][] outputValue;
-    private double[] inputValues;
+    private double[][] inputValues;
     
     /**
      * 
@@ -16,7 +16,7 @@ public class Data {
      * @param _desiredValue double[] outputValue vector of the output
      */
     public Data(double[] inputValues, double[] outputValue) {
-        this.inputValues = inputValues;
+        this.inputValues = MatMath.fromList(inputValues);
         this.outputValue = MatMath.fromList(outputValue);
     }
 
@@ -24,7 +24,7 @@ public class Data {
      * 
      * @return double[]
      */
-    public double[] getMatrix() {
+    public double[][] getMatrix() {
         return inputValues;
     }
 

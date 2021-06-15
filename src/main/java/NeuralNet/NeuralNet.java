@@ -62,8 +62,7 @@ public class NeuralNet {
      * @param inputValues double input vector 
      * @return what the computer thinks is right 
      */
-    public double[][] predict(double[] inputValues) {
-        double[][] input = MatMath.fromList(inputValues);
+    public double[][] predict(double[][] input) {
         double[][] output = input;
 
         for (int layer = 0; layer < edges.length; layer++) {
