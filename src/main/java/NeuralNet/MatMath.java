@@ -33,27 +33,6 @@ public final class MatMath {
     }
 
 
-    public static double sigmoid(double x) { // sigmoid on single value
-        return 1 / (1 + Math.exp(-x));
-    }
-
-
-    public static double[][] sigmoid(double[][] mA) { // sigmoid on matrix
-        return map(mA, (x) -> sigmoid(x));
-    }
-    
-
-    public static double derivedSigmoid(double x) {
-        double sigx = sigmoid(x);
-        return sigx * (1 - sigx);
-    }
-
-
-    public static double[][] derivedSigmoid(double[][] mA) { // sigmoid on matrix
-        return map(mA, (x) -> derivedSigmoid(x));
-    }
-
-
     public static double sum(double[][] mA){
         return reduce(mA, (x,a) -> x+a, 0);
     }
@@ -199,4 +178,3 @@ public final class MatMath {
         return mA.length == mB.length && mA[0].length == mB[0].length;
     }
 }
-
