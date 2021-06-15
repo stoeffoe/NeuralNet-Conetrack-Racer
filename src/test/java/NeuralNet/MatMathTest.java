@@ -33,29 +33,11 @@ public class MatMathTest {
 
 
     @Test
-    public void magnitude(){
-        double expected = 5.0;
-        double actual = MatMath.magnitude(mat_2x1);
-        double delta = 0.00000001;
-        assertEquals(expected, actual, delta);
-    }
-
-
-    @Test
     public void sum(){
         double expected = 7.0;
         double actual = MatMath.sum(mat_2x1);
         double delta = 0.00000001;
         assertEquals(expected, actual, delta);
-    }
-
-
-    @Test
-    public void normaliseVector(){
-        double[][] expected = {{3.0/5.0, 4.0/5.0}};
-        double[][] actual = MatMath.norm(mat_2x1);
-
-        assertArrayEquals(expected, actual);
     }
 
 
