@@ -79,8 +79,7 @@ public class NeuralNet {
 
         for (int layer = 0; layer < edges.length; layer++) {
             input = output;
-            output = MatMath.multiply(edges[layer], input);
-            output = MatMath.map(output, (x) -> activationFunction.calculateActivation(x));
+            output = MatMath.multiplyAndActivate(edges[layer], input, activationFunction);
         }
         return output;
     }
