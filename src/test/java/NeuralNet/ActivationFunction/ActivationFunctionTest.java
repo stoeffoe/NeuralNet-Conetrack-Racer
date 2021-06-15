@@ -1,10 +1,8 @@
-package NeuralNet;
+package NeuralNet.ActivationFunction;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import NeuralNet.ActivationFunction.*;
 
 
 public class ActivationFunctionTest {
