@@ -61,7 +61,19 @@ public final class MatMath {
 
 
     public static double sumSquaredErrors(double[][] mA, double[][] mB) {
-        return sumOfSquares(MatMath.sub(mB, mA));
+        int rows = mA.length;
+        int cols = mA[0].length;
+
+        double sse = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                double error = mA[r][c] - mB[r][c];
+                sse += error*error;
+            }
+        }
+
+        return sse;
     }
 
 
