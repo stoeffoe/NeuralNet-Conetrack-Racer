@@ -19,15 +19,5 @@ public class MatMathTest {
                                   {  3,   4, 9}};
 
     private double[][] mat_2x1 = {{3.0, 4.0}};
-
-    @Test
-    public void mapSingleMatrix(){
-        double[][] expected = {{13.1, 15.3, 12},
-                               {  13,   14, 19}};;
-        
-        double[][] actual = MatMath.map(mat_3x2, (a) -> a + 10);
-
-        assertArrayEquals(expected, actual);
-    }
 }
 
