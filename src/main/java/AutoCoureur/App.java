@@ -81,27 +81,23 @@ public class App {
         DataSet carDataSet = DataSet.loadFromJsonFile(dataSetFile);
         
         // convert dataset to format for neuralnet
-        ArrayList<Data> nndataSet = new ArrayList<Data>();
-        int end = carDataSet.getPropertiesList().size()-1;
-        for(int i = 0; i < end; i++){
 
+        int end = carDataSet.getPropertiesList().size()-1;
+        Data[] dataSet = new Data[end];
+
+        for(int indexDataset = 0; indexDataset < end; indexDataset++){
             Properties properties = carDataSet.getFirstProperties();
             Controls control = carDataSet.getFirstControls();
             
-            nndataSet.add(
-                new Data(
-                    properties.getRay(120,8), 
-                    new double[]{
-                        control.getSteeringAngle()
-                    }
-                )
+            dataSet[indexDataset] = new Data(
+                properties.getRay(120,8), 
+                new double[]{
+                    control.getSteeringAngle()
+                }
             );
         }
 
-        Data[] dataSet = new Data[end];
-        for (int indexData = 0; indexData < dataSet.length; indexData++) {
-            dataSet[indexData] =nndataSet.get(indexData); 
-        }
+
         
         // create neural net
         int[] layers = { 8,6,4,1 };
@@ -109,7 +105,7 @@ public class App {
         
         // get startvalues of edges if necessary
         try {
-            nn =new NeuralNet(NeuralNet.loadFromJsonFile(edgesFile).getEdges());
+            nn = NeuralNet.loadFromJsonFile(edgesFile);
         } catch (Exception e) {
             System.out.println("No file to init edges");
             nn = new NeuralNet(layers);
