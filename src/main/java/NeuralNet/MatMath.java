@@ -40,6 +40,9 @@ public final class MatMath {
 
 
     public static double sumSquaredErrors(double[][] mA, double[][] mB) {
+
+        if (!matricesEqualSize(mA, mB)) throw new IllegalArgumentException("Matrix sizes are not compatible");
+
         int rows = mA.length;
         int cols = mA[0].length;
 
@@ -55,22 +58,6 @@ public final class MatMath {
         return sse;
     }
 
-
-    public static double[][] sub(double[][] mA, double[][] mB) {
-        int rows = mA.length;
-        int cols = mA[0].length;
-
-        double[][] resultMatrix = new double[cols][rows];
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                resultMatrix[c][r] = mA[r][c] - mB[r][c];
-            }
-        }
-
-        return resultMatrix;
-    }
-    
 
     public static double[][] fromList(double[] list){
         double[][] newVector = new double[list.length][1];
@@ -88,16 +75,6 @@ public final class MatMath {
 
     public static boolean areMultiplyable(double mA[][], double mB[][]) {
         return mA[0].length == mB.length; 
-    }
-
-
-    public static boolean isRowVector(double vA[][]) {
-        return vA.length == 1;
-    }
-
-
-    public static boolean isColVector(double vA[][]) {
-        return vA[0].length == 1;
     }
 
     
