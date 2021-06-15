@@ -41,14 +41,5 @@ public class MatMathTest {
 
         assertArrayEquals(expected, actual);
     }
-
-
-    @Test
-    public void raiseMatrixToPower() {
-        double[][] expected = {{3.0*3*3, 4.0*4*4}};
-        double[][] actual = MatMath.pow(mat_2x1, 3);
-
-        assertArrayEquals(expected, actual);
-    }
 }
 
