@@ -14,6 +14,7 @@ public final class MatMath {
     private MatMath(){} // private constructor; no initialization, only static methods
 
 
+<<<<<<< HEAD
     public static double[][] multiplyAndActivate(double[][] mA, double[][] mB, ActivationFunction af) throws IllegalArgumentException {
         
         if (!areMultiplyable(mA, mB)) throw new IllegalArgumentException("Matrix sizes are not compatible");
@@ -21,6 +22,11 @@ public final class MatMath {
         int rows = mA.length;
         int cols = mB[0].length;
         int numOfCalcs = mA[0].length;
+=======
+    public static double[][] pow(double[][] mA, double n) {
+        return map(mA, a -> Math.pow(a,n));
+    }
+>>>>>>> db57197 (removed norm and magnitude (not used))
 
         double[][] resultMatrix = new double[rows][cols];
 
