@@ -59,14 +59,48 @@ public class App {
     }
 
     /**
-     * Get a raw dataset from the car by controlling it and saving all the input(properties)-output(controls)
-     * @param dataSetFile The file where the raw dataset needs to be saved
+     * Get car data from the car by controlling it and saving all the input(properties)-output(controls)
+     * @param dataSetFile The file where the car data needs to be saved
      */
     private static void getData(String dataSetFile){
         Car car = new Car();
-        // control car
-        // save dataset to specified file
+        CarData carData = new CarData();
+        UserInputControls uic = UserInputControls.getInstance();
 
+        System.out.println("Use mouse to steer, press R to start/stop recording and press ESC to save the cardata and exit the program");
+
+        boolean record = false;
+        boolean previousRecordStatus = record;
+        while(!uic.getQuitingStatus()){
+            record = uic.getRecordStatus();
+            if(!previousRecordStatus && record){
+                System.out.println("Started recording");
+            } else if(previousRecordStatus && !record){
+                System.out.println("Stopped recording");
+            }
+            Properties properties = car.recvProperties();
+            if(record){
+                carData.addProperties(properties);
+            }
+
+            double steeringAngle = uic.getSteeringAngle();
+            double targetVelocity = 0.9;
+            Controls controls = car.sendControls(steeringAngle, targetVelocity);
+            if(record){
+                carData.addControls(controls);
+            }
+            previousRecordStatus = record;
+        }
+
+        if(carData.getPropertiesList().isEmpty()){
+            System.out.println("No data to save");
+        } else{
+            System.out.println("Saving data to file");
+            carData.saveToJsonFile(dataSetFile);
+        }
+
+        car.close();
+        System.exit(0);
     }
 
     /**
@@ -95,8 +129,6 @@ public class App {
             );
         }
 
-
-        
         // create neural net
         int[] layers = { 8,6,4,1 };
         NeuralNet nn = null;
