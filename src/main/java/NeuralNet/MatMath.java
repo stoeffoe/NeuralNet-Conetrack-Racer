@@ -38,13 +38,6 @@ public final class MatMath {
         return resultMatrix;
     }
 
-                double sum = 0;
-                for (int i=0; i<numOfCalcs; i++){
-                    sum += mA[r][i] * mB[i][c];
-                }
-                resultMatrix[r][c] = af.calculateActivation(sum);
-            }
-        }
 
     public static double sumSquaredErrors(double[][] mA, double[][] mB) {
         int rows = mA.length;
