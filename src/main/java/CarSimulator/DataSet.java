@@ -88,7 +88,7 @@ public class DataSet{
             }
         }
         try{
-            Writer writer = new FileWriter(fileName);
+            Writer writer = new FileWriter("./jsonFiles/dataset/" + fileName);
             gson.toJson(this, writer);
             writer.close();
         } catch(JsonIOException e){
@@ -106,7 +106,7 @@ public class DataSet{
     public static DataSet loadFromJsonFile(String fileName){
         gson = new Gson();
         try {
-            Reader reader = Files.newBufferedReader(Paths.get(fileName));
+            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/dataset/" + fileName));
             return gson.fromJson(reader, DataSet.class);
         } catch(IOException e){
             e.printStackTrace();
