@@ -51,22 +51,6 @@ public final class MatMath {
     }
     
 
-    public static double[][] transpose(double[][] mA) {
-        int rows = mA.length;
-        int cols = mA[0].length;
-
-        double[][] resultMatrix = new double[cols][rows];
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                resultMatrix[c][r] = mA[r][c];
-            }
-        }
-
-        return resultMatrix;
-    }
-    
-
     public static double[][] fromList(double[] list){
         double[][] newVector = new double[list.length][1];
         for (int i=0; i<list.length; i++) {
