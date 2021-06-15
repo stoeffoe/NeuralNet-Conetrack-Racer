@@ -13,16 +13,6 @@ public final class MatMath {
     private MatMath(){} // private constructor; no initialization, only static methods
 
 
-    public static double[][] norm(double[][] vA) {
-        return map(vA, a -> a/magnitude(vA));
-    }
-
-
-    public static double magnitude(double[][] vA) {
-        return Math.sqrt( sumOfSquares(vA) );
-    }
-
-
     public static double[][] pow(double[][] mA, double n) {
         return map(mA, a -> Math.pow(a,n));
     }
