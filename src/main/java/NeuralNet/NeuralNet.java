@@ -16,10 +16,13 @@ import java.nio.file.Paths;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
+import NeuralNet.ActivationFunction.*;
+
 public class NeuralNet {
     private transient static Gson gson;
 
     private double[][][] edges;
+    private ActivationFunction activationFunction = new FastSigmoid();
 
     /**
      * @return list of matrices containing the weights
@@ -76,7 +79,7 @@ public class NeuralNet {
         for (int layer = 0; layer < edges.length; layer++) {
             input = output;
             output = MatMath.multiply(edges[layer], input);
-            output = MatMath.sigmoid(output);
+            output = MatMath.map(output, (x) -> activationFunction.calculateActivation(x));
         }
         return output;
     }
