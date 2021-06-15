@@ -60,23 +60,6 @@ public final class MatMath {
     }
     
 
-    public static double[][] transpose(double[][] mA) {
-        int rows = mA.length;
-        int cols = mA[0].length;
-
-        double sse = 0;
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                double error = mA[r][c] - mB[r][c];
-                sse += error*error;
-            }
-        }
-
-        return sse;
-    }
-    
-
     public static double[][] fromList(double[] list){
         double[][] newVector = new double[list.length][1];
         for (int i=0; i<list.length; i++) {
@@ -86,10 +69,6 @@ public final class MatMath {
     }
 
 
-<<<<<<< HEAD
-    public static void print(double[][] mA) {
-        System.out.println(Arrays.deepToString(mA));
-=======
     public static double[][] map(double[][] mA, double[][] mB, BiFunction<Double, Double, Double> fn) throws IllegalArgumentException { 
         
         if (!matricesEqualSize(mA, mB)) throw new IllegalArgumentException("Matrices must be equal in size");
@@ -156,7 +135,6 @@ public final class MatMath {
         }
 
         return resultMatrix;
->>>>>>> 8f6e221 (formatting)
     }
 
 
