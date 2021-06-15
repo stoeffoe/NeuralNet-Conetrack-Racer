@@ -34,7 +34,18 @@ public final class MatMath {
 
 
     public static double sum(double[][] mA){
-        return reduce(mA, (x,a) -> x+a, 0);
+        int rows = mA.length;
+        int cols = mA[0].length;
+
+        double sum = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                sum += mA[r][c];
+            }
+        }
+
+        return sum;
     }
 
 
