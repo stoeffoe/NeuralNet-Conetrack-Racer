@@ -6,7 +6,7 @@ import java.util.Arrays;
 import CarSimulator.Car;
 import CarSimulator.Controls;
 import CarSimulator.Properties;
-import CarSimulator.DataSet;
+import CarSimulator.CarData;
 import NeuralNet.Data;
 import NeuralNet.MatMath;
 import NeuralNet.NeuralNet;
@@ -77,16 +77,16 @@ public class App {
      */
     private static void train(String dataSetFile, String edgesFile){
         // get dataset out of file
-        DataSet carDataSet = DataSet.loadFromJsonFile(dataSetFile);
+        CarData carData = CarData.loadFromJsonFile(dataSetFile);
         
         // convert dataset to format for neuralnet
 
-        int end = carDataSet.getPropertiesList().size()-1;
+        int end = carData.getPropertiesList().size()-1;
         Data[] dataSet = new Data[end];
 
         for(int indexDataset = 0; indexDataset < end; indexDataset++){
-            Properties properties = carDataSet.getFirstProperties();
-            Controls control = carDataSet.getFirstControls();
+            Properties properties = carData.getFirstProperties();
+            Controls control = carData.getFirstControls();
             
             dataSet[indexDataset] = new Data(
                 properties.getRay(120,8), 
