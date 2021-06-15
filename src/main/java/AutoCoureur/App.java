@@ -109,7 +109,8 @@ public class App {
         
         // get startvalues of edges if necessary
         try {
-            nn =new NeuralNet(NeuralNet.loadFromJsonFile(edgesFile).getEdges());
+            nn = NeuralNet.loadFromJsonFile(edgesFile);
+
         } catch (Exception e) {
             System.out.println("No file to init edges");
             nn = new NeuralNet(layers);
