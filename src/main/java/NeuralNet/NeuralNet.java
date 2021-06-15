@@ -193,15 +193,11 @@ public class NeuralNet {
      * Load a NeuralNet object from a json file
      * @param fileName The location and name of the file where the json info needs to be loaded from
      * @return A NeuralNet object with the lists in it
+     * @throws IOException
      */
-    public static NeuralNet loadFromJsonFile(String fileName){
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
-            return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-        return null;
+    public static NeuralNet loadFromJsonFile(String fileName) throws IOException{
+        Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
+        return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
     }
 
 }
