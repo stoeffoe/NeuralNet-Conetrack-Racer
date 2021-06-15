@@ -34,7 +34,7 @@ public final class MatMath {
     }
 
 
-    public static double sum(double[][] mA){
+    public static double sum(double[][] mA) {
         int rows = mA.length;
         int cols = mA[0].length;
 
@@ -112,8 +112,7 @@ public final class MatMath {
     }
 
 
-    public static double[][] map(double[][] mA, double[][] mB, BiFunction<Double, Double, Double> fn) 
-        throws IllegalArgumentException { 
+    public static double[][] map(double[][] mA, double[][] mB, BiFunction<Double, Double, Double> fn) throws IllegalArgumentException { 
         
         if (!matricesEqualSize(mA, mB)) throw new IllegalArgumentException("Matrices must be equal in size");
 
@@ -158,8 +157,7 @@ public final class MatMath {
     }
     
     
-    public static double[][] multiply(double[][] mA, double[][] mB) 
-        throws IllegalArgumentException {
+    public static double[][] multiply(double[][] mA, double[][] mB) throws IllegalArgumentException {
         
         if (!areMultiplyable(mA, mB)) throw new IllegalArgumentException("Matrix sizes are not compatible");
 
