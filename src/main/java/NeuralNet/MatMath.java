@@ -80,6 +80,28 @@ public final class MatMath {
     }
 
 
+    public static double sumOfSquares(double[][] mA) {
+        return reduce(mA, (x,a) -> x+Math.pow(a,2), 0);
+    }
+    
+
+    public static double[][] transpose(double[][] mA) {
+        int rows = mA.length;
+        int cols = mA[0].length;
+
+        double sse = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                double error = mA[r][c] - mB[r][c];
+                sse += error*error;
+            }
+        }
+
+        return sse;
+    }
+
+
     public static double[][] sub(double[][] mA, double[][] mB) {
         int rows = mA.length;
         int cols = mA[0].length;
