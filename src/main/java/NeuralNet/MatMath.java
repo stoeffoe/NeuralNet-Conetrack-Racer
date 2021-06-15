@@ -96,15 +96,10 @@ public final class MatMath {
 
         return resultMatrix;
     }
-
-
-    public static String toString(double[][] mat) {
-        return Arrays.deepToString(mat);
-    }
-
+    
 
     public static void print(double[][] mA) {
-        System.out.println(toString(mA));
+        System.out.println(Arrays.deepToString(mA));
     }
     
     
