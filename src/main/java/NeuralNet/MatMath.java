@@ -29,7 +29,18 @@ public final class MatMath {
 
 
     public static double[][] sub(double[][] mA, double[][] mB) {
-        return map(mA, mB, (a, b) -> a - b);
+        int rows = mA.length;
+        int cols = mA[0].length;
+
+        double[][] resultMatrix = new double[cols][rows];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                resultMatrix[c][r] = mA[r][c] - mB[r][c];
+            }
+        }
+
+        return resultMatrix;
     }
 
 
