@@ -58,41 +58,6 @@ public final class MatMath {
     }
 
 
-    public static double[][] map(double[][] mA, double[][] mB, BiFunction<Double, Double, Double> fn) throws IllegalArgumentException { 
-        
-        if (!matricesEqualSize(mA, mB)) throw new IllegalArgumentException("Matrices must be equal in size");
-
-        int rows = mA.length;
-        int cols = mA[0].length;
-
-        double[][] resultMatrix = new double[rows][cols];
-
-        for (int r=0; r<rows; r++){
-            for (int c=0; c<cols; c++){
-                resultMatrix[r][c] = fn.apply(mA[r][c], mB[r][c]);
-            }
-        }
-
-        return resultMatrix;
-    }
-
-
-    public static double[][] map(double[][] mA, Function<Double, Double> fn) { 
-        int rows = mA.length;
-        int cols = mA[0].length;
-
-        double[][] resultMatrix = new double[rows][cols];
-
-        for (int r=0; r<rows; r++){
-            for (int c=0; c<cols; c++){
-                resultMatrix[r][c] = fn.apply(mA[r][c]);
-            }
-        }
-
-        return resultMatrix;
-    }
-
-
     public static void print(double[][] mA) {
         System.out.println(Arrays.deepToString(mA));
     }
