@@ -6,7 +6,7 @@ import java.util.Arrays;
 import CarSimulator.Car;
 import CarSimulator.Controls;
 import CarSimulator.Properties;
-import CarSimulator.DataSet;
+import CarSimulator.CarData;
 import NeuralNet.Data;
 import NeuralNet.MatMath;
 import NeuralNet.NeuralNet;
@@ -23,53 +23,85 @@ import NeuralNet.NeuralNet;
  * 
  */
 public class App {
-    // For testing purposes to see if the right function is called, might be removed later
-    public static String currentFunction = null;
-
-
     public static void main(String[] args){
-
-        if(args.length > 0){
-            currentFunction = args[0];
-            switch(currentFunction){
-                case "data":
-                    if(args.length == 2){
+        switch (args.length) {
+            case 2:
+                switch (args[0]) {
+                    case "data":
                         getData(args[1]);
-                    }
-                    break;
+                        break;
                     
-                case "train":
-                    if(args.length == 2){
+                    case "train":
                         train(args[1], null);
-                    } else if(args.length == 3){
-                        train(args[1], args[2]);
-                    }
-                    break;
+                        break;
                     
-                case "test":
-                    if(args.length == 2){
+                    case "test":
                         test(args[1]);
-                    }
-                    break;
-                    
-                default:
-                    break;
-            }
+                        break;
 
-        } else{
-            basicControlLoop();
+                    default:
+                        System.out.println("Invalid argument specified!");
+                        displayOptions();
+                        break;
+                }
+                break;
+        
+            case 3:
+                if(args[0].equals("train")){
+                    train(args[1], args[2]);
+                    break;
+                }
+        
+            default:
+                System.out.println("Invalid number of arguments specified!");
+                displayOptions();
+                break;
         }
     }
 
     /**
-     * Get a raw dataset from the car by controlling it and saving all the input(properties)-output(controls)
-     * @param dataSetFile The file where the raw dataset needs to be saved
+     * Get car data from the car by controlling it and saving all the input(properties)-output(controls)
+     * @param dataSetFile The file where the car data needs to be saved
      */
-    public static void getData(String dataSetFile){
-        // start car
-        // control car
-        // save dataset to specified file
+    private static void getData(String dataSetFile){
+        Car car = new Car();
+        CarData carData = new CarData();
+        UserInputControls uic = UserInputControls.getInstance();
 
+        System.out.println("Use mouse to steer, press R to start/stop recording and press ESC to save the cardata and exit the program");
+
+        boolean record = false;
+        boolean previousRecordStatus = record;
+        while(!uic.getQuitingStatus()){
+            record = uic.getRecordStatus();
+            if(!previousRecordStatus && record){
+                System.out.println("Started recording");
+            } else if(previousRecordStatus && !record){
+                System.out.println("Stopped recording");
+            }
+            Properties properties = car.recvProperties();
+            if(record){
+                carData.addProperties(properties);
+            }
+
+            double steeringAngle = uic.getSteeringAngle();
+            double targetVelocity = 0.9;
+            Controls controls = car.sendControls(steeringAngle, targetVelocity);
+            if(record){
+                carData.addControls(controls);
+            }
+            previousRecordStatus = record;
+        }
+
+        if(carData.getPropertiesList().isEmpty()){
+            System.out.println("No data to save");
+        } else{
+            System.out.println("Saving data to file");
+            carData.saveToJsonFile(dataSetFile);
+        }
+
+        car.close();
+        System.exit(0);
     }
 
     /**
@@ -77,18 +109,18 @@ public class App {
      * @param dataSetFile A file with a raw dataset from the car
      * @param edgesFile A file where the weights of the edges are saved
      */
-    public static void train(String dataSetFile, String edgesFile){
+    private static void train(String dataSetFile, String edgesFile){
         // get dataset out of file
-        DataSet carDataSet = DataSet.loadFromJsonFile(dataSetFile);
+        CarData carData = CarData.loadFromJsonFile(dataSetFile);
         
         // convert dataset to format for neuralnet
 
-        int end = carDataSet.getPropertiesList().size()-1;
+        int end = carData.getPropertiesList().size()-1;
         Data[] dataSet = new Data[end];
 
         for(int indexDataset = 0; indexDataset < end; indexDataset++){
-            Properties properties = carDataSet.getFirstProperties();
-            Controls control = carDataSet.getFirstControls();
+            Properties properties = carData.getFirstProperties();
+            Controls control = carData.getFirstControls();
             
             dataSet[indexDataset] = new Data(
                 properties.getRay(120,8), 
@@ -98,8 +130,6 @@ public class App {
             );
         }
 
-
-        
         // create neural net
         int[] layers = { 8,6,4,1 };
         NeuralNet nn = null;
@@ -126,7 +156,7 @@ public class App {
      * Control the car used a trained neural net to test its performance
      * @param edgesFile A file where the weights of the edges are saved
      */
-    public static void test(String edgesFile){
+    private static void test(String edgesFile){
         // initialize objects
         NeuralNet neuralNet = null;
         try {
@@ -151,71 +181,17 @@ public class App {
     }
 
     /**
-     * basic loop to run Jacques code to control a car
+     * Display to possible arguments to run the app with
      */
-    public static void basicControlLoop(){
-        while(true){
-            int amountOfCars = 1;
-            Car car[] = new Car[amountOfCars];
-            for (int i = 0; i < car.length; i++) {
-                car[i] = new Car();
-            }
-
-            for (int i = 0; i < car.length; i++) {
-                control(car[i]);
-            }
-        }
-    }
-
-    /**
-     * Control a car for testing purposes
-     * @param car
-     */
-    public static void control(Car car){
-        while(true){
-            car.recvProperties();
-            if(car.getProperties().getProgress() >= 100){
-                System.out.println(car.getProperties().getLapTime());
-                car.close();
-                break;
-            }
-            double[] lidarDistances = car.getProperties().getLidarDistances();
-            long lidarHalfApertureAngle = car.getProperties().getLidarHalfApertureAngle();
-            long lidarApertureAngle = 2 * lidarHalfApertureAngle;
-    
-            // ====== BEGIN of control algorithm
-    
-            double nearestObstacleDistance = 1e20;
-            double nearestObstacleAngle = 0.;
-            
-            double nextObstacleDistance = 1e20;
-            double nextObstacleAngle = 0.;
-    
-            for (long lidarAngle = -lidarHalfApertureAngle; lidarAngle < lidarHalfApertureAngle; lidarAngle++) {
-                long distanceIndex = lidarAngle < 0 ? lidarAngle + lidarApertureAngle : lidarAngle;
-                double lidarDistance = lidarDistances [(int) distanceIndex];
-                
-                if (lidarDistance < nearestObstacleDistance) {
-                    nextObstacleDistance = nearestObstacleDistance;
-                    nextObstacleAngle = nearestObstacleAngle;
-                    
-                    nearestObstacleDistance = lidarDistance;
-                    nearestObstacleAngle = lidarAngle;
-                }
-                else if (lidarDistance < nextObstacleDistance) {
-                    nextObstacleDistance = lidarDistance;
-                    nextObstacleAngle = lidarAngle;
-                }
-            }
-            
-            double targetObstacleAngle = (nearestObstacleAngle + nextObstacleAngle) / 2;
-    
-            double steeringAngle = targetObstacleAngle;
-            double targetVelocity = (90 - Math.abs (steeringAngle)) / 60;
-    
-            // ====== END of control algorithm
-    
-            car.sendControls(steeringAngle, targetVelocity);
-        }
+    private static void displayOptions(){
+        System.out.println("Possible options:");
+        System.out.println("- data <dataset.json>");
+        System.out.println("\t To gather data and save it to a file specified at <dataset.json>");
+        System.out.println("- train <dataset.json>");
+        System.out.println("\t To train a new neural net with a dataset specified at <dataset.json>");
+        System.out.println("- train <dataset.json> <edges.json>");
+        System.out.println("\t To train an existing neural net with a dataset specified at <dataset.json> and the edges specified at <edges.json>");
+        System.out.println("- test <edges.json>");
+        System.out.println("\t To test the neural net with edges specified at <edges.json>");
     }
 }

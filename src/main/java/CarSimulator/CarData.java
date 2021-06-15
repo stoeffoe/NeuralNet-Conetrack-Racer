@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
-public class DataSet{
+public class CarData{
     private transient static final Gson gson = new Gson();
     private LinkedList<Properties> propertiesList;
     private LinkedList<Controls> controlsList;
@@ -20,7 +20,7 @@ public class DataSet{
     /**
      * Initialize a dataset with an empty list of properties and an empty list of controls
      */
-    public DataSet(){
+    public CarData(){
         propertiesList = new LinkedList<Properties>();
         controlsList = new LinkedList<Controls>();
     }
@@ -88,7 +88,7 @@ public class DataSet{
             }
         }
         try{
-            Writer writer = new FileWriter("./jsonFiles/dataset/" + fileName);
+            Writer writer = new FileWriter("./jsonFiles/carData/" + fileName);
             gson.toJson(this, writer);
             writer.close();
         } catch(JsonIOException e){
@@ -103,10 +103,10 @@ public class DataSet{
      * @param fileName The location and name of the file where the json info needs to be loaded from
      * @return A dataset object with the lists in it
      */
-    public static DataSet loadFromJsonFile(String fileName){
+    public static CarData loadFromJsonFile(String fileName){
         try {
-            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/dataset/" + fileName));
-            return gson.fromJson(reader, DataSet.class);
+            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/carData/" + fileName));
+            return gson.fromJson(reader, CarData.class);
         } catch(IOException e){
             e.printStackTrace();
         }

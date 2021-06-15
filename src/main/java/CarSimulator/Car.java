@@ -14,7 +14,6 @@ public class Car{
     private Process pythonWorld;
     private Client client;
 
-    private DataSet dataSet;
     private Properties properties;
     private Controls controls;
 
@@ -22,7 +21,6 @@ public class Car{
      * Set up a client connection to be able to use the car
      */
     public Car(){
-        dataSet = new DataSet();
         properties = new Properties();
         controls = new Controls();
 
@@ -67,7 +65,6 @@ public class Car{
             }
         }
         properties = gson.fromJson(incomingString, Properties.class);
-        dataSet.addProperties(properties);
         return properties;
     }
 
@@ -76,9 +73,8 @@ public class Car{
      * @param steeringAngle The angle to where the car has to steer
      * @param targetVelocity The target velocity of the car
      */
-    public void sendControls(double steeringAngle, double targetVelocity){
+    public Controls sendControls(double steeringAngle, double targetVelocity){
         controls = new Controls(steeringAngle, targetVelocity);
-        dataSet.addControls(controls);
         try {
             client.send(gson.toJson(controls));
         } catch (IOException e) {
@@ -86,13 +82,13 @@ public class Car{
             close();
             System.exit(1);
         }
+        return controls;
     }
 
     /**
      * Close the socketconnection and kill the server
      */
     public void close(){
-        dataSet.saveToJsonFile("dataset.json");
         client.close();
         pythonWorld.descendants().forEach(childprocess -> {
             try {
