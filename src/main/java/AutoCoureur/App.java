@@ -1,6 +1,5 @@
 package AutoCoureur;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import CarSimulator.Car;

@@ -22,7 +22,7 @@ public class NeuralNet {
     private transient static Gson gson;
 
     private double[][][] edges;
-    private ActivationFunction activationFunction = new FastSigmoid();
+    private ActivationFunction activationFunction ;
 
     /**
      * @return list of matrices containing the weights
@@ -37,6 +37,7 @@ public class NeuralNet {
       */
       
     public NeuralNet(int[] layers) {
+        this.activationFunction = new FastSigmoid();
 
         edges = new double[layers.length - 1][][];
         double initEdgeWeight = 1;
@@ -56,6 +57,7 @@ public class NeuralNet {
      * @param edges 
      */
     public NeuralNet(double[][][] edges) {
+        this.activationFunction = new FastSigmoid();
         this.edges = edges;
     }
 
@@ -72,8 +74,7 @@ public class NeuralNet {
      * @param inputValues double input vector 
      * @return what the computer thinks is right 
      */
-    public double[][] predict(double[] inputValues) {
-        double[][] input = MatMath.fromList(inputValues);
+    public double[][] predict(double[][] input) {
         double[][] output = input;
 
         for (int layer = 0; layer < edges.length; layer++) {
@@ -181,7 +182,7 @@ public class NeuralNet {
         gson = new Gson();
         try{
             Writer writer = new FileWriter("./jsonFiles/edges/"+fileName);
-            gson.toJson(this, writer);
+            gson.toJson(edges, writer);
             writer.close();
         } catch(JsonIOException e){
             e.printStackTrace();
@@ -199,7 +200,7 @@ public class NeuralNet {
         gson = new Gson();
         try {
             Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
-            return gson.fromJson(reader, NeuralNet.class);
+            return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
         } catch(IOException e){
             e.printStackTrace();
         }
