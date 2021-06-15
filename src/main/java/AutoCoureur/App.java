@@ -125,10 +125,22 @@ public class App {
      * @param edgesFile A file where the weights of the edges are saved
      */
     public static void test(String edgesFile){
-        // get startvalues of edges from file
-        // create neural net
-        // start car
-        // control car using the neural net
+        // initialize objects
+        NeuralNet neuralNet = NeuralNet.loadFromJsonFile(edgesFile);
+        Car car = new Car();
+
+        // test main loop
+        while (true) {
+            car.recvProperties();
+            Properties carData = car.getProperties();
+
+            double[][] neuralNetInput = MatMath.fromList(carData.getRay(120, 8));
+
+            double steeringAngle = neuralNet.predict(neuralNetInput)[0][0];
+            double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet
+
+            car.sendControls(steeringAngle, targetVelocity);
+        }
     }
 
     /**
