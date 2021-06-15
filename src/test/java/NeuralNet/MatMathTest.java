@@ -20,18 +20,6 @@ public class MatMathTest {
 
     private double[][] mat_2x1 = {{3.0, 4.0}};
 
-
-    @Test
-    public void multipyDifferentSizedMatrices(){
-        double[][] expected = {{30.14, 71.24, 3.91},
-                               {97.7, 303.2, 106.3}};
-        
-        double[][] actual = MatMath.multiply(mat_3x2, mat_3x3);
-
-        assertArrayEquals(expected, actual);
-    }
-
-
     @Test
     public void mapSingleMatrix(){
         double[][] expected = {{13.1, 15.3, 12},

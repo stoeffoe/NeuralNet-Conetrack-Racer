@@ -3,6 +3,8 @@
 package NeuralNet;
 
 import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import NeuralNet.ActivationFunction.ActivationFunction;
 
@@ -96,14 +98,14 @@ public final class MatMath {
 
         return resultMatrix;
     }
-    
+
 
     public static void print(double[][] mA) {
         System.out.println(Arrays.deepToString(mA));
     }
     
     
-    public static double[][] multiply(double[][] mA, double[][] mB) throws IllegalArgumentException {
+    public static double[][] multiplyAndActivate(double[][] mA, double[][] mB, ActivationFunction af) throws IllegalArgumentException {
         
         if (!areMultiplyable(mA, mB)) throw new IllegalArgumentException("Matrix sizes are not compatible");
 
@@ -116,10 +118,11 @@ public final class MatMath {
         for (int r=0; r<rows; r++){
             for (int c=0; c<cols; c++){
 
+                double sum = 0;
                 for (int i=0; i<numOfCalcs; i++){
-                    resultMatrix[r][c] += mA[r][i] * mB[i][c];
+                    sum += mA[r][i] * mB[i][c];
                 }
-
+                resultMatrix[r][c] = af.calculateActivation(sum);
             }
         }
 
