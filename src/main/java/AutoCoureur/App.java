@@ -1,5 +1,6 @@
 package AutoCoureur;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import CarSimulator.Car;
@@ -112,7 +113,7 @@ public class App {
         }
                 
         // train
-        nn.fit(dataSet, 0.1, 15);
+        nn.fit(dataSet, 0.1, 10000);
 
         // save
         if(edgesFile != null){
@@ -127,7 +128,12 @@ public class App {
      */
     public static void test(String edgesFile){
         // initialize objects
-        NeuralNet neuralNet = NeuralNet.loadFromJsonFile(edgesFile);
+        NeuralNet neuralNet = null;
+        try {
+            neuralNet = NeuralNet.loadFromJsonFile(edgesFile);
+        } catch (IOException e) {
+            System.out.println("No file to init edges");
+        }
         Car car = new Car();
 
         // test main loop
