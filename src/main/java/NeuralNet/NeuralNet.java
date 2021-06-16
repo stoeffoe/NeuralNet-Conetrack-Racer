@@ -134,7 +134,7 @@ public class NeuralNet {
      * @return The sum of squared errors 
      */
     private double calculateError(Data data) {
-        double[][] target = data.getOutputValue();
+        double[][] target = data.getOutputValues();
         double[][] output = predict(data.getInputValues());
 
         return MatMath.sumSquaredErrors(target, output);
