@@ -25,8 +25,8 @@ import NeuralNet.NeuralNet;
 public class App {
     private static int amountOfRays = 8;
     private static double minDistance = 0.5;
-    private static double maxDistance = 2;
-    private static double maxSteeringAngle = Controls.maxSteeringAngle;
+    private static double maxDistance = 5;
+    private static double maxSteeringAngle = 45;
     private static int[] layers = {amountOfRays, 6, 4, 1};
 
 
@@ -175,7 +175,7 @@ public class App {
         }
     }
 
-    
+
     /**
      * Display to possible arguments to run the app with
      */
