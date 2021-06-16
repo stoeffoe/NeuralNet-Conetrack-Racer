@@ -123,7 +123,7 @@ public class App {
             Controls control = carData.getFirstControls();
             
             dataSet[indexDataset] = new Data(
-                properties.getRay(120,8), 
+                properties.getRay(8), 
                 new double[]{
                     control.getSteeringAngle()
                 }
@@ -171,7 +171,7 @@ public class App {
             car.recvProperties();
             Properties carData = car.getProperties();
 
-            double[][] neuralNetInput = MatMath.fromList(carData.getRay(120, 8));
+            double[][] neuralNetInput = MatMath.fromList(carData.getRay(8));
 
             double steeringAngle = neuralNet.predict(neuralNetInput)[0][0];
             double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet

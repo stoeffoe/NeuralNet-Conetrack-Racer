@@ -66,7 +66,8 @@ public class Properties{
      * 
      * @return 
      */
-    public double[] getRay(int lidarAngle, int outputVector){
+    public double[] getRay(int outputVector){
+        int lidarAngle = 2 * (int)lidarHalfApertureAngle;
         int sublist = lidarAngle / outputVector;
         double[][] rays = new double[outputVector][sublist]; 
 
@@ -88,7 +89,7 @@ public class Properties{
         return tempRays;
     }
 
-    double normalize(double value, double min, double max){
+    public double normalize(double value, double min, double max){
         if (value > max){
             return 1.0;
         } else if (value < min){
