@@ -154,19 +154,17 @@ public class App {
      * @param edgesFile A file where the weights of the edges are saved
      */
     private static void test(String edgesFile){
-        // initialize objects
         NeuralNet neuralNet = null;
         try {
             neuralNet = NeuralNet.loadFromJsonFile(edgesFile);
         } catch (IOException e) {
             System.out.println("No file to init edges");
+            System.exit(1);
         }
         Car car = new Car();
 
-        // test main loop
         while (true) {
-            car.recvProperties();
-            Properties properties = car.getProperties();
+            Properties properties = car.recvProperties();
 
             double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(amountOfRays), minDistance, maxDistance));
 
@@ -177,6 +175,7 @@ public class App {
         }
     }
 
+    
     /**
      * Display to possible arguments to run the app with
      */
