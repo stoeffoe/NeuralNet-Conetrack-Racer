@@ -19,17 +19,18 @@ public class NeuralNet {
     private ActivationFunction activationFunction ;
 
     /**
-     * @return list of matrices containing the weights
+     * if you have already the weights of the edges  
+     * @param edges 
      */
-    public double[][][] getEdges() {
-        return edges;
+    public NeuralNet(double[][][] edges) {
+        this.activationFunction = new FastSigmoid();
+        this.edges = edges;
     }
 
     /**
-      * initializes neuralnet with given layer sizes from input to output with optional hidden layers
-      * @param layers is a list with the amount of nodes in each layer
-      */
-      
+     * initializes neuralnet with given layer sizes from input to output with optional hidden layers
+     * @param layers is a list with the amount of nodes in each layer
+     */
     public NeuralNet(int[] layers) {
         this.activationFunction = new FastSigmoid();
 
@@ -47,14 +48,10 @@ public class NeuralNet {
     }
 
     /**
-     * if you have already the weights of the edges  
-     * @param edges 
+     * Init each edge within a layer
+     * @param layer The layer where the edges needs to be initialized
+     * @param initEdgeWeight The initialized weight of the edge
      */
-    public NeuralNet(double[][][] edges) {
-        this.activationFunction = new FastSigmoid();
-        this.edges = edges;
-    }
-
     private void initEdgeWeights(int layer, double initEdgeWeight ){
         for (int row = 0; row < edges[layer].length; row++) {
             for (int col = 0; col < edges[layer][row].length; col++) {
@@ -64,20 +61,25 @@ public class NeuralNet {
     }
 
     /**
-     * Passes the input values through the neural net
-     * @param inputValues double input vector 
-     * @return what the computer thinks is right 
+     * @return list of matrices containing the weights
      */
-    public double[][] predict(double[][] input) {
-        double[][] output = input;
-
-        for (int layer = 0; layer < edges.length; layer++) {
-            input = output;
-            output = MatMath.multiplyAndActivate(edges[layer], input, activationFunction);
-        }
-        return output;
+    public double[][][] getEdges() {
+        return edges;
     }
 
+
+    public void fit(Data[] dataSet, double weightChange, int epochs) {
+        for (int epoch = 0; epoch < epochs; epoch++) {
+            train(dataSet, weightChange);
+
+            System.out.print("\t epoch: "+epoch);
+            if(epoch%10==0){
+                System.out.print("\n");
+            }
+        }
+        System.out.print("\n");
+
+    }
 
     private void train(Data[] dataSet, double weightChange) {
         int[] bestEdgeIndex = new int[3];
@@ -113,18 +115,6 @@ public class NeuralNet {
     }
 
     /**
-     *  calculate error of the vector 
-     * @param data Data
-     * @return error as double 
-     */
-    private double calculateError(Data data) {
-        double[][] target = data.getOutputValue();
-        double[][] output = predict(data.getInputValues());
-
-        return MatMath.sumSquaredErrors(target, output);
-    }
-
-    /**
      * calculate the error of eache datapoint 
      * @param dataSet Data[]
      * @return returns the average error
@@ -136,6 +126,18 @@ public class NeuralNet {
         }
 
         return errorSum / dataSet.length;
+    }
+
+    /**
+     * Calculate the sum of squared error of the vector 
+     * @param data Data object with the inputvalues and corresponding outputvalue
+     * @return The sum of squared errors 
+     */
+    private double calculateError(Data data) {
+        double[][] target = data.getOutputValue();
+        double[][] output = predict(data.getInputValues());
+
+        return MatMath.sumSquaredErrors(target, output);
     }
 
     /**
@@ -153,17 +155,19 @@ public class NeuralNet {
         return avgError;
     }
 
-    public void fit(Data[] dataSet, double weightChange, int epochs) {
-        for (int epoch = 0; epoch < epochs; epoch++) {
-            train(dataSet, weightChange);
+    /**
+     * Passes the input values through the neural net
+     * @param inputValues double input vector 
+     * @return what the computer thinks is right 
+     */
+    public double[][] predict(double[][] input) {
+        double[][] output = input;
 
-            System.out.print("\t epoch: "+epoch);
-            if(epoch%10==0){
-                System.out.print("\n");
-            }
+        for (int layer = 0; layer < edges.length; layer++) {
+            input = output;
+            output = MatMath.multiplyAndActivate(edges[layer], input, activationFunction);
         }
-        System.out.print("\n");
-
+        return output;
     }
 
 
@@ -193,5 +197,4 @@ public class NeuralNet {
         Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
         return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
     }
-
 }
