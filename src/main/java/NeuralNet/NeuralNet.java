@@ -14,16 +14,15 @@ import NeuralNet.ActivationFunction.*;
 
 public class NeuralNet {
     private transient static final Gson gson = new Gson();
+    private final ActivationFunction activationFunction = new FastSigmoid();
 
     private double[][][] edges;
-    private ActivationFunction activationFunction ;
 
     /**
      * if you have already the weights of the edges  
      * @param edges 
      */
     public NeuralNet(double[][][] edges) {
-        this.activationFunction = new FastSigmoid();
         this.edges = edges;
     }
 
@@ -32,8 +31,6 @@ public class NeuralNet {
      * @param layers is a list with the amount of nodes in each layer
      */
     public NeuralNet(int[] layers) {
-        this.activationFunction = new FastSigmoid();
-
         edges = new double[layers.length - 1][][];
         double initEdgeWeight = 1;
 
