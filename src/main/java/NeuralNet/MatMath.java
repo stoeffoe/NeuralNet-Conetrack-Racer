@@ -73,7 +73,11 @@ public final class MatMath {
         } else {
             return (value - min) / (max - min);
         }
-}
+    }
+
+    public static double denormalize(double normalizedValue, double min, double max){
+        return (normalizedValue * (max - min)) - max;
+    }
 
 
     public static double[][] fromList(double[] list){

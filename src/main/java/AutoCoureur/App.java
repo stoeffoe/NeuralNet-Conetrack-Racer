@@ -125,7 +125,7 @@ public class App {
             dataSet[indexDataset] = new Data(
                 MatMath.normalize(properties.getRay(8), 0.5, 2), 
                 new double[]{
-                    control.getSteeringAngle()
+                    MatMath.normalize(control.getSteeringAngle(), -Controls.maxSteeringAngle, Controls.maxSteeringAngle)
                 }
             );
         }
@@ -173,7 +173,7 @@ public class App {
 
             double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(8), 0.5, 2));
 
-            double steeringAngle = neuralNet.predict(neuralNetInput)[0][0];
+            double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -Controls.maxSteeringAngle, Controls.maxSteeringAngle);
             double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet
 
             car.sendControls(steeringAngle, targetVelocity);
