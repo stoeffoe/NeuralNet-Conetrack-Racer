@@ -23,7 +23,7 @@ import NeuralNet.NeuralNet;
  * 
  */
 public class App {
-    private static int amountOfRays = 8;
+    private static int amountOfRays = 4;
     private static double minDistance = 0.5;
     private static double maxDistance = 5;
     private static double maxSteeringAngle = 45;
@@ -139,14 +139,33 @@ public class App {
             nn = new NeuralNet(layers);
         }
 
+        UserInputControls uic = UserInputControls.getInstance();
+        System.out.println("NeuralNet.cores "+ NeuralNet.cores);
+        System.out.println("press ESC to save the NN and exit the program");
+        
+        int count = 0;
+        double weights = 1;
+        double oldLowestError =0;
+        while(!uic.getQuitingStatus()){             
+            double LowestError = nn.fit(dataSet, weights, 100,count);
+            double errorDiff = oldLowestError - LowestError;
+            System.out.println("errorDiff "+  errorDiff );
 
-        nn.fit(dataSet, 0.1, 10000);
+            if(errorDiff ==0){
+                weights/=10;
+            }
 
+            oldLowestError =  LowestError;
+            count++;
+        }
+
+        nn.stopExecutor();
 
         if(edgesFile != null){
             nn.saveToJsonFile(edgesFile);
         }
         System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
+        System.exit(0);
     }
 
     /**
