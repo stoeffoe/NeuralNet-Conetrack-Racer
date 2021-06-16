@@ -83,22 +83,11 @@ public class Properties{
 
         double[] tempRays = new double[outputVector];
         for (int k = 0; k < rays.length; k++) {
-            tempRays[k] = normalize(rays[k][0], 0.5, 2) ;
+            tempRays[k] = rays[k][0];
         }
 
         return tempRays;
     }
-
-    public double normalize(double value, double min, double max){
-        if (value > max){
-            return 1.0;
-        } else if (value < min){
-            return 0.0;
-        } else {
-            return (value - min) / (max - min);
-        }
-    }
-
     
     /**
      * 

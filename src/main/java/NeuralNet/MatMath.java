@@ -59,6 +59,21 @@ public final class MatMath {
     }
 
 
+    public static double[] normalize(double[] list, double min, double max){
+        double[] normalizedList = new double[list.length];
+        for (int i = 0; i < list.length; i++){
+            if (list[i] > max){
+                normalizedList[i] = 1.0;
+            } else if (list[i] < min){
+                normalizedList[i] = 0.0;
+            } else {
+                normalizedList[i] = (list[i] - min) / (max - min);
+            }
+        }
+        return normalizedList;
+    }
+
+
     public static double[][] fromList(double[] list){
         double[][] newVector = new double[list.length][1];
         for (int i=0; i<list.length; i++) {

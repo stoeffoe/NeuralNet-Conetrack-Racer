@@ -123,7 +123,7 @@ public class App {
             Controls control = carData.getFirstControls();
             
             dataSet[indexDataset] = new Data(
-                properties.getRay(8), 
+                MatMath.normalize(properties.getRay(8), 0.5, 2), 
                 new double[]{
                     control.getSteeringAngle()
                 }
