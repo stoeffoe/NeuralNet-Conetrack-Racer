@@ -61,7 +61,6 @@ public class Properties{
         return collided;
     }
 
-
     /**
      * 
      * @return 

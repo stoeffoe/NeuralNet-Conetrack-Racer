@@ -169,9 +169,9 @@ public class App {
         // test main loop
         while (true) {
             car.recvProperties();
-            Properties carData = car.getProperties();
+            Properties properties = car.getProperties();
 
-            double[][] neuralNetInput = MatMath.fromList(carData.getRay(8));
+            double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(8), 0.5, 2));
 
             double steeringAngle = neuralNet.predict(neuralNetInput)[0][0];
             double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet
