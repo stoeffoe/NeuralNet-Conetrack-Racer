@@ -1,14 +1,8 @@
-/*
-- Ruben Hiemstra 0924010
-- Stefan Beenen 0963586
-- Jordy Weijgertse 0974347
-*/
-
 package NeuralNet;
 
 public class Data {
-    private double[][] outputValue;
     private double[][] inputValues;
+    private double[][] outputValue;
     
     /**
      * 
@@ -24,7 +18,7 @@ public class Data {
      * 
      * @return double[]
      */
-    public double[][] getMatrix() {
+    public double[][] getInputValues() {
         return inputValues;
     }
 
@@ -32,7 +26,7 @@ public class Data {
      * 
      * @return double[][]
      */
-    public double[][] getDesiredValue() {
+    public double[][] getOutputValue() {
         return outputValue;
     }
 }

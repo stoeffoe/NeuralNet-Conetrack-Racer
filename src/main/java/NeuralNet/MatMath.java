@@ -1,5 +1,3 @@
-// Author: Stefan Beenen
-
 package NeuralNet;
 
 import java.util.Arrays;

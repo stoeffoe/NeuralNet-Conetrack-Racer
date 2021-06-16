@@ -1,9 +1,3 @@
-/*
-Authors
-- Stefan Beenen 0963586
-- Ruben Hiemstra 0924010
-- Jordy Weijgertse 0974347
-*/
 package NeuralNet;
 
 import java.io.FileWriter;
@@ -124,8 +118,8 @@ public class NeuralNet {
      * @return error as double 
      */
     private double calculateError(Data data) {
-        double[][] target = data.getDesiredValue();
-        double[][] output = predict(data.getMatrix());
+        double[][] target = data.getOutputValue();
+        double[][] output = predict(data.getInputValues());
 
         return MatMath.sumSquaredErrors(target, output);
     }
