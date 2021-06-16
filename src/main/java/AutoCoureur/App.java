@@ -23,6 +23,13 @@ import NeuralNet.NeuralNet;
  * 
  */
 public class App {
+    private static int amountOfRays = 8;
+    private static double minDistance = 0.5;
+    private static double maxDistance = 2;
+    private static double maxSteeringAngle = Controls.maxSteeringAngle;
+    private static int[] layers = {amountOfRays, 6, 4, 1};
+
+
     public static void main(String[] args){
         switch (args.length) {
             case 2:
@@ -110,42 +117,32 @@ public class App {
      * @param edgesFile A file where the weights of the edges are saved
      */
     private static void train(String dataSetFile, String edgesFile){
-        // get dataset out of file
         CarData carData = CarData.loadFromJsonFile(dataSetFile);
-        
-        // convert dataset to format for neuralnet
-
-        int end = carData.getPropertiesList().size()-1;
-        Data[] dataSet = new Data[end];
-
-        for(int indexDataset = 0; indexDataset < end; indexDataset++){
+        int datasetSize = carData.getPropertiesList().size()-1;
+        Data[] dataSet = new Data[datasetSize];
+        for(int indexDataset = 0; indexDataset < datasetSize; indexDataset++){
             Properties properties = carData.getFirstProperties();
-            Controls control = carData.getFirstControls();
-            
+            Controls controls = carData.getFirstControls();
             dataSet[indexDataset] = new Data(
-                MatMath.normalize(properties.getRay(8), 0.5, 2), 
+                MatMath.normalize(properties.getRay(amountOfRays), minDistance, maxDistance), 
                 new double[]{
-                    MatMath.normalize(control.getSteeringAngle(), -Controls.maxSteeringAngle, Controls.maxSteeringAngle)
+                    MatMath.normalize(controls.getSteeringAngle(), -maxSteeringAngle, maxSteeringAngle)
                 }
             );
         }
 
-        // create neural net
-        int[] layers = { 8,6,4,1 };
         NeuralNet nn = null;
-        
-        // get startvalues of edges if necessary
         try {
             nn = NeuralNet.loadFromJsonFile(edgesFile);
         } catch (Exception e) {
             System.out.println("No file to init edges");
             nn = new NeuralNet(layers);
         }
-                
-        // train
+
+
         nn.fit(dataSet, 0.1, 10000);
 
-        // save
+
         if(edgesFile != null){
             nn.saveToJsonFile(edgesFile);
         }
@@ -171,9 +168,9 @@ public class App {
             car.recvProperties();
             Properties properties = car.getProperties();
 
-            double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(8), 0.5, 2));
+            double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(amountOfRays), minDistance, maxDistance));
 
-            double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -Controls.maxSteeringAngle, Controls.maxSteeringAngle);
+            double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
             double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet
 
             car.sendControls(steeringAngle, targetVelocity);
