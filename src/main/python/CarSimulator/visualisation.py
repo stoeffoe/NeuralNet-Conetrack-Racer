@@ -97,7 +97,7 @@ class Window (sp.Beam):
         
 class Floor (sp.Beam):
     side = 16
-    spacing = 0.2
+    spacing = .5
     halfSteps = round (0.5 * side / spacing)
 
     class Stripe (sp.Beam):
@@ -136,6 +136,17 @@ class Visualisation (sp.Scene):
         
         self.windowFront = Window (size = (0.05, 0.14, 0.14), center = (0.14, 0, -0.025), angle = -60)    
         self.windowRear = Window (size = (0.05, 0.14, 0.18), center = (-0.18, 0, -0.025),angle = 72) 
+
+        self.viewBoxes = []
+
+        if False:
+            helfAperture = 60
+            numOfBoxes = 6
+            anglePerBox = int((helfAperture*2)/numOfBoxes)
+            for angle in range(-helfAperture, helfAperture+1, anglePerBox):
+                self.viewBoxes.append(BodyPart (size = (8, 0.01, 0.01), center =  (0, 0, 0.07), angle=angle))
+
+
 
         self.roadCones = []
 
@@ -180,7 +191,7 @@ class Visualisation (sp.Scene):
         )
         '''
         self.camera (   # Soccer match
-            position = sp.tEva ((sp.world.physics.positionX + 2, sp.world.physics.positionY, 2)),
+            position = sp.tEva ((sp.world.physics.positionX + 2, sp.world.physics.positionY, 9)),
             focus = sp.tEva ((sp.world.physics.positionX + 0.001, sp.world.physics.positionY, 0))
         )
         '''
@@ -194,7 +205,8 @@ class Visualisation (sp.Scene):
             self.fuselage (position = (sp.world.physics.positionX, sp.world.physics.positionY, 0), rotation = sp.world.physics.attitudeAngle, parts = lambda:
                 self.cabin (parts = lambda:
                     self.windowFront () +
-                    self.windowRear ()
+                    self.windowRear () +
+                    sum(box() for box in self.viewBoxes)
                 ) +
                 
                 self.wheelFrontLeft (
