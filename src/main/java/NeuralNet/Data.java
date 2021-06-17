@@ -1,38 +1,30 @@
-/*
-- Ruben Hiemstra 0924010
-- Stefan Beenen 0963586
-- Jordy Weijgertse 0974347
-*/
-
 package NeuralNet;
 
 public class Data {
-    private double[][] outputValue;
     private double[][] inputValues;
+    private double[][] outputValues;
     
     /**
      * 
-     * @param _matrix double[] vector of the input
-     * @param _desiredValue double[] outputValue vector of the output
+     * @param inputValues input values as row vector
+     * @param outputValues output values as row vector
      */
-    public Data(double[] inputValues, double[] outputValue) {
+    public Data(double[] inputValues, double[] outputValues) {
         this.inputValues = MatMath.fromList(inputValues);
-        this.outputValue = MatMath.fromList(outputValue);
+        this.outputValues = MatMath.fromList(outputValues);
     }
 
     /**
-     * 
-     * @return double[]
+     * @return The input values as column vector
      */
-    public double[][] getMatrix() {
+    public double[][] getInputValues() {
         return inputValues;
     }
 
     /**
-     * 
-     * @return double[][]
+     * @return The output values as column vector
      */
-    public double[][] getDesiredValue() {
-        return outputValue;
+    public double[][] getOutputValues() {
+        return outputValues;
     }
 }

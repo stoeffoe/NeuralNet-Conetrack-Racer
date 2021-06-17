@@ -1,5 +1,3 @@
-// Author: Stefan Beenen
-
 package NeuralNet;
 
 import java.util.Arrays;
@@ -56,6 +54,29 @@ public final class MatMath {
         }
 
         return sumSquaredError;
+    }
+
+
+    public static double[] normalize(double[] list, double min, double max){
+        double[] normalizedList = new double[list.length];
+        for (int i = 0; i < list.length; i++){
+            normalizedList[i] = normalize(list[i], min, max);
+        }
+        return normalizedList;
+    }
+
+    public static double normalize(double value, double min, double max){
+        if (value > max){
+            return 1.0;
+        } else if (value < min){
+            return 0.0;
+        } else {
+            return (value - min) / (max - min);
+        }
+    }
+
+    public static double denormalize(double normalizedValue, double min, double max){
+        return (normalizedValue * (max - min)) - max;
     }
 
 

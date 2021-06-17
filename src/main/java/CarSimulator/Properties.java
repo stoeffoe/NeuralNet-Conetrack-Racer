@@ -61,12 +61,12 @@ public class Properties{
         return collided;
     }
 
-
     /**
      * 
      * @return 
      */
-    public double[] getRay(int lidarAngle, int outputVector){
+    public double[] getRay(int outputVector){
+        int lidarAngle = 2 * (int)lidarHalfApertureAngle;
         int sublist = lidarAngle / outputVector;
         double[][] rays = new double[outputVector][sublist]; 
 
@@ -82,22 +82,11 @@ public class Properties{
 
         double[] tempRays = new double[outputVector];
         for (int k = 0; k < rays.length; k++) {
-            tempRays[k] = normalize(rays[k][0], 0.5, 2) ;
+            tempRays[k] = rays[k][0];
         }
 
         return tempRays;
     }
-
-    double normalize(double value, double min, double max){
-        if (value > max){
-            return 1.0;
-        } else if (value < min){
-            return 0.0;
-        } else {
-            return (value - min) / (max - min);
-        }
-    }
-
     
     /**
      * 
