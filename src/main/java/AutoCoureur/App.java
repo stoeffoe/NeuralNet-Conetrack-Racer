@@ -187,6 +187,7 @@ public class App {
      */
     private static void test(String edgesFile){
         NeuralNet neuralNet = null;
+        double lastTime = 0;
         try {
             neuralNet = NeuralNet.loadFromJsonFile(edgesFile);
         } catch (IOException e) {
@@ -202,12 +203,19 @@ public class App {
 
             double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
 
-            double maxTargetVelocity = 3;
-            double targetVelocity=0.8+(2/Math.abs(steeringAngle));
-            if(targetVelocity> maxTargetVelocity)  targetVelocity = 3;
+            double maxTargetVelocity = 10;
+            double targetVelocity = 1.0 + ( 2.0 / Math.abs(steeringAngle) );
+            if(targetVelocity> maxTargetVelocity)  targetVelocity = maxTargetVelocity;
+            
+            if (properties.getProgress() >= 100){
+                double time = properties.getLapTime();
+                
+                System.out.println(time - lastTime);
+                lastTime = time;
+                
+            }
 
-
-            car.sendControls(steeringAngle*facSteeringAngle, targetVelocity);
+            car.sendControls(steeringAngle*(facSteeringAngle ), targetVelocity);
         }
     }
 
