@@ -3,7 +3,6 @@ package NeuralNet;
 import java.util.concurrent.Callable;
 
 import NeuralNet.ActivationFunction.ActivationFunction;
-import NeuralNet.ActivationFunction.Sigmoid;
 
 class WorkThread implements Callable<NNdata> {
 
@@ -11,11 +10,12 @@ class WorkThread implements Callable<NNdata> {
 
     private double[][][] edges;
     private Data[] dataSet;
-    private ActivationFunction activationFunction = new Sigmoid() ;
+    private ActivationFunction activationFunction;
 
-    public WorkThread(double[][][] edges, Data[] dataSet ) {
+    public WorkThread(double[][][] edges, Data[] dataSet, ActivationFunction activationFunction ) {
         this.edges = edges;
         this.dataSet = dataSet;
+        this.activationFunction = activationFunction;
     }
     /**
      * Passes the input values through the neural net
