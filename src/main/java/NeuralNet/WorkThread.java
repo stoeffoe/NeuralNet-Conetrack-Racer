@@ -12,19 +12,17 @@ class WorkThread implements Callable<NNdata> {
     private double[][][] edges;
     private Data[] dataSet;
     private ActivationFunction activationFunction = new Sigmoid() ;
-    private int[] edge;
 
-    public WorkThread(double[][][] edges, Data[] dataSet, int[] edge ) {
+    public WorkThread(double[][][] edges, Data[] dataSet ) {
         this.edges = edges;
         this.dataSet = dataSet;
-        this.edge = edge;
     }
     /**
      * Passes the input values through the neural net
      * @param inputValues double input vector 
      * @return what the computer thinks is right 
      */
-    public double[][] predict(double[][] input) {
+    private double[][] predict(double[][] input) {
         double[][] output = input;
 
         for (int layer = 0; layer < edges.length; layer++) {
@@ -63,9 +61,7 @@ class WorkThread implements Callable<NNdata> {
 
     @Override
     public NNdata call() throws Exception {
-        double[] avgError = new double[1]; 
-        avgError[0] = calculateAverageError(dataSet);
-        return new NNdata(edges,edge ,avgError[0]);
+        return new NNdata(edges ,calculateAverageError(dataSet));
     }
     
 }

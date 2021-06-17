@@ -22,12 +22,8 @@ import com.google.gson.JsonIOException;
 import NeuralNet.ActivationFunction.*;
 
 public class NeuralNet {
-    public static int cores  =  Runtime.getRuntime().availableProcessors();
+    public final static int cores  =  Runtime.getRuntime().availableProcessors(); 
     private static ExecutorService executor = Executors.newFixedThreadPool(cores);
-
-    public void stopExecutor(){
-        executor.shutdown();
-    }
 
     private transient static final Gson gson = new Gson();
     private final ActivationFunction activationFunction = new FastSigmoid();
@@ -104,8 +100,8 @@ public class NeuralNet {
             for (int row = 0; row < edges[layer].length; row++) {
                 for (int col = 0; col < edges[layer][row].length; col++) {
                     int[] currentEdge = new int[] {layer,row,col};
-                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, weightChange),dataSet,currentEdge));
-                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, -weightChange),dataSet,currentEdge));
+                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, weightChange),dataSet));
+                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, -weightChange),dataSet));
                 }
             }
         }
@@ -123,15 +119,15 @@ public class NeuralNet {
             }
         }
         
-        Collections.sort(dataArrayList, new Comparator<NNdata>() {
+        NNdata nnDataLowestError =  Collections.min(dataArrayList, new Comparator<NNdata>() {
             @Override
             public int compare(NNdata d1, NNdata d2) {
                 return d1.error < d2.error ? -1 : (d1.error > d2.error) ? 1 : 0;
             }
         });
 
-        this.edges = dataArrayList.get(0).nn;
-        return dataArrayList.get(0).error;
+        this.edges =nnDataLowestError.nn;
+        return nnDataLowestError.error;
     }
 
     private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {
@@ -205,5 +201,9 @@ public class NeuralNet {
     public static NeuralNet loadFromJsonFile(String fileName) throws IOException{
         Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
         return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
+    }
+
+    public void stopExecutor(){
+        executor.shutdown();
     }
 }

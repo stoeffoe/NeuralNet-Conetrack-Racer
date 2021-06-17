@@ -97,7 +97,7 @@ public final class UserInputControls implements NativeKeyListener, NativeMouseMo
                 this.record = !this.record;
                 break;
 
-            case NativeKeyEvent.VC_ESCAPE:
+            case NativeKeyEvent.VC_PAGE_DOWN:
                 this.quit = true;
                 break;
         }

@@ -141,7 +141,7 @@ public class App {
 
         UserInputControls uic = UserInputControls.getInstance();
         System.out.println("NeuralNet.cores "+ NeuralNet.cores);
-        System.out.println("press ESC to save the NN and exit the program");
+        System.out.println("press PAGE_DOWN to save the NN and exit the program");
         
         int count = 0;
         double weights = 1;
