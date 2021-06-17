@@ -104,8 +104,8 @@ public class NeuralNet {
             for (int row = 0; row < edges[layer].length; row++) {
                 for (int col = 0; col < edges[layer][row].length; col++) {
                     int[] currentEdge = new int[] {layer,row,col};
-                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, weightChange),dataSet,currentEdge));
-                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, -weightChange),dataSet,currentEdge));
+                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, weightChange),dataSet,currentEdge,activationFunction));
+                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, -weightChange),dataSet,currentEdge,activationFunction));
                 }
             }
         }
