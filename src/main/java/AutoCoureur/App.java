@@ -13,10 +13,16 @@ import NeuralNet.NeuralNet;
 
 /**
  * Requirements:
- * 
+ *  This program needs to be able to:
+ *      - Start and stop the SimPyLC car simulation
+ *      - Connect through sockets with the SimPyLC car simulation.
+ *      - Send and recieve the appropiate commands with JSON to drive and steer the vehicle 
+ *        and to recieve the lidar array data
+ *      - Generate data and format it properly for the machine learning algorithm
+ *      - Learn to manoeuvre the car through the default track with a machine learning technique (without hitting the cones) 
  * 
  * Design:
- * 
+ *    
  * 
  * Testing:
  * 
@@ -24,10 +30,10 @@ import NeuralNet.NeuralNet;
  */
 public class App {
     private static int amountOfRays = 6;
-    private static double minDistance = .4;
-    private static double maxDistance =4;
+    private static double minDistance = 0.4;
+    private static double maxDistance = 4;
     private static double maxSteeringAngle = 45;
-    private static int[] layers = {amountOfRays,12,3,1 }; 
+    private static int[] layers = {amountOfRays,12,3,1}; 
     private static double facSteeringAngle = 1.4;
 
 
