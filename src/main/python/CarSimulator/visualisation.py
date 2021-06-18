@@ -97,7 +97,7 @@ class Window (sp.Beam):
         
 class Floor (sp.Beam):
     side = 16
-    spacing = 0.2
+    spacing = .5
     halfSteps = round (0.5 * side / spacing)
 
     class Stripe (sp.Beam):
@@ -137,6 +137,17 @@ class Visualisation (sp.Scene):
         self.windowFront = Window (size = (0.05, 0.14, 0.14), center = (0.14, 0, -0.025), angle = -60)    
         self.windowRear = Window (size = (0.05, 0.14, 0.18), center = (-0.18, 0, -0.025),angle = 72) 
 
+        self.viewBoxes = []
+
+        if False:
+            helfAperture = 60
+            numOfBoxes = 6
+            anglePerBox = int((helfAperture*2)/numOfBoxes)
+            for angle in range(-helfAperture, helfAperture+1, anglePerBox):
+                self.viewBoxes.append(BodyPart (size = (8, 0.01, 0.01), center =  (0, 0, 0.07), angle=angle))
+
+
+
         self.roadCones = []
 
         self.leftConesPos = np.array(((3.0, -5.5),(4.5, -6.0),(6.0, -5.5),(6.0, -4.0),(6.0, -2.5),(5.5, -0.5),(5.0, 1.5),(5.0, 3.5),(5.5, 5.5),(5.0, 6.5),(4.0, 6.5),(2.5, 6.0),(2.0, 5.0),(1.5, 3.5),(1.5, 1.5),(1.5, -0.5),(0.5, -2.5),(-1.5, -3.5),(-3.0, -3.5),(-4.5, -2.5),(-4.5, -0.5),(-4.0, 1.0),(-3.5, 2.5),(-3.5, 4.0),(-3.5, 5.5),(-4.0, 6.0),(-5.0, 6.0),(-6.0, 5.5),(-6.5, 4.5),(-6.0, 3.0),(-6.5, 1.0),(-6.5, -1.0),(-6.0, -2.5),(-6.5, -4.5),(-5.5, -6.0),(-4.5, -6.5),(-3.0, -6.5),(-1.5, -6.0),(0.5, -5.5),))
@@ -173,28 +184,30 @@ class Visualisation (sp.Scene):
             sp.world.physics.positionX.set (self.startX) 
             sp.world.physics.positionY.set (self.startY)
         
-        '''
+        
         self.camera (   # First person
             position = sp.tEva ((sp.world.physics.positionX, sp.world.physics.positionY, 1)),
             focus = sp.tEva ((sp.world.physics.focusX, sp.world.physics.focusY, 0))
         )
         '''
         self.camera (   # Soccer match
-            position = sp.tEva ((sp.world.physics.positionX + 2, sp.world.physics.positionY, 2)),
+            position = sp.tEva ((sp.world.physics.positionX + 2, sp.world.physics.positionY, 9)),
             focus = sp.tEva ((sp.world.physics.positionX + 0.001, sp.world.physics.positionY, 0))
         )
         '''
+
         self.camera (   # Helicopter
             position = sp.tEva ((0.0000001, 0, 20)),
             focus = sp.tEva ((0, 0, 0))
         )
-        '''
+
         
         self.floor (parts = lambda:
             self.fuselage (position = (sp.world.physics.positionX, sp.world.physics.positionY, 0), rotation = sp.world.physics.attitudeAngle, parts = lambda:
                 self.cabin (parts = lambda:
                     self.windowFront () +
-                    self.windowRear ()
+                    self.windowRear () +
+                    sum(box() for box in self.viewBoxes)
                 ) +
                 
                 self.wheelFrontLeft (
@@ -237,8 +250,6 @@ class Visualisation (sp.Scene):
         return self.getPosition().within(self.circuitgon)
 
     def getProgress(self):
-        if self.progress >= 100:
-            return 100
 
         distances = np.sum((self.leftConesPos-self.getPosition())**2, axis=1)
         nearestCone = np.argmin(distances)
@@ -250,7 +261,11 @@ class Visualisation (sp.Scene):
             self.progress += (newConeDiff / numOfInnerCones) * 100
             self.lastCone = nearestCone
 
-        return self.progress
+        if self.progress >= 100:
+            self.progress = 0
+            return 100
+        else:
+            return self.progress
 
     def getLapTime(self):
         return sp.world.time()

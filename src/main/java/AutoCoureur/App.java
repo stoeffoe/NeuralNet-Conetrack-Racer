@@ -23,16 +23,19 @@ import NeuralNet.NeuralNet;
  * 
  */
 public class App {
-    private static int amountOfRays = 4;
+    private static int amountOfRays = 6;
     private static double minDistance = .4;
     private static double maxDistance =4;
     private static double maxSteeringAngle = 45;
-    private static int[] layers = {amountOfRays,8,3,1 }; 
-    private static double facSteeringAngle = 2.5;
+    private static int[] layers = {amountOfRays,12,3,1 }; 
+    private static double facSteeringAngle = 1.4;
 
 
     public static void main(String[] args){
         switch (args.length) {
+            case 0:
+                test("NN.json");
+                break;
             case 2:
                 switch (args[0]) {
                     case "data":
@@ -147,7 +150,7 @@ public class App {
         
         int count = 0;
         double oldLowestError =0;
-        while(!uic.getQuitingStatus()){             
+        while(!uic.getQuitingStatus()){   
             double weights = 0.1;
             while(true){
                 double LowestError = nn.fit(dataSet, weights, 100,count);
@@ -169,6 +172,7 @@ public class App {
 
                 oldLowestError =  LowestError;
                 count++;
+            }
         }
 
         nn.stopExecutor();
@@ -186,6 +190,7 @@ public class App {
      */
     private static void test(String edgesFile){
         NeuralNet neuralNet = null;
+        double lastTime = 0;
         try {
             neuralNet = NeuralNet.loadFromJsonFile(edgesFile);
         } catch (IOException e) {
@@ -200,9 +205,19 @@ public class App {
             double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(amountOfRays), minDistance, maxDistance));
 
             double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
-            double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet
 
-            car.sendControls(steeringAngle*facSteeringAngle, targetVelocity);
+            double maxTargetVelocity = 10;
+            double targetVelocity = 1.0 + ( 2.0 / Math.abs(steeringAngle) );
+            
+            if (properties.getProgress() >= 100){
+                double time = properties.getLapTime();
+                
+                System.out.println(time - lastTime);
+                lastTime = time;
+                
+            }
+
+            car.sendControls(steeringAngle*(facSteeringAngle ), targetVelocity);
         }
     }
 
