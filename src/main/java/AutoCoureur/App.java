@@ -33,6 +33,9 @@ public class App {
 
     public static void main(String[] args){
         switch (args.length) {
+            case 0:
+                test("NN.json");
+                break;
             case 2:
                 switch (args[0]) {
                     case "data":

@@ -4,6 +4,12 @@
 ```
 mvn package
 ```
+
+### Compile including dependencies
+```
+mvn clean compile assembly:single
+```
+
 ### Run
 ```
 java -cp ".\target\Opdracht4-0.1.jar;.\target\dependency\*" AutoCoureur.App
