@@ -206,7 +206,6 @@ public class App {
 
             double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
 
-            double maxTargetVelocity = 10;
             double targetVelocity = 1.0 + ( 2.0 / Math.abs(steeringAngle) );
             
             if (properties.getProgress() >= 100){
