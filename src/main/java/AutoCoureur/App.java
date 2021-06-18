@@ -208,7 +208,6 @@ public class App {
 
             double maxTargetVelocity = 10;
             double targetVelocity = 1.0 + ( 2.0 / Math.abs(steeringAngle) );
-            if(targetVelocity> maxTargetVelocity)  targetVelocity = maxTargetVelocity;
             
             if (properties.getProgress() >= 100){
                 double time = properties.getLapTime();
