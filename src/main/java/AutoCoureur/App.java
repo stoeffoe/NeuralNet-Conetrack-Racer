@@ -23,11 +23,12 @@ import NeuralNet.NeuralNet;
  * 
  */
 public class App {
-    private static int amountOfRays = 8;
-    private static double minDistance = 0.5;
-    private static double maxDistance = 5;
+    private static int amountOfRays = 4;
+    private static double minDistance = .4;
+    private static double maxDistance =4;
     private static double maxSteeringAngle = 45;
-    private static int[] layers = {amountOfRays, 6, 4, 1};
+    private static int[] layers = {amountOfRays,8,3,1 }; 
+    private static double facSteeringAngle = 2.5;
 
 
     public static void main(String[] args){
@@ -91,6 +92,7 @@ public class App {
                 carData.addProperties(properties);
             }
 
+            
             double steeringAngle = uic.getSteeringAngle();
             double targetVelocity = uic.getTargetVelocity();
             Controls controls = car.sendControls(steeringAngle, targetVelocity);
@@ -139,14 +141,43 @@ public class App {
             nn = new NeuralNet(layers);
         }
 
+        UserInputControls uic = UserInputControls.getInstance();
+        System.out.println("NeuralNet.cores "+ NeuralNet.cores);
+        System.out.println("press PAGE_DOWN to save the NN and exit the program");
+        
+        int count = 0;
+        double oldLowestError =0;
+        while(!uic.getQuitingStatus()){             
+            double weights = 0.1;
+            while(true){
+                double LowestError = nn.fit(dataSet, weights, 100,count);
+                double errorDiff = oldLowestError - LowestError;
+                System.out.println("LowestError "+ Math.sqrt(LowestError) );
 
-        nn.fit(dataSet, 0.1, 10000);
+                if(errorDiff ==0){
+                    weights/=10; 
+                    System.out.println("\n weights has been changed to "+ weights);
+                    if(weights  == 0.0001){
+                        System.out.println("\n start over with training ");
+                        break;
+                    }
+                }
+                if(uic.getQuitingStatus()){
+                    System.out.println("\n Stop with training ");
+                    break;
+                }
 
+                oldLowestError =  LowestError;
+                count++;
+        }
+
+        nn.stopExecutor();
 
         if(edgesFile != null){
             nn.saveToJsonFile(edgesFile);
         }
         System.out.println(Arrays.deepToString(nn.getEdges()).replace("[", "{").replace("]", "}"));
+        System.exit(0);
     }
 
     /**
@@ -171,7 +202,7 @@ public class App {
             double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
             double targetVelocity = 0.9;    // default velocity, to be replaced by the neuralnet
 
-            car.sendControls(steeringAngle, targetVelocity);
+            car.sendControls(steeringAngle*facSteeringAngle, targetVelocity);
         }
     }
 

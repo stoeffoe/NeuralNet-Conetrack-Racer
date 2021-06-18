@@ -6,6 +6,15 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -13,6 +22,9 @@ import com.google.gson.JsonIOException;
 import NeuralNet.ActivationFunction.*;
 
 public class NeuralNet {
+    public final static int cores  =  Runtime.getRuntime().availableProcessors(); 
+    private static ExecutorService executor = Executors.newFixedThreadPool(cores);
+
     private transient static final Gson gson = new Gson();
     private final ActivationFunction activationFunction = new FastSigmoid();
 
@@ -65,91 +77,87 @@ public class NeuralNet {
     }
 
 
-    public void fit(Data[] dataSet, double weightChange, int epochs) {
-        for (int epoch = 0; epoch < epochs; epoch++) {
-            train(dataSet, weightChange);
 
-            System.out.print("\t epoch: "+epoch);
+    public double fit(Data[] dataSet, double weightChange, int epochs,int run) {
+        double error = 0; 
+        for (int epoch = 0; epoch < epochs; epoch++) {
+            error =  train(dataSet, weightChange);
+
+            System.out.printf("epoch: %d \t",(epoch+(run*epochs)));
             if(epoch%10==0){
                 System.out.print("\n");
             }
         }
-        System.out.print("\n");
-
+        return error;
     }
 
-    private void train(Data[] dataSet, double weightChange) {
-        int[] bestEdgeIndex = new int[3];
-        double bestEdgeWeightChange =0;
-        double lowestAvgError = calculateAverageError(dataSet);
+    private double train(Data[] dataSet,  double weightChange) {
+        
+        List<Future<NNdata>> futureList = new ArrayList<Future<NNdata>>();
+        List<WorkThread> workThreadList = new ArrayList<WorkThread>();
 
         for (int layer = 0; layer < edges.length; layer++) {
             for (int row = 0; row < edges[layer].length; row++) {
                 for (int col = 0; col < edges[layer][row].length; col++) {
-
-                        int[] currentIndex = {layer, row, col};
-
-                        double avgErrorPlus = calculateErrorEdgeChange(dataSet, currentIndex, weightChange);
-                        double avgErrorMinus = calculateErrorEdgeChange(dataSet, currentIndex, -weightChange);
-                
-                        if (lowestAvgError < avgErrorPlus && lowestAvgError < avgErrorMinus ){
-                            continue;
-                        }
-
-                        if (avgErrorMinus < avgErrorPlus){
-                            lowestAvgError = avgErrorMinus ;  
-                            bestEdgeWeightChange = -weightChange;
-                        } else {
-                            lowestAvgError = avgErrorPlus;
-                            bestEdgeWeightChange = weightChange;
-                        }
-
-                        bestEdgeIndex = currentIndex;
-                    }
+                    int[] currentEdge = new int[] {layer,row,col};
+                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, weightChange),dataSet,activationFunction));
+                    workThreadList.add(new WorkThread(changeEdge(this.edges, currentEdge, -weightChange),dataSet,activationFunction));
                 }
             }
-        edges[bestEdgeIndex[0]][bestEdgeIndex[1]][bestEdgeIndex[2]] += bestEdgeWeightChange;
-    }
-
-    /**
-     * calculate the error of eache datapoint 
-     * @param dataSet Data[]
-     * @return returns the average error
-     */
-    private double calculateAverageError(Data[] dataSet) {
-        double errorSum = 0;
-        for (Data data : dataSet) {
-            errorSum += calculateError(data);
         }
 
-        return errorSum / dataSet.length;
-    }
-
-    /**
-     * Calculate the sum of squared error of the vector 
-     * @param data Data object with the inputvalues and corresponding outputvalue
-     * @return The sum of squared errors 
-     */
-    private double calculateError(Data data) {
-        double[][] target = data.getOutputValues();
-        double[][] output = predict(data.getInputValues());
-
-        return MatMath.sumSquaredErrors(target, output);
-    }
-
-    /**
-     * chance the edge and chance them back
-     * @param dataSet Data[]
-     * @param edgeIndex int[]
-     * @param weightChange double
-     * @return the avrrage error of the dataset with the edge chance  
-     */
-    private double calculateErrorEdgeChange(Data[] dataSet, int[] edgeIndex, double weightChange) {
-        edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
-        double avgError = calculateAverageError(dataSet);
-        edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] -= weightChange;
+        for (WorkThread workThread : workThreadList) {
+            futureList.add(executor.submit(workThread));
+        }
         
-        return avgError;
+        ArrayList<NNdata> dataArrayList = new ArrayList<NNdata>();
+        for (Future<NNdata> future : futureList) {
+            try {
+                dataArrayList.add(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        NNdata nnDataLowestError =  Collections.min(dataArrayList, new Comparator<NNdata>() {
+            @Override
+            public int compare(NNdata d1, NNdata d2) {
+                return d1.error < d2.error ? -1 : (d1.error > d2.error) ? 1 : 0;
+            }
+        });
+
+        this.edges =nnDataLowestError.nn;
+        return nnDataLowestError.error;
+    }
+
+    private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {
+        edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
+
+        double[][][] newEdges = new double[edges.length][][];
+
+
+        for (int layer = 0; layer < edges.length ;layer++) {
+            for (int row = 0; row < edges[layer].length; row++) {
+                newEdges[layer] = new double[edges[layer].length][edges[layer][0].length];
+            }
+        }
+
+        newEdges = copyOf3Dim(edges, newEdges);
+
+        edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] -= weightChange;
+        return newEdges;
+    } 
+
+    private double[][][] copyOf3Dim(double[][][] array, double[][][]copy) {
+
+        for (int x = 0; x < array.length; x++) {  
+            for (int y = 0; y < array[x].length; y++) {  
+                for (int z = 0; z < array[x][y].length; z++) {
+                    copy[x][y][z] = array[x][y][z];  
+                }  
+            }  
+        } 
+        return copy;
     }
 
     /**
@@ -193,5 +201,9 @@ public class NeuralNet {
     public static NeuralNet loadFromJsonFile(String fileName) throws IOException{
         Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
         return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
+    }
+
+    public void stopExecutor(){
+        executor.shutdown();
     }
 }
