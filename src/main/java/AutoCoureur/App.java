@@ -146,21 +146,29 @@ public class App {
         System.out.println("press PAGE_DOWN to save the NN and exit the program");
         
         int count = 0;
-        double weights = 1;
         double oldLowestError =0;
         while(!uic.getQuitingStatus()){             
-            double LowestError = nn.fit(dataSet, weights, 100,count);
-            double errorDiff = oldLowestError - LowestError;
-            System.out.println("LowestError "+ Math.sqrt(LowestError) );
+            double weights = 0.1;
+            while(true){
+                double LowestError = nn.fit(dataSet, weights, 100,count);
+                double errorDiff = oldLowestError - LowestError;
+                System.out.println("LowestError "+ Math.sqrt(LowestError) );
 
-            if(errorDiff ==0){
-                weights/=10; 
-                System.out.println("\n weights has been changed to "+ weights);
-                if(weights  == 0.01){break;}
-            }
+                if(errorDiff ==0){
+                    weights/=10; 
+                    System.out.println("\n weights has been changed to "+ weights);
+                    if(weights  == 0.0001){
+                        System.out.println("\n start over with training ");
+                        break;
+                    }
+                }
+                if(uic.getQuitingStatus()){
+                    System.out.println("\n Stop with training ");
+                    break;
+                }
 
-            oldLowestError =  LowestError;
-            count++;
+                oldLowestError =  LowestError;
+                count++;
         }
 
         nn.stopExecutor();
