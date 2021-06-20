@@ -18,7 +18,8 @@ public class Car{
     private Controls controls;
 
     /**
-     * Set up a client connection to be able to use the car
+     * Start the python server where the world is running and connect the client after {@value #waitingTimeBeforeConnect} ms.
+     * Increase the socketportcounter so every new server/client combination is started on a new port
      */
     public Car(){
         properties = new Properties();
