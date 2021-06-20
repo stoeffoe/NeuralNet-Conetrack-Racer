@@ -8,13 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -121,12 +119,7 @@ public class NeuralNet {
             }
         }
         
-        NNdata nnDataLowestError =  Collections.min(dataArrayList, new Comparator<NNdata>() {
-            @Override
-            public int compare(NNdata d1, NNdata d2) {
-                return d1.error < d2.error ? -1 : (d1.error > d2.error) ? 1 : 0;
-            }
-        });
+        NNdata nnDataLowestError =  Collections.min(dataArrayList);
 
         this.edges =nnDataLowestError.nn;
         return nnDataLowestError.error;
