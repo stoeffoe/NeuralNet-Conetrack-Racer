@@ -72,6 +72,25 @@ public final class MatMath {
     }
 
     /**
+     * Creates a deep copy of a double matrix with 3 dimensions
+     */
+    public static double[][][] copyOf3Dim(double[][][] array) {
+   
+        int xlen = array.length;
+        double[][][] copy = new double[xlen][][];
+    
+        for (int x = 0; x < xlen; x++) {
+            int ylen = array[x].length;  
+            copy[x] = new double[ylen][];
+    
+            for (int y = 0; y < ylen; y++) {  
+                copy[x][y] = Arrays.copyOf(array[x][y], array[x][y].length);
+            }  
+        } 
+        return copy;
+    }
+
+    /**
      * Maps all the values in the list from the given range on to a range of 0 to 1
      * @param list
      * @param min
