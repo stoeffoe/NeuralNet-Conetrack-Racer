@@ -26,7 +26,7 @@ public class NeuralNet {
     private static ExecutorService executor = Executors.newFixedThreadPool(cores);
 
     private transient static final Gson gson = new Gson();
-    private final ActivationFunction activationFunction = new FastSigmoid();
+    public static final ActivationFunction activationFunction = new FastSigmoid();
 
     private double[][][] edges;
 
@@ -130,6 +130,32 @@ public class NeuralNet {
         return nnDataLowestError.error;
     }
 
+    /**
+     * calculate the error of eache datapoint 
+     * @param dataSet Data[]
+     * @return returns the average error
+     */
+    public static double calculateAverageError(double [][][] edges,Data[] dataSet) {
+        double errorSum = 0;
+        for (Data data : dataSet) {
+            errorSum += NeuralNet.calculateError(edges ,data);
+        }
+
+        return errorSum / dataSet.length;
+    }
+
+    /**
+     * Calculate the sum of squared error of the vector 
+     * @param data Data object with the inputvalues and corresponding outputvalue
+     * @return The sum of squared errors 
+     */
+    public static double calculateError(double[][][] edges,Data data) {
+        double[][] target = data.getOutputValues();
+        double[][] output = NeuralNet.predict( edges,data.getInputValues());
+
+        return MatMath.sumSquaredErrors(target, output);
+    }
+
     private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {   
         double[][][] newEdges = new double[edges.length][][];
 
@@ -144,6 +170,8 @@ public class NeuralNet {
         
         return newEdges;
     } 
+
+
 
     private double[][][] copyOf3Dim(double[][][] array, double[][][]copy) {
 
@@ -162,7 +190,7 @@ public class NeuralNet {
      * @param inputValues double input vector 
      * @return what the computer thinks is right 
      */
-    public double[][] predict(double[][] input) {
+    public static double[][] predict(double[][][] edges,double[][] input) {
         double[][] output = input;
 
         for (int layer = 0; layer < edges.length; layer++) {

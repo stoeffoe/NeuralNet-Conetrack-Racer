@@ -216,7 +216,7 @@ public class App {
 
             double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(amountOfRays), minDistance, maxDistance));
 
-            double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
+            double steeringAngle = MatMath.denormalize(NeuralNet.predict( neuralNet.getEdges(),neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
 
             double targetVelocity = 1.0 + ( 2.0 / Math.abs(steeringAngle) );
             
