@@ -34,9 +34,9 @@ class WorkThread implements Callable<NNdata> {
 
 
     /**
-     * calculate the error of eache datapoint 
-     * @param dataSet Data[]
-     * @return returns the average error
+     * Calculate the average error of a whole dataset
+     * @param dataSet Array of all the data objects
+     * @return The average error
      */
     private double calculateAverageError(Data[] dataSet) {
         double errorSum = 0;
