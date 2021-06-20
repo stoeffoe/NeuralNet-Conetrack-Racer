@@ -11,7 +11,10 @@ class Client{
      * The max length of the buffer which is used to send and receive to and from the server
      */
     private static final int maxMessageLength = 2048;
-    private static final int socketTimeout = 100;
+    /**
+     * The amount of ms the socket connection waits for a message to receive
+     */
+     private static final int socketTimeout = 100;
 
     private int socketPort;
     private Socket socket;
