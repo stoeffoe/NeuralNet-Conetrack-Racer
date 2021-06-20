@@ -21,6 +21,10 @@ class Client{
     private DataInputStream inStream;
     private DataOutputStream outStream;
 
+    /**
+     * Try to connect the client until it is connected
+     * @param socketPort The port which the client tries to connect to
+     */
     public Client(int socketPort){
         this.socketPort = socketPort;
         while(!connect()){}
