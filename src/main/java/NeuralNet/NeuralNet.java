@@ -160,8 +160,8 @@ public class NeuralNet {
 
     /**
      * Passes the input values through the neural net
-     * @param inputValues double input vector 
-     * @return what the computer thinks is right 
+     * @param inputValues input nodes
+     * @return output nodes
      */
     public double[][] predict(double[][] input) {
         double[][] output = input;
