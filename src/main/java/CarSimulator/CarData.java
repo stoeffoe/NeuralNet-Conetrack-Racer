@@ -45,10 +45,10 @@ public class CarData{
     }
     
     /**
-     * 
      * @return Pop the first properties object from the list
      * @throws NoSuchElementException When the list is empty
      */
+
     public Properties getFirstProperties() throws NoSuchElementException{
         return propertiesList.removeFirst();
     }
