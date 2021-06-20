@@ -77,7 +77,6 @@ public class NeuralNet {
     }
 
 
-
     public double fit(Data[] dataSet, double weightChange, int epochs,int run) {
         double error = 0; 
         for (int epoch = 0; epoch < epochs; epoch++) {
@@ -156,40 +155,14 @@ public class NeuralNet {
         return MatMath.sumSquaredErrors(target, output);
     }
 
-    /**
-     * 
-     * @param edges
-     * @param edgeIndex
-     * @param weightChange
-     * @return
-     */
-
     private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {   
         double[][][] newEdges = new double[edges.length][][];
 
-        for (int layer = 0; layer < edges.length ;layer++) {
-            for (int row = 0; row < edges[layer].length; row++) {
-                newEdges[layer] = new double[edges[layer].length][edges[layer][0].length];
-            }
-        }
-
-        newEdges = copyOf3Dim(edges, newEdges);
+        newEdges = MatMath.copyOf3Dim(edges);
         newEdges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
         
         return newEdges;
     } 
-
-
-    private double[][][] copyOf3Dim(double[][][] array, double[][][]copy) {
-        for (int x = 0; x < array.length; x++) {  
-            for (int y = 0; y < array[x].length; y++) {  
-                for (int z = 0; z < array[x][y].length; z++) {
-                    copy[x][y][z] = array[x][y][z];  
-                }  
-            }  
-        } 
-        return copy;
-    }
 
     /**
     * Passes the input values through the neural net
