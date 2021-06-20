@@ -37,9 +37,9 @@ public class CarData{
     }
 
     /**
-     * 
      * @return The list of properties objects
      */
+
     public LinkedList<Properties> getPropertiesList(){
         return propertiesList;
     }
