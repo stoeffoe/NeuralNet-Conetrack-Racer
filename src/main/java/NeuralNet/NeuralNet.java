@@ -180,7 +180,7 @@ public class NeuralNet {
      */
     public void saveToJsonFile(String fileName ){
         try{
-            Writer writer = new FileWriter("./jsonFiles/edges/"+fileName);
+            Writer writer = new FileWriter(directory+fileName);
             gson.toJson(edges, writer);
             writer.close();
         } catch(JsonIOException e){
