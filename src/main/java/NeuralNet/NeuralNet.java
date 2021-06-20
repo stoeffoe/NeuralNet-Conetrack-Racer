@@ -156,6 +156,14 @@ public class NeuralNet {
         return MatMath.sumSquaredErrors(target, output);
     }
 
+    /**
+     * 
+     * @param edges
+     * @param edgeIndex
+     * @param weightChange
+     * @return
+     */
+
     private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {   
         double[][][] newEdges = new double[edges.length][][];
 
@@ -172,9 +180,7 @@ public class NeuralNet {
     } 
 
 
-
     private double[][][] copyOf3Dim(double[][][] array, double[][][]copy) {
-
         for (int x = 0; x < array.length; x++) {  
             for (int y = 0; y < array[x].length; y++) {  
                 for (int z = 0; z < array[x][y].length; z++) {
@@ -186,8 +192,9 @@ public class NeuralNet {
     }
 
     /**
-     * Passes the input values through the neural net
-     * @param inputValues double input vector 
+    * Passes the input values through the neural net
+     * @param edges the weights of Neuralnet 
+     * @param input double input vector 
      * @return what the computer thinks is right 
      */
     public static double[][] predict(double[][][] edges,double[][] input) {
@@ -200,6 +207,9 @@ public class NeuralNet {
         return output;
     }
 
+    public double[][] predict(double[][] input) {
+        return NeuralNet.predict(this.edges, input);
+    }
 
     /**
      * Save the lists within this object to a json file
