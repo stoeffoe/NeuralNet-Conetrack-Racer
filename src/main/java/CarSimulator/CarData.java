@@ -92,7 +92,8 @@ public class CarData{
             }
         }
         try{
-            Writer writer = new FileWriter("./jsonFiles/carData/" + fileName);
+            Writer writer = new FileWriter(directory + fileName);
+
             gson.toJson(this, writer);
             writer.close();
         } catch(JsonIOException e){
