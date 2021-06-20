@@ -76,7 +76,9 @@ public class NeuralNet {
         return edges;
     }
 
-
+    /**
+     * Trains the neuralnet with the given epochs
+     */
     public double fit(Data[] dataSet, double weightChange, int epochs,int run) {
         double error = 0; 
         for (int epoch = 0; epoch < epochs; epoch++) {
@@ -89,6 +91,7 @@ public class NeuralNet {
         }
         return error;
     }
+
 
     private double train(Data[] dataSet,  double weightChange) {
         
