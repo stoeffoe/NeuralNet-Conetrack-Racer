@@ -197,7 +197,7 @@ public class NeuralNet {
      * @throws IOException
      */
     public static NeuralNet loadFromJsonFile(String fileName) throws IOException{
-        Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
+        Reader reader = Files.newBufferedReader(Paths.get(directory+fileName));
         return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
     }
 
