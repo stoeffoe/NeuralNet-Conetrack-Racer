@@ -16,11 +16,11 @@ public class Controls{
     }
 
     /**
-     * 
      * @param steeringAngle Steering angle to set in degrees.
      * Angles higher than {@value #maxSteeringAngle}, will be set to {@value #maxSteeringAngle}.
      * Angles lower than -{@value #maxSteeringAngle}, will be set to -{@value #maxSteeringAngle}.
      */
+
     public void setSteeringAngle(double steeringAngle){
         if(steeringAngle > maxSteeringAngle){
             this.steeringAngle = maxSteeringAngle;
