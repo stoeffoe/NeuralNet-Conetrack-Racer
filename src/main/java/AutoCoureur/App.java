@@ -94,7 +94,7 @@ public class App {
         CarData carData = new CarData();
         UserInputControls uic = UserInputControls.getInstance();
 
-        System.out.println("Use mouse to steer, press R to start/stop recording and press ESC to save the cardata and exit the program");
+        System.out.println("Use mouse to steer, press R to start/stop recording and press PAGE_DOWN to save the cardata and exit the program");
 
         boolean record = false;
         boolean previousRecordStatus = record;
@@ -106,15 +106,12 @@ public class App {
                 System.out.println("Stopped recording");
             }
             Properties properties = car.recvProperties();
-            if(record){
-                carData.addProperties(properties);
-            }
-
             
             double steeringAngle = uic.getSteeringAngle();
             double targetVelocity = uic.getTargetVelocity();
             Controls controls = car.sendControls(steeringAngle, targetVelocity);
             if(record){
+                carData.addProperties(properties);
                 carData.addControls(controls);
             }
             previousRecordStatus = record;

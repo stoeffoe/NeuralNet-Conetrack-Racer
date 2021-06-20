@@ -14,8 +14,11 @@ import com.google.gson.JsonIOException;
 
 public class CarData{
     private transient static final Gson gson = new Gson();
+    private transient static final String directory = "./jsonFiles/carData/";
+    
     private LinkedList<Properties> propertiesList;
     private LinkedList<Controls> controlsList;
+
 
     /**
      * Initialize a dataset with an empty list of properties and an empty list of controls
@@ -34,18 +37,18 @@ public class CarData{
     }
 
     /**
-     * 
      * @return The list of properties objects
      */
+
     public LinkedList<Properties> getPropertiesList(){
         return propertiesList;
     }
     
     /**
-     * 
      * @return Pop the first properties object from the list
      * @throws NoSuchElementException When the list is empty
      */
+
     public Properties getFirstProperties() throws NoSuchElementException{
         return propertiesList.removeFirst();
     }
@@ -59,26 +62,27 @@ public class CarData{
     }
 
     /**
-     * 
      * @return The list of controls objects
      */
     public LinkedList<Controls> getControlsList(){
+
         return controlsList;
     }
 
     /**
-     * 
      * @return Pop the first controls object from the list
      * @throws NoSuchElementException When the list is empty
      */
+
     public Controls getFirstControls() throws NoSuchElementException{
         return controlsList.removeFirst();
     }
 
     /**
-     * Save the lists within this object to a json file
+     * Save the lists with equal size within the current object to a json file
      * @param fileName The location and name of the json file where the data needs to be saved to
      */
+
     public void saveToJsonFile(String fileName){
         while(propertiesList.size() != controlsList.size()){
             if(propertiesList.size() > controlsList.size()){
