@@ -70,10 +70,10 @@ public class CarData{
     }
 
     /**
-     * 
      * @return Pop the first controls object from the list
      * @throws NoSuchElementException When the list is empty
      */
+
     public Controls getFirstControls() throws NoSuchElementException{
         return controlsList.removeFirst();
     }
