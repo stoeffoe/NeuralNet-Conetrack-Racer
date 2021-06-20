@@ -37,7 +37,6 @@ public class Car{
     }
 
     /**
-     * 
      * @return An object with all the properties of the car
      */
     public Properties getProperties() {
