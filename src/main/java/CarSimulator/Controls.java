@@ -32,9 +32,9 @@ public class Controls{
     }
 
     /**
-     * 
      * @return Current steering angle in degrees
      */
+
     public double getSteeringAngle(){
         return steeringAngle;
     }
