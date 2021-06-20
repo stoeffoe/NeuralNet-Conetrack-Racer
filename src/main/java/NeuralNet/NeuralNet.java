@@ -32,8 +32,8 @@ public class NeuralNet {
     private double[][][] edges;
 
     /**
-     * if you have already the weights of the edges  
-     * @param edges 
+     * Initialize the neural net with already known weights of the edges
+     * @param edges 3D array of the wieghts of all the edges per layer from input to output
      */
     public NeuralNet(double[][][] edges) {
         this.edges = edges;
