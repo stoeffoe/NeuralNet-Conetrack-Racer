@@ -49,7 +49,7 @@ class Client{
     /**
      * Receive a message from the socket server
      * @return The received string without leading of trailing whitespace
-     * @throws SocketTimeoutException When the socket is not connected right to the server
+     * @throws SocketTimeoutException When the socket does not receive anything within {@value #socketTimeout} ms
      * @throws IOException When there is no working server anymore
      */
     public String recv() throws SocketTimeoutException, IOException{
