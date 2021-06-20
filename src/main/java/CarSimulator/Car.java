@@ -69,7 +69,7 @@ public class Car{
     }
 
     /**
-     * 
+     * Set the parameters in the controls object and send them in Json to the car in the world
      * @param steeringAngle The angle to where the car has to steer
      * @param targetVelocity The target velocity of the car
      */
