@@ -28,28 +28,28 @@ public class Properties{
     }
 
     /**
-     * @return whether the car is on the track or not
+     * @return Whether the car is on the track or not
      */
     public boolean getIsOnTrack(){
         return isOnTrack;
     }
 
     /**
-     * @return the progress of the car on the track in percentage
+     * @return The progress of the car on the track in percentage
      */
     public double getProgress() {
         return progress;
     }
 
     /**
-     * @return elapsed simulation time
+     * @return Elapsed simulation time
      */
     public double getLapTime() {
         return lapTime;
     }
 
     /**
-     * @return if the car is colliding
+     * @return If the car is colliding
      */
     public boolean getCollided() {
         return collided;
