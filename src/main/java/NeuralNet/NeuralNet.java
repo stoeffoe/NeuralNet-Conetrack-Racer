@@ -71,7 +71,7 @@ public class NeuralNet {
     }
 
     /**
-     * @return list of matrices containing the weights
+     * @return Array of the weights of all the edges per layer from input to output
      */
     public double[][][] getEdges() {
         return edges;
