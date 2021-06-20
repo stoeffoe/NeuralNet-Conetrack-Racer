@@ -19,13 +19,22 @@ import NeuralNet.NeuralNet;
  *      - Send and recieve the appropiate commands with JSON to drive and steer the vehicle 
  *        and to recieve the lidar array data
  *      - Generate data and format it properly for the machine learning algorithm
- *      - Learn to manoeuvre the car through the default track with a machine learning technique (without hitting the cones) 
+ *      - Learn to manoeuvre the car through the default track with a machine learning technique (without hitting the cones and going off track) 
  * 
  * Design:
- *    
- * 
+ *    The program is split up in the following parts:
+ *      - CarSimlulator
+ *          - Socket connection to the SimPyLC Python simulation
+ *          - JSON object translation to control the car
+ *          - API interface for controlling the car and receiving the revelant information
+ *      - NeuralNet
+ *          - A neural net with it's nodes and edges
+            - Mathematical methods for prediction and training (matrix multiplication, sum of least squares, activation function)
+ *          - Training algorithm
+ *              - Supervised learning by changing each weight and testing them  
  * Testing:
- * 
+ *      Testing will both be done by a series of testing methods
+ *      and by hand since not all functionalities are able to be tested by the machine 
  * 
  */
 public class App {
@@ -228,7 +237,7 @@ public class App {
 
 
     /**
-     * Display to possible arguments to run the app with
+     * Display the possible arguments to run the app with
      */
     private static void displayOptions(){
         System.out.println("Possible options:");
