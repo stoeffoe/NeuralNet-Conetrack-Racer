@@ -14,8 +14,11 @@ import com.google.gson.JsonIOException;
 
 public class CarData{
     private transient static final Gson gson = new Gson();
+    private transient static final String directory = "./jsonFiles/carData/";
+    
     private LinkedList<Properties> propertiesList;
     private LinkedList<Controls> controlsList;
+
 
     /**
      * Initialize a dataset with an empty list of properties and an empty list of controls
