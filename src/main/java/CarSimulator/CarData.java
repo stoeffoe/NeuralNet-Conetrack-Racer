@@ -79,9 +79,10 @@ public class CarData{
     }
 
     /**
-     * Save the lists within this object to a json file
+     * Save the lists with equal size within the current object to a json file
      * @param fileName The location and name of the json file where the data needs to be saved to
      */
+
     public void saveToJsonFile(String fileName){
         while(propertiesList.size() != controlsList.size()){
             if(propertiesList.size() > controlsList.size()){
