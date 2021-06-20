@@ -40,9 +40,9 @@ public class Controls{
     }
 
     /**
-     * 
-     * @param targetVelocity Target velocity of the car
+     * @param targetVelocity Target velocity of the car between {@value #minTargetVelocity} and {@value #maxTargetVelocity}
      */
+
     public void setTargetVelocity(double targetVelocity){
         if(targetVelocity > maxTargetVelocity){
             this.targetVelocity = maxTargetVelocity;
@@ -55,9 +55,9 @@ public class Controls{
     
 
     /**
-     * 
      * @return Current target velocity
      */
+
     public double getTargetVelocity(){
         return targetVelocity;
     }
