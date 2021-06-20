@@ -56,8 +56,9 @@ public class Properties{
     }
 
     /**
-     * 
-     * @return 
+     * Get the distance of the nearest cones within rays of equal size
+     * @param outputVector The amount of rays
+     * @return Array with the distance of the nearest cones per ray
      */
     public double[] getRay(int outputVector){
         int lidarAngle = 2 * (int)lidarHalfApertureAngle;
@@ -83,7 +84,6 @@ public class Properties{
     }
     
     /**
-     * 
      * @return Array with the distance and angle to the 4 nearest cones sorted per cone
      */
     public double[] getNearestCones(int amountOfNearestCones){
