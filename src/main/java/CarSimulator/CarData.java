@@ -62,10 +62,10 @@ public class CarData{
     }
 
     /**
-     * 
      * @return The list of controls objects
      */
     public LinkedList<Controls> getControlsList(){
+
         return controlsList;
     }
 
