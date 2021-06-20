@@ -19,8 +19,8 @@ class WorkThread implements Callable<NNdata> {
     }
     /**
      * Passes the input values through the neural net
-     * @param inputValues double input vector 
-     * @return what the computer thinks is right 
+     * @param inputValues Inputnodes of the neural net
+     * @return Outputnodes of the neuralnet
      */
     private double[][] predict(double[][] input) {
         double[][] output = input;
