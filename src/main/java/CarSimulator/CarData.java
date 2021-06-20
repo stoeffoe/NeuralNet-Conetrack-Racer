@@ -110,7 +110,8 @@ public class CarData{
      */
     public static CarData loadFromJsonFile(String fileName){
         try {
-            Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/carData/" + fileName));
+            Reader reader = Files.newBufferedReader(Paths.get(directory + fileName));
+
             return gson.fromJson(reader, CarData.class);
         } catch(IOException e){
             e.printStackTrace();
