@@ -91,15 +91,12 @@ public class App {
                 System.out.println("Stopped recording");
             }
             Properties properties = car.recvProperties();
-            if(record){
-                carData.addProperties(properties);
-            }
-
             
             double steeringAngle = uic.getSteeringAngle();
             double targetVelocity = uic.getTargetVelocity();
             Controls controls = car.sendControls(steeringAngle, targetVelocity);
             if(record){
+                carData.addProperties(properties);
                 carData.addControls(controls);
             }
             previousRecordStatus = record;
