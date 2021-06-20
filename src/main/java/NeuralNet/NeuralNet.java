@@ -130,11 +130,8 @@ public class NeuralNet {
         return nnDataLowestError.error;
     }
 
-    private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {
-        edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
-
+    private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {   
         double[][][] newEdges = new double[edges.length][][];
-
 
         for (int layer = 0; layer < edges.length ;layer++) {
             for (int row = 0; row < edges[layer].length; row++) {
@@ -143,8 +140,8 @@ public class NeuralNet {
         }
 
         newEdges = copyOf3Dim(edges, newEdges);
-
-        edges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] -= weightChange;
+        newEdges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
+        
         return newEdges;
     } 
 
