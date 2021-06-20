@@ -16,7 +16,6 @@ public class Controls{
     }
 
     /**
-     * 
      * @param steeringAngle Steering angle to set in degrees.
      * Angles higher than {@value #maxSteeringAngle}, will be set to {@value #maxSteeringAngle}.
      * Angles lower than -{@value #maxSteeringAngle}, will be set to -{@value #maxSteeringAngle}.
@@ -32,7 +31,6 @@ public class Controls{
     }
 
     /**
-     * 
      * @return Current steering angle in degrees
      */
     public double getSteeringAngle(){
@@ -40,7 +38,6 @@ public class Controls{
     }
 
     /**
-     * 
      * @param targetVelocity Target velocity of the car
      */
     public void setTargetVelocity(double targetVelocity){
@@ -55,7 +52,6 @@ public class Controls{
     
 
     /**
-     * 
      * @return Current target velocity
      */
     public double getTargetVelocity(){

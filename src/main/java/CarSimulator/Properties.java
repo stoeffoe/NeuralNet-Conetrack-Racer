@@ -14,7 +14,6 @@ public class Properties{
     Properties(){}
 
     /**
-     * 
      * @return Array of lidardistances
      */
     public double[] getLidarDistances(){
@@ -22,7 +21,6 @@ public class Properties{
     }
     
     /**
-     * 
      * @return Lidar half aperture angle
      */
     public long getLidarHalfApertureAngle(){
@@ -30,7 +28,6 @@ public class Properties{
     }
 
     /**
-     * 
      * @return whether the car is on the track or not
      */
     public boolean getIsOnTrack(){
@@ -38,7 +35,6 @@ public class Properties{
     }
 
     /**
-     * 
      * @return the progress of the car on the track in percentage
      */
     public double getProgress() {
@@ -46,7 +42,6 @@ public class Properties{
     }
 
     /**
-     * 
      * @return elapsed simulation time
      */
     public double getLapTime() {
@@ -54,7 +49,6 @@ public class Properties{
     }
 
     /**
-     * 
      * @return if the car is colliding
      */
     public boolean getCollided() {
@@ -62,7 +56,6 @@ public class Properties{
     }
 
     /**
-     * 
      * @return 
      */
     public double[] getRay(int outputVector){
@@ -89,7 +82,6 @@ public class Properties{
     }
     
     /**
-     * 
      * @return Array with the distance and angle to the 4 nearest cones sorted per cone
      */
     public double[] getNearestCones(int amountOfNearestCones){

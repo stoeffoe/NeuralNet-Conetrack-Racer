@@ -5,7 +5,6 @@ public class Data {
     private double[][] outputValues;
     
     /**
-     * 
      * @param inputValues input values as row vector
      * @param outputValues output values as row vector
      */
