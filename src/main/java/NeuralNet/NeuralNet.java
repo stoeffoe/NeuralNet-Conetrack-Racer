@@ -90,7 +90,9 @@ public class NeuralNet {
         return error;
     }
 
-
+    /**
+     * Change one edge with a given weight change of + / - that will return the lowest error 
+     */
     private double train(Data[] dataSet,  double weightChange) {
         
         List<Future<NNdata>> futureList = new ArrayList<Future<NNdata>>();
