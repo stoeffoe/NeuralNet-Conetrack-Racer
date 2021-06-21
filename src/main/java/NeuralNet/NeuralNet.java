@@ -24,13 +24,14 @@ public class NeuralNet {
     private static ExecutorService executor = Executors.newFixedThreadPool(cores);
 
     private transient static final Gson gson = new Gson();
+    private transient static final String directory = "./jsonFiles/edges/";
     public static final ActivationFunction activationFunction = new FastSigmoid();
 
     private double[][][] edges;
 
     /**
-     * if you have already the weights of the edges  
-     * @param edges 
+     * Initialize the neural net with already known weights of the edges
+     * @param edges 3D array of the wieghts of all the edges per layer from input to output
      */
     public NeuralNet(double[][][] edges) {
         this.edges = edges;
@@ -68,7 +69,7 @@ public class NeuralNet {
     }
 
     /**
-     * @return list of matrices containing the weights
+     * @return Array of the weights of all the edges per layer from input to output
      */
     public double[][][] getEdges() {
         return edges;
@@ -188,7 +189,7 @@ public class NeuralNet {
      */
     public void saveToJsonFile(String fileName ){
         try{
-            Writer writer = new FileWriter("./jsonFiles/edges/"+fileName);
+            Writer writer = new FileWriter(directory+fileName);
             gson.toJson(edges, writer);
             writer.close();
         } catch(JsonIOException e){
@@ -205,7 +206,7 @@ public class NeuralNet {
      * @throws IOException
      */
     public static NeuralNet loadFromJsonFile(String fileName) throws IOException{
-        Reader reader = Files.newBufferedReader(Paths.get("./jsonFiles/edges/"+fileName));
+        Reader reader = Files.newBufferedReader(Paths.get(directory+fileName));
         return new NeuralNet(gson.fromJson(reader, double[][][].class)) ;
     }
 
