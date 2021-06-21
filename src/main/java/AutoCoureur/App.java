@@ -21,7 +21,7 @@
  *          - API interface for controlling the car and receiving the relevant information
  *      - NeuralNet
  *          - A neural net with its nodes and edges
-            - Mathematical methods for prediction and training (matrix multiplication, sum of least squares, activation function)
+ *          - Mathematical methods for prediction and training (matrix multiplication, sum of least squares, activation function)
  *          - Training algorithm
  *              - Supervised learning by changing each weight and testing them  
  * Testing:
