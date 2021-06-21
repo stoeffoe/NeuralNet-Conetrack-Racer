@@ -1,17 +1,9 @@
-package AutoCoureur;
-
-import java.io.IOException;
-import java.util.Arrays;
-
-import CarSimulator.Car;
-import CarSimulator.Controls;
-import CarSimulator.Properties;
-import CarSimulator.CarData;
-import NeuralNet.Data;
-import NeuralNet.MatMath;
-import NeuralNet.NeuralNet;
-
-/**
+/** 
+ * Authors:
+ *  Jordy Weijgertse  0974347
+ *  Ruben Hiemstra    0924010
+ *  Stefan Beenen     0963586
+ * 
  * Requirements:
  *  This program needs to be able to:
  *      - Start and stop the SimPyLC car simulation
@@ -35,8 +27,24 @@ import NeuralNet.NeuralNet;
  * Testing:
  *      Testing will both be done by a series of testing methods
  *      and by hand since not all functionalities are able to be tested by the machine 
- * 
  */
+
+
+
+
+package AutoCoureur;
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import CarSimulator.Car;
+import CarSimulator.Controls;
+import CarSimulator.Properties;
+import CarSimulator.CarData;
+import NeuralNet.Data;
+import NeuralNet.MatMath;
+import NeuralNet.NeuralNet;
+
 public class App {
     private static int amountOfRays = 6;
     private static double minDistance = 0.4;
@@ -216,7 +224,7 @@ public class App {
 
             double[][] neuralNetInput = MatMath.fromList(MatMath.normalize(properties.getRay(amountOfRays), minDistance, maxDistance));
 
-            double steeringAngle = MatMath.denormalize(neuralNet.predict(neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
+            double steeringAngle = MatMath.denormalize(NeuralNet.predict( neuralNet.getEdges(),neuralNetInput)[0][0], -maxSteeringAngle, maxSteeringAngle);
 
             double targetVelocity = 1.0 + ( 2.0 / Math.abs(steeringAngle) );
             

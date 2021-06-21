@@ -8,13 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -27,7 +25,7 @@ public class NeuralNet {
 
     private transient static final Gson gson = new Gson();
     private transient static final String directory = "./jsonFiles/edges/";
-    private final ActivationFunction activationFunction = new FastSigmoid();
+    public static final ActivationFunction activationFunction = new FastSigmoid();
 
     private double[][][] edges;
 
@@ -77,8 +75,9 @@ public class NeuralNet {
         return edges;
     }
 
-
-
+    /**
+     * Trains the neuralnet with the given epochs
+     */
     public double fit(Data[] dataSet, double weightChange, int epochs,int run) {
         double error = 0; 
         for (int epoch = 0; epoch < epochs; epoch++) {
@@ -92,6 +91,9 @@ public class NeuralNet {
         return error;
     }
 
+    /**
+     * Change one edge with a given weight change of + / - that will return the lowest error 
+     */
     private double train(Data[] dataSet,  double weightChange) {
         
         List<Future<NNdata>> futureList = new ArrayList<Future<NNdata>>();
@@ -120,50 +122,54 @@ public class NeuralNet {
             }
         }
         
-        NNdata nnDataLowestError =  Collections.min(dataArrayList, new Comparator<NNdata>() {
-            @Override
-            public int compare(NNdata d1, NNdata d2) {
-                return d1.error < d2.error ? -1 : (d1.error > d2.error) ? 1 : 0;
-            }
-        });
+        NNdata nnDataLowestError =  Collections.min(dataArrayList);
 
         this.edges =nnDataLowestError.nn;
         return nnDataLowestError.error;
     }
 
+    /**
+     * calculate the error of eache datapoint 
+     * @param dataSet Data[]
+     * @return returns the average error
+     */
+    public static double calculateAverageError(double [][][] edges,Data[] dataSet) {
+        double errorSum = 0;
+        for (Data data : dataSet) {
+            errorSum += NeuralNet.calculateError(edges ,data);
+        }
+
+        return errorSum / dataSet.length;
+    }
+
+    /**
+     * Calculate the sum of squared error of the vector 
+     * @param data Data object with the inputvalues and corresponding outputvalue
+     * @return The sum of squared errors 
+     */
+    public static double calculateError(double[][][] edges,Data data) {
+        double[][] target = data.getOutputValues();
+        double[][] output = NeuralNet.predict( edges,data.getInputValues());
+
+        return MatMath.sumSquaredErrors(target, output);
+    }
+
     private double[][][] changeEdge( double[][][] edges ,int[] edgeIndex,double weightChange) {   
         double[][][] newEdges = new double[edges.length][][];
 
-        for (int layer = 0; layer < edges.length ;layer++) {
-            for (int row = 0; row < edges[layer].length; row++) {
-                newEdges[layer] = new double[edges[layer].length][edges[layer][0].length];
-            }
-        }
-
-        newEdges = copyOf3Dim(edges, newEdges);
+        newEdges = MatMath.copyOf3Dim(edges);
         newEdges[edgeIndex[0]][edgeIndex[1]][edgeIndex[2]] += weightChange;
         
         return newEdges;
     } 
 
-    private double[][][] copyOf3Dim(double[][][] array, double[][][]copy) {
-
-        for (int x = 0; x < array.length; x++) {  
-            for (int y = 0; y < array[x].length; y++) {  
-                for (int z = 0; z < array[x][y].length; z++) {
-                    copy[x][y][z] = array[x][y][z];  
-                }  
-            }  
-        } 
-        return copy;
-    }
-
     /**
-     * Passes the input values through the neural net
-     * @param inputValues input nodes
-     * @return output nodes
+    * Passes the input values through the neural net
+     * @param edges the weights of Neuralnet 
+     * @param input double input vector 
+     * @return what the computer thinks is right 
      */
-    public double[][] predict(double[][] input) {
+    public static double[][] predict(double[][][] edges,double[][] input) {
         double[][] output = input;
 
         for (int layer = 0; layer < edges.length; layer++) {
@@ -173,6 +179,9 @@ public class NeuralNet {
         return output;
     }
 
+    public double[][] predict(double[][] input) {
+        return NeuralNet.predict(this.edges, input);
+    }
 
     /**
      * Save the lists within this object to a json file
