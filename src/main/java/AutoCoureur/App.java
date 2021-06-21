@@ -8,25 +8,27 @@
  *  This program needs to be able to:
  *      - Start and stop the SimPyLC car simulation
  *      - Connect through sockets with the SimPyLC car simulation.
- *      - Send and recieve the appropiate commands with JSON to drive and steer the vehicle 
- *        and to recieve the lidar array data
+ *      - Send and receive the appropiate commands with JSON to drive and steer the vehicle 
+ *        and to receive the lidar array data
  *      - Generate data and format it properly for the machine learning algorithm
  *      - Learn to manoeuvre the car through the default track with a machine learning technique (without hitting the cones and going off track) 
  * 
  * Design:
  *    The program is split up in the following parts:
- *      - CarSimlulator
+ *      - CarSimulator
  *          - Socket connection to the SimPyLC Python simulation
  *          - JSON object translation to control the car
- *          - API interface for controlling the car and receiving the revelant information
+ *          - API interface for controlling the car and receiving the relevant information
  *      - NeuralNet
- *          - A neural net with it's nodes and edges
+ *          - A neural net with its nodes and edges
             - Mathematical methods for prediction and training (matrix multiplication, sum of least squares, activation function)
  *          - Training algorithm
  *              - Supervised learning by changing each weight and testing them  
  * Testing:
- *      Testing will both be done by a series of testing methods
- *      and by hand since not all functionalities are able to be tested by the machine 
+ *      Testing of methods where it is possible will be done by unit tests
+ *      and testing of the methods where unit tests are not possible, together with the integration tests, will be done by running the program
+ *      reviewing its behaviour in the simulation
+ *      The program is done when all the unit tests are succesfull and the car is driving the whole track without going off track or hitting cones
  */
 
 
