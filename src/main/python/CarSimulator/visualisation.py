@@ -158,7 +158,7 @@ class Visualisation (sp.Scene):
         self.progress = 0
         self.lastCone = 0
 
-        track = open ('default.track')
+        track = open ('./assets/tracklayouts/default.track')
         
         for rowIndex, row in enumerate (track):
             for columnIndex, column in enumerate (row):

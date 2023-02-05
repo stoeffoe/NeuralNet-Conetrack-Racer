@@ -24,7 +24,7 @@ public class NeuralNet {
     private static ExecutorService executor = Executors.newFixedThreadPool(cores);
 
     private transient static final Gson gson = new Gson();
-    private transient static final String directory = "./jsonFiles/edges/";
+    private transient static final String directory = "./assets/NNmodels/";
     public static final ActivationFunction activationFunction = new FastSigmoid();
 
     private double[][][] edges;
