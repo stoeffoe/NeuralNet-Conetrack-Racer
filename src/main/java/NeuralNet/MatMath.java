@@ -130,7 +130,7 @@ public final class MatMath {
      * @return A value between min and max
      */
     public static double denormalize(double normalizedValue, double min, double max){
-        return (normalizedValue * (max - min)) - max;
+        return (normalizedValue * (max - min)) + min;
     }
 
     /**
