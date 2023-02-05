@@ -252,7 +252,10 @@ class Visualisation (sp.Scene):
 
     def getProgress(self):
 
-        distances = np.sum((self.leftConesPos-self.getPosition())**2, axis=1)
+        posPoint = self.getPosition()
+        posArray = (posPoint.x, posPoint.y)
+
+        distances = np.sum((self.leftConesPos-posArray)**2, axis=1)
         nearestCone = np.argmin(distances)
         numOfInnerCones = len(self.leftConesPos)
 
