@@ -1,5 +1,10 @@
 # Opdracht4
 
+### Install python packages
+```
+python -m pip install -r .\requirements.txt
+```
+
 ### Compile
 ```
 mvn package
